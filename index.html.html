@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio Développeur</title>
+<style>
+  :root { --c1:#6c63ff; --c2:#f64f59; --c3:#43e97b; --c4:#f7971e; --dark:#0f0e17; --card:#1a1830; --text:#fffffe; --sub:#a7a9be; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--dark); color:var(--text); font-family:'Segoe UI',sans-serif; overflow-x:hidden; }
+
+  /* NAV */
+  nav { position:fixed; top:0; width:100%; background:rgba(15,14,23,.92); backdrop-filter:blur(10px); z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1rem 2.5rem; border-bottom:1px solid rgba(108,99,255,.2); gap:1rem; flex-wrap:wrap; }
+  .logo { font-size:1.3rem; font-weight:800; background:linear-gradient(135deg,var(--c1),var(--c2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  nav ul { list-style:none; display:flex; gap:1.5rem; align-items:center; }
+  nav a { color:var(--sub); text-decoration:none; font-size:.9rem; transition:.3s; }
+  nav a:hover { color:var(--text); }
+  .lang-btn { background:none; border:1px solid rgba(255,255,255,.15); border-radius:50px; padding:.3rem .9rem; cursor:pointer; font-size:.95rem; display:flex; align-items:center; gap:.4rem; color:var(--sub); transition:.3s; white-space:nowrap; }
+  .lang-btn:hover { border-color:var(--c1); color:var(--text); }
+
+  /* HERO */
+  #hero { min-height:100vh; display:flex; align-items:center; justify-content:center; text-align:center; padding:6rem 2rem 4rem; position:relative; overflow:hidden; }
+  .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse at 30% 50%,rgba(108,99,255,.25) 0%,transparent 60%),radial-gradient(ellipse at 70% 20%,rgba(246,79,89,.2) 0%,transparent 50%); }
+  .blob { position:absolute; border-radius:50%; filter:blur(70px); animation:float 8s ease-in-out infinite; }
+  .b1 { width:400px; height:400px; background:rgba(108,99,255,.18); top:-100px; left:-100px; }
+  .b2 { width:300px; height:300px; background:rgba(246,79,89,.15); bottom:50px; right:-50px; animation-delay:3s; }
+  .b3 { width:200px; height:200px; background:rgba(67,233,123,.12); top:40%; left:60%; animation-delay:5s; }
+  @keyframes float { 0%,100%{transform:translateY(0) scale(1)} 50%{transform:translateY(-30px) scale(1.05)} }
+  .hero-content { position:relative; z-index:1; }
+  .badge { display:inline-block; background:rgba(108,99,255,.2); border:1px solid var(--c1); color:var(--c1); padding:.4rem 1.2rem; border-radius:50px; font-size:.85rem; margin-bottom:1.5rem; animation:fadeUp .8s ease; }
+  h1 { font-size:clamp(2.5rem,6vw,4.5rem); font-weight:900; line-height:1.1; margin-bottom:1rem; animation:fadeUp .8s ease .1s both; }
+  .grad { background:linear-gradient(135deg,var(--c1),var(--c2),var(--c4)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { color:var(--sub); font-size:1.1rem; max-width:600px; margin:0 auto 2rem; animation:fadeUp .8s ease .2s both; line-height:1.7; }
+  .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; animation:fadeUp .8s ease .3s both; }
+  .btn { padding:.8rem 2rem; border-radius:50px; font-weight:700; cursor:pointer; transition:.3s; text-decoration:none; font-size:.95rem; border:none; display:inline-block; }
+  .btn-primary { background:linear-gradient(135deg,var(--c1),var(--c2)); color:#fff; box-shadow:0 4px 20px rgba(108,99,255,.4); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 30px rgba(108,99,255,.5); }
+  .btn-outline { background:transparent; border:2px solid var(--c1); color:var(--c1); }
+  .btn-outline:hover { background:var(--c1); color:#fff; }
+  .stats { display:flex; gap:3rem; justify-content:center; margin-top:3rem; animation:fadeUp .8s ease .4s both; flex-wrap:wrap; }
+  .stat span { display:block; font-size:2rem; font-weight:900; color:var(--c1); }
+  .stat p { color:var(--sub); font-size:.85rem; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
+
+  /* SECTIONS */
+  section { padding:5rem 2rem; max-width:1100px; margin:0 auto; }
+  .section-tag { color:var(--c1); font-size:.85rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:.5rem; }
+  h2 { font-size:2.2rem; font-weight:900; margin-bottom:3rem; }
+  h2 span { background:linear-gradient(135deg,var(--c1),var(--c2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+
+  /* SKILLS */
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+  .skill-card { background:var(--card); border-radius:16px; padding:1.5rem; border:1px solid rgba(255,255,255,.06); transition:.3s; }
+  .skill-card:hover { transform:translateY(-5px); border-color:var(--c1); box-shadow:0 10px 30px rgba(108,99,255,.2); }
+  .skill-icon { font-size:2rem; margin-bottom:1rem; }
+  .skill-card h3 { font-size:1rem; margin-bottom:1rem; }
+  .tags { display:flex; flex-wrap:wrap; gap:.5rem; }
+  .tag { background:rgba(108,99,255,.15); color:var(--c1); padding:.3rem .8rem; border-radius:50px; font-size:.78rem; font-weight:600; }
+  .tag.green { background:rgba(67,233,123,.1); color:var(--c3); }
+  .tag.orange { background:rgba(247,151,30,.1); color:var(--c4); }
+  .tag.red { background:rgba(246,79,89,.1); color:var(--c2); }
+
+  /* TIMELINE */
+  .timeline { position:relative; padding-left:2rem; }
+  .timeline::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(180deg,var(--c1),var(--c2),var(--c4)); border-radius:2px; }
+  .exp { position:relative; margin-bottom:2.5rem; padding:1.5rem; background:var(--card); border-radius:16px; border:1px solid rgba(255,255,255,.06); transition:.3s; }
+  .exp::before { content:''; position:absolute; left:-2.55rem; top:1.5rem; width:12px; height:12px; border-radius:50%; background:var(--c1); box-shadow:0 0 10px var(--c1); }
+  .exp:hover { border-color:rgba(108,99,255,.4); transform:translateX(5px); }
+  .exp-header { display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:.5rem; margin-bottom:.5rem; }
+  .exp-title { font-weight:800; font-size:1.05rem; }
+  .exp-company { color:var(--c1); font-weight:600; font-size:.9rem; }
+  .exp-date { color:var(--sub); font-size:.82rem; background:rgba(255,255,255,.05); padding:.25rem .8rem; border-radius:50px; white-space:nowrap; }
+  .exp-desc { color:var(--sub); font-size:.88rem; line-height:1.7; margin-top:.75rem; }
+  .exp-tags { display:flex; flex-wrap:wrap; gap:.4rem; margin-top:.8rem; }
+  .exp-tag { background:rgba(255,255,255,.06); color:var(--sub); padding:.2rem .7rem; border-radius:50px; font-size:.75rem; }
+
+  /* PROJETS */
+  .proj-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1.5rem; }
+  @media(max-width:700px){ .proj-grid { grid-template-columns:1fr; } }
+  .proj-card { background:var(--card); border-radius:16px; padding:2rem; border:1px solid rgba(255,255,255,.06); transition:.3s; position:relative; overflow:hidden; display:flex; flex-direction:column; }
+  .proj-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:var(--grad,linear-gradient(135deg,var(--c1),var(--c2))); }
+  .proj-card:hover { transform:translateY(-6px); box-shadow:0 15px 40px rgba(0,0,0,.3); }
+  .proj-emoji { font-size:2.5rem; margin-bottom:1rem; display:block; }
+  .proj-card h3 { font-size:1.1rem; margin-bottom:.5rem; }
+  .proj-card p { color:var(--sub); font-size:.88rem; line-height:1.6; margin-bottom:1rem; flex:1; }
+  .proj-btns { display:flex; gap:.7rem; flex-wrap:wrap; margin-top:auto; }
+
+  /* CONTACT */
+  #contact { text-align:center; }
+  .contact-card { background:var(--card); border-radius:20px; padding:3rem; border:1px solid rgba(108,99,255,.2); max-width:600px; margin:0 auto; }
+  .contact-links { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem; }
+  .clink { display:flex; align-items:center; gap:.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:var(--text); text-decoration:none; padding:.7rem 1.5rem; border-radius:50px; font-size:.9rem; transition:.3s; }
+  .clink:hover { background:var(--c1); border-color:var(--c1); transform:translateY(-2px); }
+
+  footer { text-align:center; padding:2rem; color:var(--sub); font-size:.85rem; border-top:1px solid rgba(255,255,255,.05); }
+  .reveal { opacity:0; transform:translateY(30px); transition:.7s ease; }
+  .reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">&lt;Dev /&gt;</div>
+  <ul>
+    <li><a href="#skills" data-i18n="nav_skills">Compétences</a></li>
+    <li><a href="#experience" data-i18n="nav_exp">Expérience</a></li>
+    <li><a href="#projets" data-i18n="nav_proj">Projets</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn">🇬🇧 English</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div>
+  <div class="hero-content">
+    <div class="badge" data-i18n="badge">🚀 Disponible pour de nouveaux projets</div>
+    <h1><span class="grad">Développeur</span></h1>
+    <p class="hero-sub" data-i18n="hero_sub">Du monde IBM AS/400 aux API REST modernes — un parcours de 35 ans à travers IBM, Adelia, Oracle, Windev et .NET. Une expertise rare qui allie fondations solides et maîtrise des technologies actuelles.</p>
+    <div class="hero-btns">
+      <a href="#experience" class="btn btn-primary" data-i18n="btn_parcours">Voir mon parcours</a>
+      <a href="#contact" class="btn btn-outline" data-i18n="btn_contact">Me contacter</a>
+    </div>
+    <div class="stats">
+      <div class="stat"><span>35+</span><p data-i18n="stat1">ans d'expérience</p></div>
+      <div class="stat"><span>5+</span><p data-i18n="stat2">secteurs d'activité</p></div>
+      <div class="stat"><span>C1</span><p data-i18n="stat3">Anglais professionnel</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="reveal">
+    <div class="section-tag">// <span data-i18n="nav_skills">compétences</span></div>
+    <h2>Stack <span data-i18n="h2_tech">Technique</span></h2>
+  </div>
+  <div class="skills-grid">
+    <div class="skill-card reveal"><div class="skill-icon">⚙️</div><h3 data-i18n="sk1_title">Backend & Frameworks</h3><div class="tags"><span class="tag">.NET 5–9</span><span class="tag">C#</span><span class="tag">EF Core</span><span class="tag">API REST</span><span class="tag">WPF</span><span class="tag">JWT</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🗄️</div><h3 data-i18n="sk2_title">Bases de données</h3><div class="tags"><span class="tag green">PostgreSQL</span><span class="tag green">SQL Server</span><span class="tag green">MySQL</span><span class="tag green">HFSQL</span><span class="tag green">Oracle</span><span class="tag green">DB2/400</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🖥️</div><h3>Windev / Webdev</h3><div class="tags"><span class="tag orange">Windev 20–2024</span><span class="tag orange">Webdev</span><span class="tag orange">Windev Mobile</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🏭</div><h3>IBM / Legacy</h3><div class="tags"><span class="tag red">AS/400 — IBMi</span><span class="tag red">RPG III/IV/ILE</span><span class="tag red">OS/400</span><span class="tag red">DB2/400</span><span class="tag red">Adelia</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🛠️</div><h3>Outils</h3><div class="tags"><span class="tag">Git</span><span class="tag">Swagger</span><span class="tag">JIRA</span><span class="tag">Visual Studio</span><span class="tag">VS Code</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">💬</div><h3 data-i18n="sk6_title">Soft Skills</h3><div class="tags"><span class="tag" data-i18n="soft1">Rédaction technique</span><span class="tag" data-i18n="soft2">Vulgarisation</span><span class="tag" data-i18n="soft3">Travail en équipe</span><span class="tag" data-i18n="soft4">Apprentissage continu</span></div></div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience" style="max-width:900px">
+  <div class="reveal">
+    <div class="section-tag">// <span data-i18n="nav_exp">parcours</span></div>
+    <h2 data-i18n="h2_exp">Expériences <span>Professionnelles</span></h2>
+  </div>
+  <div class="timeline">
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e1_title">Développeur</div><div class="exp-company">InfoSquad — Groupe InfoGones PCSoft</div></div><span class="exp-date">Jan 2025 – Déc 2025</span></div>
+      <p class="exp-desc" data-i18n="e1_desc">Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.</p>
+      <div class="exp-tags"><span class="exp-tag">Windev 2024</span><span class="exp-tag">SQL</span><span class="exp-tag">POO</span><span class="exp-tag">Multi-threading</span><span class="exp-tag">PostgreSQL</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e2_title">Lead Développeur</div><div class="exp-company">Sifa Logistique</div></div><span class="exp-date">Jun 2024 – Oct 2024</span></div>
+      <p class="exp-desc" data-i18n="e2_desc">Assistance technique et leadership d'équipe sur des projets Transact-SQL et Windev 28.</p>
+      <div class="exp-tags"><span class="exp-tag">T-SQL</span><span class="exp-tag">Windev 28</span><span class="exp-tag">Lead Tech</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e3_title">Consultant API</div><div class="exp-company">Talentia Software</div></div><span class="exp-date">Avr 2023 – Jun 2024</span></div>
+      <p class="exp-desc" data-i18n="e3_desc">Développement d'API REST en .NET 8 / C# et migration de données.</p>
+      <div class="exp-tags"><span class="exp-tag">.NET 8</span><span class="exp-tag">C#</span><span class="exp-tag">REST API</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e4_title">Chef de Projet & Développeur</div><div class="exp-company">Groupe Prenant</div></div><span class="exp-date">Fév 2020 – Avr 2023</span></div>
+      <p class="exp-desc" data-i18n="e4_desc">Gestion et développement de projets avec HFSQL, Windev 26, Windev Mobile et API REST .NET 5. Optimisation des processus métiers avec +20% d'efficacité.</p>
+      <div class="exp-tags"><span class="exp-tag">.NET 5</span><span class="exp-tag">Windev 26</span><span class="exp-tag">HFSQL</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e5_title">Ingénieur R&D</div><div class="exp-company">Atoll-Solutions</div></div><span class="exp-date">Oct 2015 – Fév 2020</span></div>
+      <p class="exp-desc" data-i18n="e5_desc">Conception de solutions desktop et mobiles pour la gestion de projets dans le secteur bâtiment/rénovation. Windev, C#, .NET et WPF.</p>
+      <div class="exp-tags"><span class="exp-tag">WPF</span><span class="exp-tag">C#</span><span class="exp-tag">Windev 20–25</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e4_title">Chef de Projet & Développeur</div><div class="exp-company">Toyota France</div></div><span class="exp-date">Nov 2007 – Oct 2015</span></div>
+      <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique. Adelia Studio, RPG IV, OS/400, SQL, Windev 20 et Webdev 20.</p>
+      <div class="exp-tags"><span class="exp-tag">RPG IV</span><span class="exp-tag">OS/400</span><span class="exp-tag">Windev 20</span><span class="exp-tag">Adelia</span></div>
+    </div>
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e7_title">Analyste & Développeur</div><div class="exp-company">Rentokil, STEF-TFE, Siemens Healthcare, Groupe Hardis…</div></div><span class="exp-date">1989 – 2007</span></div>
+      <p class="exp-desc" data-i18n="e7_desc">Analyse et développement multi-secteurs (logistique, santé). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.</p>
+      <div class="exp-tags"><span class="exp-tag">RPG III/IV</span><span class="exp-tag">Oracle</span><span class="exp-tag">UNIX</span><span class="exp-tag">SQL</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJETS -->
+<section id="projets">
+  <div class="reveal">
+    <div class="section-tag">// <span data-i18n="nav_proj">réalisations</span></div>
+    <h2 data-i18n="h2_proj">Projets <span>Notables</span></h2>
+  </div>
+  <div class="proj-grid">
+    <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#0077b5,#00a0dc)">
+      <span class="proj-emoji">📝</span>
+      <h3>EF Core — Dynamic Context</h3>
+      <p data-i18n="p1_desc">Article technique sur les modèles dynamiques en .NET avec EF Core, publié sur LinkedIn pour la communauté .NET.</p>
+      <div class="tags"><span class="tag">.NET</span><span class="tag">EF Core</span><span class="tag" data-i18n="redac">Rédaction technique</span></div>
+      <div class="proj-btns" style="margin-top:1rem;">
+        <a href="https://www.linkedin.com/posts/jean-christophe-cherid-9422b139_ef-core-dynamic-context-activity-7407029320864579585-1Wc0" target="_blank" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_linkedin">🔗 Voir sur LinkedIn</a>
+      </div>
+    </div>
+    <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#43e97b,#0f9960)">
+      <span class="proj-emoji">⛽</span>
+      <h3>FuelMapPrice</h3>
+      <p data-i18n="p2_desc">Application de cartographie des prix de carburant en temps réel. Architecture conçue entièrement par mes soins, développée avec Claude Code.</p>
+      <div class="tags"><span class="tag green" data-i18n="archi">Architecture perso</span><span class="tag green">Claude Code</span></div>
+      <div class="proj-btns">
+        <a href="https://lianazel.github.io/FuelMapPrice/" target="_blank" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_site">🌐 Voir le site</a>
+        <a href="https://github.com/lianazel/FuelMapPrice" target="_blank" class="btn btn-outline" style="font-size:.8rem;padding:.5rem 1.2rem;">💻 GitHub</a>
+      </div>
+    </div>
+    <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#6c63ff,#f64f59)">
+      <span class="proj-emoji">🔄</span>
+      <h3 data-i18n="p3_title">Moteur de Migration HFSQL</h3>
+      <p data-i18n="p3_desc">Solution multi-threading complète pour migrer des bases HFSQL vers PostgreSQL, MySQL ou SQL Server avec reprise sur interruption et logs d'erreurs.</p>
+      <div class="tags"><span class="tag">Windev 2024</span><span class="tag">SQL</span><span class="tag">Multi-threading</span></div>
+    </div>
+    <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#f7971e,#ffd200)">
+      <span class="proj-emoji">🔐</span>
+      <h3 data-i18n="p4_title">Tutoriel JWT .NET 8</h3>
+      <p data-i18n="p4_desc">Guide technique détaillé sur l'authentification JWT en .NET 8, rédigé en anglais et publié pour la communauté .NET.</p>
+      <div class="tags"><span class="tag orange">.NET 8</span><span class="tag orange">JWT</span><span class="tag orange">C#</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <div class="section-tag">// contact</div>
+    <h2 data-i18n="h2_contact">Travaillons <span>Ensemble</span></h2>
+  </div>
+  <div class="contact-card reveal">
+    <p style="color:var(--sub);line-height:1.7;margin-bottom:1.5rem;" data-i18n="contact_sub">Je suis ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour discuter de vos projets !</p>
+    <a href="mailto:votre@email.com" class="btn btn-primary" data-i18n="contact_btn">✉️ Envoyer un email</a>
+    <div class="contact-links">
+      <a href="https://www.linkedin.com/in/jean-christophe-cherid-9422b139" target="_blank" class="clink">🔗 LinkedIn</a>
+      <a href="https://github.com/lianazel" target="_blank" class="clink">💻 GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p data-i18n="footer">Région Parisienne · Développeur · Disponible en 2025</p>
+</footer>
+
+<script>
+const t = {
+  fr: {
+    nav_skills:"Compétences", nav_exp:"Expérience", nav_proj:"Projets",
+    badge:"🚀 Disponible pour de nouveaux projets",
+    hero_sub:"Du monde IBM AS/400 aux API REST modernes — un parcours de 35 ans à travers IBM, Adelia, Oracle, Windev et .NET. Une expertise rare qui allie fondations solides et maîtrise des technologies actuelles.",
+    btn_parcours:"Voir mon parcours", btn_contact:"Me contacter",
+    stat1:"ans d'expérience", stat2:"secteurs d'activité", stat3:"Anglais professionnel",
+    h2_tech:"Technique", sk1_title:"Backend & Frameworks", sk2_title:"Bases de données", sk6_title:"Soft Skills",
+    soft1:"Rédaction technique", soft2:"Vulgarisation", soft3:"Travail en équipe", soft4:"Apprentissage continu",
+    h2_exp:"Expériences <span>Professionnelles</span>",
+    e1_title:"Développeur", e2_title:"Lead Développeur", e3_title:"Consultant API",
+    e4_title:"Chef de Projet & Développeur", e5_title:"Ingénieur R&D", e7_title:"Analyste & Développeur",
+    e1_desc:"Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.",
+    e2_desc:"Assistance technique et leadership d'équipe sur des projets Transact-SQL et Windev 28.",
+    e3_desc:"Développement d'API REST en .NET 8 / C# et migration de données.",
+    e4_desc:"Gestion et développement de projets avec HFSQL, Windev 26, Windev Mobile et API REST .NET 5. Optimisation des processus métiers avec +20% d'efficacité.",
+    e5_desc:"Conception de solutions desktop et mobiles pour la gestion de projets dans le secteur bâtiment/rénovation. Windev, C#, .NET et WPF.",
+    e6_desc:"Gestion et développement de projets ventes & logistique. Adelia Studio, RPG IV, OS/400, SQL, Windev 20 et Webdev 20.",
+    e7_desc:"Analyse et développement multi-secteurs (logistique, santé). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
+    h2_proj:"Projets <span>Notables</span>",
+    p1_desc:"Article technique sur les modèles dynamiques en .NET avec EF Core, publié sur LinkedIn pour la communauté .NET.",
+    p2_desc:"Application de cartographie des prix de carburant en temps réel. Architecture conçue entièrement par mes soins, développée avec Claude Code.",
+    p3_title:"Moteur de Migration HFSQL", p3_desc:"Solution multi-threading complète pour migrer des bases HFSQL vers PostgreSQL, MySQL ou SQL Server avec reprise sur interruption et logs d'erreurs.",
+    p4_title:"Tutoriel JWT .NET 8", p4_desc:"Guide technique détaillé sur l'authentification JWT en .NET 8, rédigé en anglais et publié pour la communauté .NET.",
+    redac:"Rédaction technique", archi:"Architecture perso",
+    see_linkedin:"🔗 Voir sur LinkedIn", see_site:"🌐 Voir le site",
+    h2_contact:"Travaillons <span>Ensemble</span>",
+    contact_sub:"Je suis ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour discuter de vos projets !",
+    contact_btn:"✉️ Envoyer un email",
+    footer:"Région Parisienne · Développeur · Disponible en 2025",
+    langBtn:"🇬🇧 English"
+  },
+  en: {
+    nav_skills:"Skills", nav_exp:"Experience", nav_proj:"Projects",
+    badge:"🚀 Open to new opportunities",
+    hero_sub:"From IBM AS/400 to modern REST APIs — a 35-year journey through IBM, Adelia, Oracle, Windev and .NET. A rare expertise combining solid foundations with mastery of current technologies.",
+    btn_parcours:"View my career", btn_contact:"Contact me",
+    stat1:"years of experience", stat2:"industry sectors", stat3:"Professional English",
+    h2_tech:"Stack", sk1_title:"Backend & Frameworks", sk2_title:"Databases", sk6_title:"Soft Skills",
+    soft1:"Technical writing", soft2:"Knowledge sharing", soft3:"Team work", soft4:"Continuous learning",
+    h2_exp:"Professional <span>Experience</span>",
+    e1_title:"Developer", e2_title:"Lead Developer", e3_title:"API Consultant",
+    e4_title:"Project Manager & Developer", e5_title:"R&D Engineer", e7_title:"Analyst & Developer",
+    e1_desc:"Development of a complete HFSQL database migration solution to PostgreSQL, MySQL and SQL Server. Multi-threading, resume on interruption, ID management and error logs.",
+    e2_desc:"Technical assistance and team leadership on Transact-SQL and Windev 28 projects.",
+    e3_desc:"REST API development in .NET 8 / C# and data migration.",
+    e4_desc:"Project management and development with HFSQL, Windev 26, Windev Mobile and REST API .NET 5. Business process optimization achieving +20% efficiency.",
+    e5_desc:"Design of desktop and mobile solutions for project management in the construction/renovation sector. Windev, C#, .NET and WPF.",
+    e6_desc:"Project management and development for sales & logistics. Adelia Studio, RPG IV, OS/400, SQL, Windev 20 and Webdev 20.",
+    e7_desc:"Multi-sector analysis and development (logistics, healthcare). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
+    h2_proj:"Notable <span>Projects</span>",
+    p1_desc:"Technical article on dynamic models in .NET with EF Core, published on LinkedIn for the .NET community.",
+    p2_desc:"Real-time fuel price mapping application. Architecture entirely designed by myself, developed with Claude Code.",
+    p3_title:"HFSQL Migration Engine", p3_desc:"Complete multi-threading solution to migrate HFSQL databases to PostgreSQL, MySQL or SQL Server with resume on interruption and error logs.",
+    p4_title:"JWT .NET 8 Tutorial", p4_desc:"Detailed technical guide on JWT authentication in .NET 8, written in English and published for the .NET community.",
+    redac:"Technical writing", archi:"Custom architecture",
+    see_linkedin:"🔗 View on LinkedIn", see_site:"🌐 View live site",
+    h2_contact:"Let's Work <span>Together</span>",
+    contact_sub:"I'm open to new opportunities. Feel free to reach out to discuss your projects!",
+    contact_btn:"✉️ Send an email",
+    footer:"Paris Region · Developer · Available 2025",
+    langBtn:"🇫🇷 Français"
+  }
+};
+
+let lang = 'fr';
+
+function toggleLang() {
+  lang = lang === 'fr' ? 'en' : 'fr';
+  document.documentElement.lang = lang;
+  const d = t[lang];
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.getAttribute('data-i18n');
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+}
+
+// Scroll reveal
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold:0.1 });
+document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+</script>
+</body>
+</html>
