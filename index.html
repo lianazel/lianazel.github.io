@@ -121,7 +121,7 @@
     <p class="hero-sub" data-i18n="hero_sub">Du monde IBM AS/400 aux API REST modernes — un parcours de 35 ans à travers IBM, Adelia, Oracle, Windev et .NET. Une expertise rare qui allie fondations solides et maîtrise des technologies actuelles.</p>
     <div class="hero-btns">
       <a href="#experience" class="btn btn-primary" data-i18n="btn_parcours">Voir mon parcours</a>
-      <a href="#contact" class="btn btn-outline" data-i18n="btn_contact">Me contacter</a>
+      <a href="#contact" onclick="event.preventDefault();document.getElementById('contact').scrollIntoView({behavior:'smooth'})" class="btn btn-outline" data-i18n="btn_contact">Me contacter</a>
     </div>
     <div class="stats">
       <div class="stat"><span>35+</span><p data-i18n="stat1">ans d'expérience</p></div>
@@ -143,6 +143,7 @@
     <div class="skill-card reveal"><div class="skill-icon">🖥️</div><h3>Windev / Webdev</h3><div class="tags"><span class="tag orange">Windev 20–2024</span><span class="tag orange">Webdev</span><span class="tag orange">Windev Mobile</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🏭</div><h3>IBM / Legacy</h3><div class="tags"><span class="tag red">AS/400 — IBMi</span><span class="tag red">RPG III/IV/ILE</span><span class="tag red">OS/400</span><span class="tag red">DB2/400</span><span class="tag red">Adelia</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🛠️</div><h3>Outils</h3><div class="tags"><span class="tag">Git</span><span class="tag">Swagger</span><span class="tag">JIRA</span><span class="tag">Visual Studio</span><span class="tag">VS Code</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🤖</div><h3>IA & Développement assisté</h3><div class="tags"><span class="tag" style="background:rgba(108,99,255,.25);border:1px solid var(--c1);">Claude Code</span><span class="tag green">FuelMapPrice</span><span class="tag green">Facture_AI</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">💬</div><h3 data-i18n="sk6_title">Soft Skills</h3><div class="tags"><span class="tag" data-i18n="soft1">Rédaction technique</span><span class="tag" data-i18n="soft2">Vulgarisation</span><span class="tag" data-i18n="soft3">Travail en équipe</span><span class="tag" data-i18n="soft4">Apprentissage continu</span></div></div>
   </div>
 </section>
@@ -157,7 +158,29 @@
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e1_title">Développeur</div><div class="exp-company">InfoSquad — Groupe InfoGones PCSoft</div></div><span class="exp-date">Jan 2025 – Déc 2025</span></div>
       <p class="exp-desc" data-i18n="e1_desc">Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.</p>
-      <div class="exp-tags"><span class="exp-tag">Windev 2024</span><span class="exp-tag">SQL</span><span class="exp-tag">POO</span><span class="exp-tag">Multi-threading</span><span class="exp-tag">PostgreSQL</span></div>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔄 Moteur de migration HFSQL multi-SGBD</div>
+          <div style="display:flex;flex-direction:column;gap:.45rem;">
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Cibles supportées</span> — PostgreSQL, MySQL, SQL Server (architecture extensible à Oracle, MariaDB, etc.)</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Construction dynamique du DDL</span> — Génération des instructions CREATE TABLE avec les bons types de colonnes cibles, recréation des indexes y compris sur clés composées.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Préservation des ID</span> — Conservation des valeurs d'ID et reprise au dernier ID inséré si une migration est interrompue.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Injection par lots & multi-threading</span> — Génération de requêtes SQL par lots, thread père soumettant des threads fils pour accélérer la migration des tables à forte volumétrie.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Fonctions SQL à la volée</span> — Injection de fonctions définies par l'utilisateur (ex : SQL Server) directement dans les instructions INSERT INTO.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Logs & rejeux</span> — Stockage des instructions SQL en échec pour analyse et rejeu.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1);font-weight:700;">Analyse des plages d'ID manquants</span> — Récupération ciblée des enregistrements manquants sans réexécuter la migration complète.</div>
+          </div>
+          <div class="exp-tags" style="margin-top:.8rem;">
+            <span class="exp-tag">Windev 2024</span>
+            <span class="exp-tag">PostgreSQL</span>
+            <span class="exp-tag">MySQL</span>
+            <span class="exp-tag">SQL Server</span>
+            <span class="exp-tag">POO</span>
+            <span class="exp-tag">Multi-threading</span>
+            <span class="exp-tag">DDL dynamique</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e2_title">Lead Développeur</div><div class="exp-company">Sifa Logistique</div></div><span class="exp-date">Jun 2024 – Oct 2024</span></div>
@@ -172,17 +195,121 @@
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e4_title">Chef de Projet & Développeur</div><div class="exp-company">Groupe Prenant</div></div><span class="exp-date">Fév 2020 – Avr 2023</span></div>
       <p class="exp-desc" data-i18n="e4_desc">Gestion et développement de projets avec HFSQL, Windev 26, Windev Mobile et API REST .NET 5. Optimisation des processus métiers avec +20% d'efficacité.</p>
-      <div class="exp-tags"><span class="exp-tag">.NET 5</span><span class="exp-tag">Windev 26</span><span class="exp-tag">HFSQL</span></div>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🖨️ Solution éditique — Media Performance</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception et développement d'une solution éditique complète en 3 couches :</div>
+          <div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;">
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
+              <span style="color:var(--c1);font-weight:700;">1/ Application mobile (douchettes)</span> — Application Windev Mobile 26 sous Android pour la saisie terrain en temps réel.
+            </div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
+              <span style="color:var(--c1);font-weight:700;">2/ Gestionnaire d'impression multi-thread</span> — Le cerveau du système : routage des flux entre les douchettes et les imprimantes avec haute disponibilité.
+            </div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
+              <span style="color:var(--c1);font-weight:700;">3/ API REST .NET 5</span> — Consommée par l'application mobile, interagit avec une base HFSQL. Architecture offrant un haut niveau de réactivité et de disponibilité.
+            </div>
+          </div>
+          <div class="exp-tags" style="margin-top:.8rem;">
+            <span class="exp-tag">Windev 26</span>
+            <span class="exp-tag">Windev Mobile 26</span>
+            <span class="exp-tag">.NET 5 REST API</span>
+            <span class="exp-tag">HFSQL</span>
+            <span class="exp-tag">POO</span>
+            <span class="exp-tag">Multi-threading</span>
+            <span class="exp-tag">Android</span>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c4);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">📄 Dématérialisation des demandes d'affacturage</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception d'un workflow complet pour le suivi et la gestion des demandes d'affacturage :</div>
+          <div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;">
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
+              <span style="color:var(--c4);font-weight:700;">1/ Dématérialisation</span> — Suppression du papier et numérisation complète des demandes.
+            </div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
+              <span style="color:var(--c4);font-weight:700;">2/ Suivi des demandes</span> — Workflow de validation et de traitement en temps réel.
+            </div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
+              <span style="color:var(--c4);font-weight:700;">3/ Historique</span> — Conservation et consultation de l'ensemble des demandes traitées.
+            </div>
+          </div>
+          <div class="exp-tags" style="margin-top:.8rem;">
+            <span class="exp-tag">Windev 26</span>
+            <span class="exp-tag">HFSQL</span>
+            <span class="exp-tag">POO</span>
+            <span class="exp-tag">Workflow</span>
+          </div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c3);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🏭 GPAO — Gestion de Production Assistée par Ordinateur</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:.6rem;">Collecte et envoi des données de production des machines vers l'ERP <strong style="color:var(--text);">MasterPrint</strong> et son module analytique, avec deux objectifs majeurs :</div>
+          <div style="display:flex;flex-direction:column;gap:.5rem;">
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
+              <span style="color:var(--c3);font-weight:700;">1/ Optimisation des ressources</span> — Exploitation mécanique (machines, imprimantes, rotatives…) et gestion des équipes humaines.
+            </div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
+              <span style="color:var(--c3);font-weight:700;">2/ Rentabilité clients</span> — Mesure de la rentabilité des dossiers clients pris en charge.
+            </div>
+          </div>
+          <div style="font-size:.82rem;color:var(--sub);margin-top:.6rem;line-height:1.6;">L'application produit une extraction CSV des données de production et déclenche <strong style="color:var(--text);">FluxProd.exe</strong> pour l'intégration dans MasterPrint.</div>
+          <div class="exp-tags" style="margin-top:.8rem;">
+            <span class="exp-tag">Windev 26</span>
+            <span class="exp-tag">HFSQL</span>
+            <span class="exp-tag">POO</span>
+            <span class="exp-tag">CSV</span>
+            <span class="exp-tag">ERP</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e5_title">Ingénieur R&D</div><div class="exp-company">Atoll-Solutions</div></div><span class="exp-date">Oct 2015 – Fév 2020</span></div>
-      <p class="exp-desc" data-i18n="e5_desc">Conception de solutions desktop et mobiles pour la gestion de projets dans le secteur bâtiment/rénovation. Windev, C#, .NET et WPF.</p>
-      <div class="exp-tags"><span class="exp-tag">WPF</span><span class="exp-tag">C#</span><span class="exp-tag">Windev 20–25</span></div>
+      <p class="exp-desc" data-i18n="e5_desc">Start-up créée et détenue par le groupe <strong style="color:var(--text);">BALAS</strong>, acteur majeur du secteur du bâtiment. Membre de l'équipe R&D pour la conception d'une solution de gestion de projets innovante.</p>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c2);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔬 Rôles au sein de l'équipe R&D</div>
+          <div style="display:flex;flex-direction:column;gap:.45rem;">
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2);font-weight:700;">Architecture technique</span> — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2);font-weight:700;">Exploration WPF</span> — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2);font-weight:700;">Framework Objet Windev 23</span> — Participation à la conception du framework objet de la future solution métier.</div>
+          </div>
+          <div class="exp-tags" style="margin-top:.8rem;">
+            <span class="exp-tag">Windev 20–25</span>
+            <span class="exp-tag">WPF</span>
+            <span class="exp-tag">C#</span>
+            <span class="exp-tag">.NET</span>
+            <span class="exp-tag">R&D</span>
+            <span class="exp-tag">Framework OOP</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e4_title">Chef de Projet & Développeur</div><div class="exp-company">Toyota France</div></div><span class="exp-date">Nov 2007 – Oct 2015</span></div>
-      <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique. Adelia Studio, RPG IV, OS/400, SQL, Windev 20 et Webdev 20.</p>
-      <div class="exp-tags"><span class="exp-tag">RPG IV</span><span class="exp-tag">OS/400</span><span class="exp-tag">Windev 20</span><span class="exp-tag">Adelia</span></div>
+      <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique sur IBM AS/400. Conception d'outils métiers web, systèmes de livraison automatisés et intégration d'API Java sur OS/400.</p>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🌐 Gestion du Risque Financier</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.</div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">WebDev 20</span><span class="exp-tag">IBM DB2/400</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c3);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🚗 VN_3EN1_DEMAT</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.</div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">WebDev 20</span><span class="exp-tag">IBM DB2/400</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c4);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">⚙️ Système de livraison automatisé</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.</div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">CLLE</span><span class="exp-tag">RPG-ILE</span><span class="exp-tag">Windev</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c2);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">☕ JVM OS/400 — Projet OrderFlex</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Gestion de la machine virtuelle Java sur OS/400 et consommation d'une API depuis un code Adelia via l'IFS.</div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">CLLE</span><span class="exp-tag">RPG-ILE</span><span class="exp-tag">IFS</span><span class="exp-tag">Adelia</span><span class="exp-tag">JVM</span></div>
+        </div>
+      </div>
     </div>
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e7_title">Analyste & Développeur</div><div class="exp-company">Rentokil, STEF-TFE, Siemens Healthcare, Groupe Hardis…</div></div><span class="exp-date">1989 – 2007</span></div>
@@ -229,6 +356,9 @@
       <h3 data-i18n="p4_title">Tutoriel JWT .NET 8</h3>
       <p data-i18n="p4_desc">Guide technique détaillé sur l'authentification JWT en .NET 8, rédigé en anglais et publié pour la communauté .NET.</p>
       <div class="tags"><span class="tag orange">.NET 8</span><span class="tag orange">JWT</span><span class="tag orange">C#</span></div>
+      <div class="proj-btns">
+        <a href="https://www.linkedin.com/posts/jean-christophe-cherid-9422b139_jwtauthenticationerrormessagefailedtoexecute-activity-7269844225926582273-mQNb/" target="_blank" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_linkedin">🔗 Voir sur LinkedIn</a>
+      </div>
     </div>
   </div>
 </section>
@@ -241,7 +371,7 @@
   </div>
   <div class="contact-card reveal">
     <p style="color:var(--sub);line-height:1.7;margin-bottom:1.5rem;" data-i18n="contact_sub">Je suis ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour discuter de vos projets !</p>
-    <a href="mailto:votre@email.com" class="btn btn-primary" data-i18n="contact_btn">✉️ Envoyer un email</a>
+    <a href="mailto:devnet902@gmail.com" class="btn btn-primary" data-i18n="contact_btn">✉️ Envoyer un email</a>
     <div class="contact-links">
       <a href="https://www.linkedin.com/in/jean-christophe-cherid-9422b139" target="_blank" class="clink">🔗 LinkedIn</a>
       <a href="https://github.com/lianazel" target="_blank" class="clink">💻 GitHub</a>
