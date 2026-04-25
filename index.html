@@ -114,6 +114,13 @@
   .clink { display:flex; align-items:center; gap:.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:var(--text); text-decoration:none; padding:.7rem 1.5rem; border-radius:50px; font-size:.9rem; transition:.3s; }
   .clink:hover { background:var(--c1); border-color:var(--c1); transform:translateY(-2px); }
 
+  /* EMAIL DISPLAY + COPY */
+  .email-display { display:inline-flex; align-items:center; gap:.6rem; margin-top:1rem; padding:.45rem .9rem; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:50px; font-size:.85rem; }
+  .email-text { color:var(--sub); font-family:'Consolas','Courier New',monospace; user-select:all; }
+  .copy-btn { background:none; border:1px solid rgba(108,99,255,.4); color:var(--c1-soft); padding:.2rem .8rem; border-radius:50px; font-size:.72rem; cursor:pointer; transition:.3s; font-weight:600; letter-spacing:.3px; }
+  .copy-btn:hover { background:var(--c1); color:#fff; border-color:var(--c1); }
+  .copy-btn.copied { background:var(--c3); border-color:var(--c3); color:#0f0e17; }
+
   footer { text-align:center; padding:2rem; color:var(--sub); font-size:.85rem; border-top:1px solid rgba(255,255,255,.05); }
   .reveal { opacity:0; transform:translateY(30px); transition:.7s ease; }
   .reveal.visible { opacity:1; transform:none; }
@@ -189,15 +196,15 @@
       <p class="exp-desc" data-i18n="e1_desc">Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.</p>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔄 Moteur de migration HFSQL multi-SGBD</div>
+          <div data-i18n="x1" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔄 Moteur de migration HFSQL multi-SGBD</div>
           <div style="display:flex;flex-direction:column;gap:.45rem;">
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Cibles supportées</span> — PostgreSQL, MySQL, SQL Server (architecture extensible à Oracle, MariaDB, etc.)</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Construction dynamique du DDL</span> — Génération des instructions CREATE TABLE avec les bons types de colonnes cibles, recréation des indexes y compris sur clés composées.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Préservation des ID</span> — Conservation des valeurs d'ID et reprise au dernier ID inséré si une migration est interrompue.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Injection par lots & multi-threading</span> — Génération de requêtes SQL par lots, thread père soumettant des threads fils pour accélérer la migration des tables à forte volumétrie.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Fonctions SQL à la volée</span> — Injection de fonctions définies par l'utilisateur (ex : SQL Server) directement dans les instructions INSERT INTO.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Logs & rejeux</span> — Stockage des instructions SQL en échec pour analyse et rejeu.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span style="color:var(--c1-soft);font-weight:700;">Analyse des plages d'ID manquants</span> — Récupération ciblée des enregistrements manquants sans réexécuter la migration complète.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x9" style="color:var(--c1-soft);font-weight:700;">Cibles supportées</span><span data-i18n="y308"> — PostgreSQL, MySQL, SQL Server (architecture extensible à Oracle, MariaDB, etc.)</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x10" style="color:var(--c1-soft);font-weight:700;">Construction dynamique du DDL</span><span data-i18n="y309"> — Génération des instructions CREATE TABLE avec les bons types de colonnes cibles, recréation des indexes y compris sur clés composées.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x11" style="color:var(--c1-soft);font-weight:700;">Préservation des ID</span><span data-i18n="y310"> — Conservation des valeurs d'ID et reprise au dernier ID inséré si une migration est interrompue.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x12" style="color:var(--c1-soft);font-weight:700;">Injection par lots & multi-threading</span><span data-i18n="y311"> — Génération de requêtes SQL par lots, thread père soumettant des threads fils pour accélérer la migration des tables à forte volumétrie.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x13" style="color:var(--c1-soft);font-weight:700;">Fonctions SQL à la volée</span><span data-i18n="y312"> — Injection de fonctions définies par l'utilisateur (ex : SQL Server) directement dans les instructions INSERT INTO.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x14" style="color:var(--c1-soft);font-weight:700;">Logs & rejeux</span><span data-i18n="y313"> — Stockage des instructions SQL en échec pour analyse et rejeu.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;"><span data-i18n="x15" style="color:var(--c1-soft);font-weight:700;">Analyse des plages d'ID manquants</span><span data-i18n="y314"> — Récupération ciblée des enregistrements manquants sans réexécuter la migration complète.</span></div>
           </div>
           <div class="exp-tags" style="margin-top:.8rem;">
             <span class="exp-tag">Windev 2024</span>
@@ -232,17 +239,17 @@
       <p class="exp-desc" data-i18n="e4_desc">Gestion et développement de projets avec HFSQL, Windev 26, Windev Mobile et API REST .NET 5. Optimisation des processus métiers avec +20% d'efficacité.</p>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🖨️ Solution éditique — Media Performance</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception et développement d'une solution éditique complète en 3 couches :</div>
+          <div data-i18n="x2" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🖨️ Solution éditique — Media Performance</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y304">Conception et développement d'une solution éditique complète en 3 couches :</span></div>
           <div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;">
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
-              <span style="color:var(--c1-soft);font-weight:700;">1/ Application mobile (douchettes)</span> — Application Windev Mobile 26 sous Android pour la saisie terrain en temps réel.
+              <span data-i18n="x16" style="color:var(--c1-soft);font-weight:700;">1/ Application mobile (douchettes)</span><span data-i18n="y315"> — Application Windev Mobile 26 sous Android pour la saisie terrain en temps réel.</span>
             </div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
-              <span style="color:var(--c1-soft);font-weight:700;">2/ Gestionnaire d'impression multi-thread</span> — Le cerveau du système : routage des flux entre les douchettes et les imprimantes avec haute disponibilité.
+              <span data-i18n="x17" style="color:var(--c1-soft);font-weight:700;">2/ Gestionnaire d'impression multi-thread</span><span data-i18n="y316"> — Le cerveau du système : routage des flux entre les douchettes et les imprimantes avec haute disponibilité.</span>
             </div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
-              <span style="color:var(--c1-soft);font-weight:700;">3/ API REST .NET 5</span> — Consommée par l'application mobile, interagit avec une base HFSQL. Architecture offrant un haut niveau de réactivité et de disponibilité.
+              <span data-i18n="x18" style="color:var(--c1-soft);font-weight:700;">3/ API REST .NET 5</span><span data-i18n="y317"> — Consommée par l'application mobile, interagit avec une base HFSQL. Architecture offrant un haut niveau de réactivité et de disponibilité.</span>
             </div>
           </div>
           <div class="exp-tags" style="margin-top:.8rem;">
@@ -256,17 +263,17 @@
           </div>
         </div>
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c4);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">📄 Dématérialisation des demandes d'affacturage</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception d'un workflow complet pour le suivi et la gestion des demandes d'affacturage :</div>
+          <div data-i18n="x3" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">📄 Dématérialisation des demandes d'affacturage</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y305">Conception d'un workflow complet pour le suivi et la gestion des demandes d'affacturage :</span></div>
           <div style="margin-top:.6rem;display:flex;flex-direction:column;gap:.5rem;">
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-              <span style="color:var(--c4-soft);font-weight:700;">1/ Dématérialisation</span> — Suppression du papier et numérisation complète des demandes.
+              <span data-i18n="x19" style="color:var(--c4-soft);font-weight:700;">1/ Dématérialisation</span><span data-i18n="y318"> — Suppression du papier et numérisation complète des demandes.</span>
             </div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-              <span style="color:var(--c4-soft);font-weight:700;">2/ Suivi des demandes</span> — Workflow de validation et de traitement en temps réel.
+              <span data-i18n="x20" style="color:var(--c4-soft);font-weight:700;">2/ Suivi des demandes</span><span data-i18n="y319"> — Workflow de validation et de traitement en temps réel.</span>
             </div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-              <span style="color:var(--c4-soft);font-weight:700;">3/ Historique</span> — Conservation et consultation de l'ensemble des demandes traitées.
+              <span data-i18n="x21" style="color:var(--c4-soft);font-weight:700;">3/ Historique</span><span data-i18n="y320"> — Conservation et consultation de l'ensemble des demandes traitées.</span>
             </div>
           </div>
           <div class="exp-tags" style="margin-top:.8rem;">
@@ -277,17 +284,17 @@
           </div>
         </div>
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c3);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🏭 GPAO — Gestion de Production Assistée par Ordinateur</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:.6rem;">Collecte et envoi des données de production des machines vers l'ERP <strong style="color:var(--text);">MasterPrint</strong> et son module analytique, avec deux objectifs majeurs :</div>
+          <div data-i18n="x4" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🏭 GPAO — Gestion de Production Assistée par Ordinateur</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;margin-bottom:.6rem;"><span data-i18n="y306">Collecte et envoi des données de production des machines vers l'ERP <strong style="color:var(--text);">MasterPrint</strong> et son module analytique, avec deux objectifs majeurs :</span></div>
           <div style="display:flex;flex-direction:column;gap:.5rem;">
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-              <span style="color:var(--c3-soft);font-weight:700;">1/ Optimisation des ressources</span> — Exploitation mécanique (machines, imprimantes, rotatives…) et gestion des équipes humaines.
+              <span data-i18n="x22" style="color:var(--c3-soft);font-weight:700;">1/ Optimisation des ressources</span><span data-i18n="y321"> — Exploitation mécanique (machines, imprimantes, rotatives…) et gestion des équipes humaines.</span>
             </div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-              <span style="color:var(--c3-soft);font-weight:700;">2/ Rentabilité clients</span> — Mesure de la rentabilité des dossiers clients pris en charge.
+              <span data-i18n="x23" style="color:var(--c3-soft);font-weight:700;">2/ Rentabilité clients</span><span data-i18n="y322"> — Mesure de la rentabilité des dossiers clients pris en charge.</span>
             </div>
           </div>
-          <div style="font-size:.82rem;color:var(--sub);margin-top:.6rem;line-height:1.6;">L'application produit une extraction CSV des données de production et déclenche <strong style="color:var(--text);">FluxProd.exe</strong> pour l'intégration dans MasterPrint.</div>
+          <div style="font-size:.82rem;color:var(--sub);margin-top:.6rem;line-height:1.6;"><span data-i18n="y307">L'application produit une extraction CSV des données de production et déclenche <strong style="color:var(--text);">FluxProd.exe</strong> pour l'intégration dans MasterPrint.</span></div>
           <div class="exp-tags" style="margin-top:.8rem;">
             <span class="exp-tag">Windev 26</span>
             <span class="exp-tag">HFSQL</span>
@@ -305,11 +312,11 @@
       <p class="exp-desc" data-i18n="e5_desc">Start-up créée et détenue par le groupe <strong style="color:var(--text);">BALAS</strong>, acteur majeur du secteur du bâtiment. Membre de l'équipe R&D pour la conception d'une solution de gestion de projets innovante.</p>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c2);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔬 Rôles au sein de l'équipe R&D</div>
+          <div data-i18n="x5" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔬 Rôles au sein de l'équipe R&D</div>
           <div style="display:flex;flex-direction:column;gap:.45rem;">
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2-soft);font-weight:700;">Architecture technique</span> — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2-soft);font-weight:700;">Exploration WPF</span> — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.</div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span style="color:var(--c2-soft);font-weight:700;">Framework Objet Windev 23</span> — Participation à la conception du framework objet de la future solution métier.</div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x24" style="color:var(--c2-soft);font-weight:700;">Architecture technique</span><span data-i18n="y323"> — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x25" style="color:var(--c2-soft);font-weight:700;">Exploration WPF</span><span data-i18n="y324"> — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x26" style="color:var(--c2-soft);font-weight:700;">Framework Objet Windev 23</span><span data-i18n="y325"> — Participation à la conception du framework objet de la future solution métier.</span></div>
           </div>
           <div class="exp-tags" style="margin-top:.8rem;">
             <span class="exp-tag">Windev 20–25</span>
@@ -329,23 +336,23 @@
       <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique sur IBM AS/400. Conception d'outils métiers web, systèmes de livraison automatisés et intégration d'API Java sur OS/400.</p>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🌐 Gestion du Risque Financier</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.</div>
+          <div data-i18n="x6" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🌐 Gestion du Risque Financier</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y300">Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.</span></div>
           <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">WebDev 20</span><span class="exp-tag">IBM DB2/400</span></div>
         </div>
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c3);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
           <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🚗 VN_3EN1_DEMAT</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y301">Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.</span></div>
           <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">WebDev 20</span><span class="exp-tag">IBM DB2/400</span></div>
         </div>
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c4);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">⚙️ Système de livraison automatisé</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.</div>
+          <div data-i18n="x7" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">⚙️ Système de livraison automatisé</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y302">Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.</span></div>
           <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">CLLE</span><span class="exp-tag">RPG-ILE</span><span class="exp-tag">Windev</span></div>
         </div>
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c2);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
-          <div style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">☕ JVM OS/400 — Projet OrderFlex</div>
-          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;">Gestion de la machine virtuelle Java sur OS/400 et consommation d'une API depuis un code Adelia via l'IFS.</div>
+          <div data-i18n="x8" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">☕ JVM OS/400 — Projet OrderFlex</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y303">Gestion de la machine virtuelle Java sur OS/400 et consommation d'une API depuis un code Adelia via l'IFS.</span></div>
           <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">CLLE</span><span class="exp-tag">RPG-ILE</span><span class="exp-tag">IFS</span><span class="exp-tag">Adelia</span><span class="exp-tag">JVM</span></div>
         </div>
       </div>
@@ -362,16 +369,16 @@
       </div>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.45rem;">
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;">
-          <span style="color:var(--c2-soft);font-weight:700;">Refonte ERP — MNM</span> <span style="color:var(--sub);">— Mutuelle Nationale Militaire.</span>
+          <span data-i18n="x27" style="color:var(--c2-soft);font-weight:700;">Refonte ERP — MNM</span> <span data-i18n="x41" style="color:var(--sub);">— Mutuelle Nationale Militaire.</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;">
-          <span style="color:var(--c2-soft);font-weight:700;">Migration technique</span> <span style="color:var(--sub);">— Adelia → Visual-Adelia.</span>
+          <span data-i18n="x28" style="color:var(--c2-soft);font-weight:700;">Migration technique</span> <span data-i18n="x42" style="color:var(--sub);">— Adelia → Visual-Adelia.</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;">
-          <span style="color:var(--c2-soft);font-weight:700;">Écriture & mise au point des requêtes SQL</span>
+          <span data-i18n="x29" style="color:var(--c2-soft);font-weight:700;">Écriture & mise au point des requêtes SQL</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;">
-          <span style="color:var(--c2-soft);font-weight:700;">Base de données</span> <span style="color:var(--sub);">— DB2/400.</span>
+          <span style="color:var(--c2-soft);font-weight:700;">Base de données</span> <span data-i18n="x44" style="color:var(--sub);">— DB2/400.</span>
         </div>
       </div>
       <div class="exp-tags" style="margin-top:1rem;">
@@ -395,16 +402,16 @@
       </div>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.45rem;">
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">PL/SQL Oracle</span>
+          <span data-i18n="x30" style="color:var(--c4-soft);font-weight:700;">PL/SQL Oracle</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">Conception d'une base</span>
+          <span data-i18n="x31" style="color:var(--c4-soft);font-weight:700;">Conception d'une base</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">Les Tablespaces</span>
+          <span data-i18n="x32" style="color:var(--c4-soft);font-weight:700;">Les Tablespaces</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">DBA Performance Tuning</span>
+          <span data-i18n="x40" style="color:var(--c4-soft);font-weight:700;">DBA Performance Tuning</span>
         </div>
       </div>
       <div class="exp-tags" style="margin-top:1rem;">
@@ -430,16 +437,16 @@
           <span style="color:var(--c3-soft);font-weight:700;">Développeur AS/400</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-          <span style="color:var(--c3-soft);font-weight:700;">Responsable technique migrations SQL</span> <span style="color:var(--sub);">— SGBD Progress vers BDD DB2/400.</span>
+          <span data-i18n="x33" style="color:var(--c3-soft);font-weight:700;">Responsable technique migrations SQL</span> <span data-i18n="x43" style="color:var(--sub);">— SGBD Progress vers BDD DB2/400.</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-          <span style="color:var(--c3-soft);font-weight:700;">Solution « ToolsLib » — gestion de l'AS/400</span> <span style="color:var(--sub);">— Solution développée en partie sur une partition AS/400 partagée aux USA via <a href="https://timeshare400.com/" target="_blank" rel="noopener noreferrer" style="color:var(--c3);text-decoration:underline;text-underline-offset:2px;">timeshare400.com</a>. Conversion des spools au format PDF, chargement dynamique de la <em>library list</em> selon le projet et l'environnement (DEV / PROD), etc.</span>
+          <span data-i18n="x34" style="color:var(--c3-soft);font-weight:700;">Solution « ToolsLib » — gestion de l'AS/400</span> <span style="color:var(--sub);">— Solution développée en partie sur une partition AS/400 partagée aux USA via <a href="https://timeshare400.com/" target="_blank" rel="noopener noreferrer" style="color:var(--c3);text-decoration:underline;text-underline-offset:2px;">timeshare400.com</a>. Conversion des spools au format PDF, chargement dynamique de la <em>library list</em> selon le projet et l'environnement (DEV / PROD), etc.</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-          <span style="color:var(--c3-soft);font-weight:700;">Windev 10 / HFSQL — CRM</span> <span style="color:var(--sub);">— Développement d'un CRM pour les commerciaux.</span>
+          <span style="color:var(--c3-soft);font-weight:700;">Windev 10 / HFSQL — CRM</span> <span data-i18n="x45" style="color:var(--sub);">— Développement d'un CRM pour les commerciaux.</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(67,233,123,.3);line-height:1.6;">
-          <span style="color:var(--c3-soft);font-weight:700;">Windev 10 / HFSQL — Gestion de stock</span> <span style="color:var(--sub);">— Développement d'une application complète de gestion de stock.</span>
+          <span data-i18n="x35" style="color:var(--c3-soft);font-weight:700;">Windev 10 / HFSQL — Gestion de stock</span> <span data-i18n="x46" style="color:var(--sub);">— Développement d'une application complète de gestion de stock.</span>
         </div>
       </div>
       <div class="exp-tags" style="margin-top:1rem;">
@@ -464,10 +471,10 @@
       </div>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.45rem;">
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">Maintenance ERP interne</span> <span style="color:var(--sub);">— « PICARD SURGELÉS ».</span>
+          <span data-i18n="x36" style="color:var(--c4-soft);font-weight:700;">Maintenance ERP interne</span> <span data-i18n="x47" style="color:var(--sub);">— « PICARD SURGELÉS ».</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(247,151,30,.3);line-height:1.6;">
-          <span style="color:var(--c4-soft);font-weight:700;">Solution HOME-SERVICE</span> <span style="color:var(--sub);">— Développement et déploiement sur l'entrepôt de <a href="https://www.ville-soa.fr/fr" target="_blank" rel="noopener noreferrer" style="color:var(--c4);text-decoration:underline;text-underline-offset:2px;">Saint-Ouen-l'Aumône</a>.</span>
+          <span data-i18n="x37" style="color:var(--c4-soft);font-weight:700;">Solution HOME-SERVICE</span> <span style="color:var(--sub);">— Développement et déploiement sur l'entrepôt de <a href="https://www.ville-soa.fr/fr" target="_blank" rel="noopener noreferrer" style="color:var(--c4);text-decoration:underline;text-underline-offset:2px;">Saint-Ouen-l'Aumône</a>.</span>
         </div>
       </div>
       <div class="exp-tags" style="margin-top:1rem;">
@@ -493,10 +500,10 @@
           <span style="color:var(--c1-soft);font-weight:700;">Développeur AS/400</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
-          <span style="color:var(--c1-soft);font-weight:700;">Responsable application</span>
+          <span data-i18n="x38" style="color:var(--c1-soft);font-weight:700;">Responsable application</span>
         </div>
         <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(108,99,255,.3);line-height:1.6;">
-          <span style="color:var(--c1-soft);font-weight:700;">Développeur système</span> <span style="color:var(--sub);">— Membre de l'équipe système.</span>
+          <span data-i18n="x39" style="color:var(--c1-soft);font-weight:700;">Développeur système</span> <span data-i18n="x48" style="color:var(--sub);">— Membre de l'équipe système.</span>
         </div>
       </div>
       <div class="exp-tags" style="margin-top:1rem;">
@@ -561,6 +568,12 @@
   <div class="contact-card reveal">
     <p style="color:var(--sub);line-height:1.7;margin-bottom:1.5rem;" data-i18n="contact_sub">Je suis ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour discuter de vos projets !</p>
     <a href="mailto:devnet902@gmail.com" class="btn btn-primary" data-i18n="contact_btn">✉️ Envoyer un email</a>
+    <div style="margin-top:1rem;">
+      <div class="email-display">
+        <span class="email-text">devnet902@gmail.com</span>
+        <button class="copy-btn" id="copyBtn" onclick="copyEmail(this)" data-i18n="copy_btn">Copier</button>
+      </div>
+    </div>
     <div class="contact-links">
       <a href="https://www.linkedin.com/in/jean-christophe-cherid-9422b139" target="_blank" rel="noopener noreferrer" class="clink">🔗 LinkedIn</a>
       <a href="https://github.com/lianazel" target="_blank" rel="noopener noreferrer" class="clink">💻 GitHub</a>
@@ -603,7 +616,83 @@ const t = {
     h2_contact:"Travaillons <span>Ensemble</span>",
     contact_sub:"Je suis ouvert aux nouvelles opportunités. N'hésitez pas à me contacter pour discuter de vos projets !",
     contact_btn:"✉️ Envoyer un email",
+    copy_btn:"Copier",
+    copied_msg:"Copié !",
     footer:"Région Parisienne · Développeur · Disponible en 2025",
+    x1:"🔄 Moteur de migration HFSQL multi-SGBD",
+    x2:"🖨️ Solution éditique — Media Performance",
+    x3:"📄 Dématérialisation des demandes d'affacturage",
+    x4:"🏭 GPAO — Gestion de Production Assistée par Ordinateur",
+    x5:"🔬 Rôles au sein de l'équipe R&D",
+    x6:"🌐 Gestion du Risque Financier",
+    x7:"⚙️ Système de livraison automatisé",
+    x8:"☕ JVM OS/400 — Projet OrderFlex",
+    x9:"Cibles supportées",
+    x10:"Construction dynamique du DDL",
+    x11:"Préservation des ID",
+    x12:"Injection par lots & multi-threading",
+    x13:"Fonctions SQL à la volée",
+    x14:"Logs & rejeux",
+    x15:"Analyse des plages d'ID manquants",
+    x16:"1/ Application mobile (douchettes)",
+    x17:"2/ Gestionnaire d'impression multi-thread",
+    x18:"3/ API REST .NET 5",
+    x19:"1/ Dématérialisation",
+    x20:"2/ Suivi des demandes",
+    x21:"3/ Historique",
+    x22:"1/ Optimisation des ressources",
+    x23:"2/ Rentabilité clients",
+    x24:"Architecture technique",
+    x25:"Exploration WPF",
+    x26:"Framework Objet Windev 23",
+    x27:"Refonte ERP — MNM",
+    x28:"Migration technique",
+    x29:"Écriture & mise au point des requêtes SQL",
+    x30:"PL/SQL Oracle",
+    x31:"Conception d'une base",
+    x32:"Les Tablespaces",
+    x33:"Responsable technique migrations SQL",
+    x34:"Solution « ToolsLib » — gestion de l'AS/400",
+    x35:"Windev 10 / HFSQL — Gestion de stock",
+    x36:"Maintenance ERP interne",
+    x37:"Solution HOME-SERVICE",
+    x38:"Responsable application",
+    x39:"Développeur système",
+    x40:"DBA Performance Tuning",
+    x41:"— Mutuelle Nationale Militaire.",
+    x42:"— Adelia → Visual-Adelia.",
+    x43:"— SGBD Progress vers BDD DB2/400.",
+    x44:"— DB2/400.",
+    x45:"— Développement d'un CRM pour les commerciaux.",
+    x46:"— Développement d'une application complète de gestion de stock.",
+    x47:"— « PICARD SURGELÉS ».",
+    x48:"— Membre de l'équipe système.",
+    y300:"Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.",
+    y301:"Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.",
+    y302:"Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.",
+    y303:"Gestion de la machine virtuelle Java sur OS/400 et consommation d'une API depuis un code Adelia via l'IFS.",
+    y304:"Conception et développement d'une solution éditique complète en 3 couches :",
+    y305:"Conception d'un workflow complet pour le suivi et la gestion des demandes d'affacturage :",
+    y306:"Collecte et envoi des données de production des machines vers l'ERP <strong style=\"color:var(--text);\">MasterPrint</strong> et son module analytique, avec deux objectifs majeurs :",
+    y307:"L'application produit une extraction CSV des données de production et déclenche <strong style=\"color:var(--text);\">FluxProd.exe</strong> pour l'intégration dans MasterPrint.",
+    y308:" — PostgreSQL, MySQL, SQL Server (architecture extensible à Oracle, MariaDB, etc.)",
+    y309:" — Génération des instructions CREATE TABLE avec les bons types de colonnes cibles, recréation des indexes y compris sur clés composées.",
+    y310:" — Conservation des valeurs d'ID et reprise au dernier ID inséré si une migration est interrompue.",
+    y311:" — Génération de requêtes SQL par lots, thread père soumettant des threads fils pour accélérer la migration des tables à forte volumétrie.",
+    y312:" — Injection de fonctions définies par l'utilisateur (ex : SQL Server) directement dans les instructions INSERT INTO.",
+    y313:" — Stockage des instructions SQL en échec pour analyse et rejeu.",
+    y314:" — Récupération ciblée des enregistrements manquants sans réexécuter la migration complète.",
+    y315:" — Application Windev Mobile 26 sous Android pour la saisie terrain en temps réel.",
+    y316:" — Le cerveau du système : routage des flux entre les douchettes et les imprimantes avec haute disponibilité.",
+    y317:" — Consommée par l'application mobile, interagit avec une base HFSQL. Architecture offrant un haut niveau de réactivité et de disponibilité.",
+    y318:" — Suppression du papier et numérisation complète des demandes.",
+    y319:" — Workflow de validation et de traitement en temps réel.",
+    y320:" — Conservation et consultation de l'ensemble des demandes traitées.",
+    y321:" — Exploitation mécanique (machines, imprimantes, rotatives…) et gestion des équipes humaines.",
+    y322:" — Mesure de la rentabilité des dossiers clients pris en charge.",
+    y323:" — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.",
+    y324:" — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.",
+    y325:" — Participation à la conception du framework objet de la future solution métier.",
     langBtn:"🇬🇧 English"
   },
   en: {
@@ -635,7 +724,85 @@ const t = {
     h2_contact:"Let's Work <span>Together</span>",
     contact_sub:"I'm open to new opportunities. Feel free to reach out to discuss your projects!",
     contact_btn:"✉️ Send an email",
+    copy_btn:"Copy",
+    copied_msg:"Copied!",
     footer:"Paris Region · Developer · Available 2025",
+    x1:"🔄 HFSQL Multi-DBMS Migration Engine",
+    x2:"🖨️ Editorial Solution — Media Performance",
+    x3:"📄 Factoring Request Digitization",
+    x4:"🏭 CAPM — Computer-Aided Production Management",
+    x5:"🔬 Roles within the R&D team",
+    x6:"🌐 Financial Risk Management",
+    x7:"⚙️ Automated delivery system",
+    x8:"☕ JVM OS/400 — OrderFlex Project",
+    x9:"Supported targets",
+    x10:"Dynamic DDL construction",
+    x11:"ID preservation",
+    x12:"Batch injection & multi-threading",
+    x13:"On-the-fly SQL functions",
+    x14:"Logs & replay",
+    x15:"Missing ID range analysis",
+    x16:"1/ Mobile app (handheld scanners)",
+    x17:"2/ Multi-thread print manager",
+    x18:"3/ REST API .NET 5",
+    x19:"1/ Digitization",
+    x20:"2/ Request tracking",
+    x21:"3/ History",
+    x22:"1/ Resource optimization",
+    x23:"2/ Client profitability",
+    x24:"Technical architecture",
+    x25:"WPF exploration",
+    x26:"Windev 23 Object Framework",
+    x27:"ERP overhaul — MNM",
+    x28:"Technical migration",
+    x29:"SQL query writing & tuning",
+    x30:"Oracle PL/SQL",
+    x31:"Database design",
+    x32:"Tablespaces",
+    x33:"Technical Lead, SQL migrations",
+    x34:"\"ToolsLib\" Solution — AS/400 management",
+    x35:"Windev 10 / HFSQL — Stock management",
+    x36:"Internal ERP maintenance",
+    x37:"HOME-SERVICE Solution",
+    x38:"Application Lead",
+    x39:"System Developer",
+    x40:"DBA Performance Tuning",
+    x41:"— National Military Mutual Insurance.",
+    x42:"— Adelia → Visual-Adelia.",
+    x43:"— Progress DBMS to DB2/400 database.",
+    x44:"— DB2/400.",
+    x45:"— Development of a CRM for sales reps.",
+    x46:"— Development of a complete stock management application.",
+    x47:"— \"PICARD SURGELÉS\".",
+    x48:"— Member of the system team.",
+    y300:"Designed with Finance teams: a web platform for financial analysis and decision support.",
+    y301:"Designed with field teams and regional managers — digital edition of the inspection report, accessible to all Toyota/Lexus dealers.",
+    y302:"Automated delivery of *PGM / DSPF / PRTF objects to production with an email report sent via a Windev task.",
+    y303:"Management of the Java virtual machine on OS/400 and API consumption from Adelia code via the IFS.",
+    y304:"Design and development of a complete 3-layer editorial solution:",
+    y305:"Design of a complete workflow for tracking and managing factoring requests:",
+    y306:"Collection and transmission of machine production data to the <strong style=\"color:var(--text);\">MasterPrint</strong> ERP and its analytics module, with two main objectives:",
+    y307:"The application produces a CSV extract of production data and triggers <strong style=\"color:var(--text);\">FluxProd.exe</strong> for integration into MasterPrint.",
+    y308:" — PostgreSQL, MySQL, SQL Server (architecture extensible to Oracle, MariaDB, etc.)",
+    y309:" — Generation of CREATE TABLE statements with proper target column types, recreation of indexes including composite keys.",
+    y310:" — Preservation of ID values and resumption from last inserted ID if a migration is interrupted.",
+    y311:" — Generation of batch SQL queries, parent thread spawning child threads to speed up migration of high-volume tables.",
+    y312:" — Injection of user-defined functions (e.g. SQL Server) directly into INSERT INTO statements.",
+    y313:" — Storage of failed SQL statements for analysis and replay.",
+    y314:" — Targeted recovery of missing records without re-executing the full migration.",
+    y315:" — Windev Mobile 26 app on Android for real-time field data capture.",
+    y316:" — The brain of the system: routing flows between scanners and printers with high availability.",
+    y317:" — Consumed by the mobile app, interacts with an HFSQL database. Architecture offering high reactivity and availability.",
+    y318:" — Paper elimination and full digitization of requests.",
+    y319:" — Real-time validation and processing workflow.",
+    y320:" — Storage and consultation of all processed requests.",
+    y321:" — Mechanical operation (machines, printers, rotaries…) and human team management.",
+    y322:" — Measuring the profitability of client engagements.",
+    y323:" — Proposing solutions based on PCSoft (Windev) and .NET / C# technologies.",
+    y324:" — Development of a complete WPF (Microsoft) module for a Front-End demonstration, as part of evaluating candidate technologies.",
+    y325:" — Contributed to the design of the object framework for the future business solution.",
+    copy_btn:"Copy",
+    copied_msg:"Copied!",
     langBtn:"🇫🇷 Français"
   }
 };
@@ -652,6 +819,36 @@ function toggleLang() {
   });
   const btn = document.getElementById('langBtn');
   if (btn && d.langBtn) btn.textContent = d.langBtn;
+}
+
+function copyEmail(btn) {
+  const email = 'devnet902@gmail.com';
+  const done = () => {
+    const d = t[lang];
+    btn.textContent = d.copied_msg || 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = d.copy_btn || 'Copy';
+      btn.classList.remove('copied');
+    }, 2000);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(email).then(done).catch(() => {
+      const ta = document.createElement('textarea');
+      ta.value = email;
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); done(); } catch(e) {}
+      document.body.removeChild(ta);
+    });
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = email;
+    document.body.appendChild(ta);
+    ta.select();
+    try { document.execCommand('copy'); done(); } catch(e) {}
+    document.body.removeChild(ta);
+  }
 }
 
 const obs = new IntersectionObserver(entries => {
