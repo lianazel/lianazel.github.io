@@ -1,8 +1,132 @@
 # Feuille de route — lianazel.github.io
 
-> Reprend les six déviations connues du `CLAUDE.md` §8, **par ordre de priorité de remboursement**.
-> Le `CLAUDE.md` reste la source de vérité : ce document ordonne, il ne redéfinit pas.
-> Aucune de ces lignes n'est un invariant — le code ne les respecte pas aujourd'hui, et c'est assumé.
+> Deux parties. **Les évolutions demandées** par le chef de projet, qui ouvrent les prochains
+> incréments. Puis **la dette connue** — les six déviations du `CLAUDE.md` §8, par ordre de
+> remboursement. Le `CLAUDE.md` reste la source de vérité : ce document ordonne, il ne redéfinit pas.
+> Aucune ligne de la seconde partie n'est un invariant — le code ne les respecte pas, et c'est assumé.
+
+---
+
+# Partie I — Évolutions demandées (8 août 2026)
+
+## E-1 — Parité linguistique complète · **priorité 1**
+
+**Demande** : « il ne doit plus rester un mot de français lorsque l'on passe en anglais ».
+
+**Constat mesuré le 8 août 2026** — ce n'est pas un résidu, c'est une zone entière du contenu :
+**29 fragments de texte visible** ne portent aucun attribut de traduction, et restent donc en
+français après bascule. Ils se concentrent sur la section **Expérience**, la plus lue par un
+recruteur :
+
+- **toutes les dates de poste** — « Fév 2020 – Avr 2023 », « Sept 2001 – Juin 2005 », « Oct 2005 – Oct 2007 » ;
+- **des intitulés** — « Développeur », « Analyste ingénieur », « Développeur AS/400 — Migrations & Outils » ;
+- « Base de données », « Formation — Cursus DBA Oracle 9i », « Cursus sur site » ;
+- **des phrases entières** — « Solution développée en partie sur une partition AS/400 partagée aux
+  USA… », « Conversion des spools au format PDF, chargement dynamique de la… ».
+
+**Le contrôle ne peut pas être entièrement automatique**, et c'est le point de conception. Sur les
+167 mots hors dictionnaire, la majorité sont des noms propres et des termes techniques qui ne se
+traduisent **pas** : Windev, .NET, HFSQL, Oracle, GitHub, AS/400, PostgreSQL, JWT. Aucune machine ne
+distingue seule « Cursus » de « Adelia ». *(Même leçon que celle du 8 août sur les marqueurs de
+gabarit : un contrôle peut énumérer, il ne peut pas juger la sémantique — s'il prétend le faire, il
+fabrique le faux vert suivant.)*
+
+**Forme retenue pour la porte** : tout texte visible doit être **soit** couvert par un attribut de
+traduction, **soit** inscrit dans une **liste blanche explicite** de termes non traduisibles, versionnée
+à côté du contrôle. Ajouter un terme à cette liste devient alors un geste conscient et tracé, jamais un
+contournement silencieux.
+
+**Périmètre de l'incrément** : élargir `scripts/check-i18n.mjs` (avec sa preuve de morsure), poser la
+liste blanche, puis rattraper les 29 fragments — traduction et attribut. Ne touche pas au rendu.
+
+---
+
+## E-2 — Petit écran d'abord et menu de débordement · priorité 2
+
+**Demande** : création d'un menu de débordement (« hamburger ») avec les options de navigation, et
+passage de la feuille de style au petit écran d'abord.
+
+**Un seul incrément, pas deux.** Ce sont les mêmes règles d'adaptation que l'on réécrit : le menu de
+débordement *est* un comportement de petit écran. Les séparer ferait toucher deux fois la même feuille
+de style — ce que le `CLAUDE.md` §7 déconseille explicitement.
+
+**Cet incrément solde la dette D-2** : il est le « prochain toucher significatif de la feuille de
+style » que son plan de remboursement attendait.
+
+**Précédent maison à réutiliser** : TwaimWeb porte déjà une barre en menu de débordement avec
+priorité d'effacement des entrées. Satellite à charger : `UX_METHOD`.
+
+**Ordre imposé — après E-1, et pour une raison mécanique** : ce chantier **ajoute des libellés
+visibles**. Si la porte de parité linguistique n'existe pas encore, ils naîtront non traduits et il
+faudra repasser derrière.
+
+> ⚠️ **Décision attendue avant d'ouvrir E-2.** Refondre la barre de navigation et inverser toutes les
+> règles d'adaptation est le chantier **le plus exposé au défaut visuel** — débordement, chevauchement,
+> comportement au seuil de bascule. Or rien ne le détecte aujourd'hui : c'est la dette **D-1**, reportée
+> le 8 août alors qu'aucune refonte n'était prévue. Le calcul a changé. Deux issues, et une seule
+> mauvaise : poser la barrière de rendu avant E-2, **ou** assumer explicitement que la validation du
+> menu sera manuelle, sur tous les seuils, à chaque itération — et l'écrire. La mauvaise issue est de
+> ne pas trancher.
+
+---
+
+## E-3 — Cartes de projets : badge de légitimité et ajout de MetalWatch · priorité 3
+
+**Règle posée le 8 août 2026, et elle commande tout le reste** : le badge « harnais IA TWAIM » n'est
+pas décoratif, c'est une **affirmation vérifiable**. Il ne se pose que sur un projet **réellement
+piloté par le harnais** — cadrage, agents et commandes, journal, consignes versionnées, et au moins
+une porte qui mord. Le portfolio dit vrai, ou il ne dit rien.
+
+### État vérifié le 8 août 2026
+
+| Projet | Cadrage | Agents / commandes | `tasks/` | `prompts/` | Porte | Badge légitime ? |
+|---|---|---|---|---|---|---|
+| **MetalWatch** | ✓ | ✓ (5) | ✓ complet | ✓ | ✓ rendu | **oui** |
+| **GFMCC** | ✓ | ✓ (6) | ✓ | ✓ v0.1→v0.8 | ✓ | **oui** |
+| GrainWatch | ✓ 310 l. | ✗ | ✓ journal, leçons, 12 rapports | ✗ | ✗ | non |
+| GrainTrack3D | ✓ 259 l. | ✗ | ✓ leçons | ✗ | ✗ | non |
+| FuelMapPrice | ✓ 155 l. | ✗ | ✗ | ✗ | ✗ | non |
+| CryptoAnalyser | — | ✗ | ✗ | ✗ | ✗ | non |
+
+*Nuance à conserver : GrainWatch porte douze rapports de diagnostic et de correctif. La **méthode** y a
+bien été appliquée ; c'est l'**outillage** qui manque. « Pas outillé » ne veut pas dire « bâclé ».*
+
+### Décidé
+
+- **Aucun badge** sur GrainWatch, GrainTrack3D, FuelMapPrice, CryptoAnalyser tant qu'ils ne sont pas
+  réalignés. Le badge suivra le réalignement, jamais l'inverse.
+- **Ajouter une carte MetalWatch**, absente du portfolio alors qu'elle est le meilleur exemple :
+  > Suivi des cours de sept métaux précieux et industriels. Collecte automatique, stockage en base,
+  > graphiques interactifs. Architecture conçue par mes soins et pilotée de bout en bout avec le
+  > harnais IA TWAIM.
+  >
+  > Badges : `Next.js 14` · `TypeScript` · `Supabase` · `Chart.js` · `harnais IA TWAIM`
+  > Bouton : « Voir le site » → `https://metalwatch-delta.vercel.app/` — **pas** de bouton GitHub,
+  > le dépôt est privé.
+
+  *Rédigé depuis la photo du 4 août 2026 (boîte aux lettres) : identité et pile technique, stables.
+  À confirmer avant livraison.*
+
+### ⏸ En suspens — trois décisions du chef de projet
+
+1. **Three.js** — la vitrine 3D de MetalWatch est-elle visible en production ? Si oui, elle mérite son
+   badge : c'est un différenciateur.
+2. **Dépôt privé** — carte sans mention (retenu par défaut), ou badge « privé » explicite ?
+3. **GFMCC** — carte ou pas ? Il est légitime, mais sans dépôt public ni site sa carte n'aurait **aucun
+   bouton**, au milieu de six qui en ont. Description retenue si la carte se fait, **volontairement
+   neutre** — elle ne nomme aucun outillage interne : *« outil de sauvegarde chiffrée de configuration
+   de poste — archive AES-256, transfert entre machines »*. Argument à valoriser dans les deux cas :
+   **zéro dépendance PyPI**, bibliothèque standard uniquement.
+
+### Contrainte d'ordonnancement
+
+Cet incrément **ajoute du texte visible** — libellés de badges, description de carte. Il se fait donc
+**dans E-1** ou **après lui**, jamais avant : sinon ces libellés naissent non traduits, et l'on repasse
+derrière.
+
+---
+
+# Partie II — Dette connue
 
 ---
 
