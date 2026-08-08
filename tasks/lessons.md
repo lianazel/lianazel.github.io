@@ -55,8 +55,12 @@ d'instanciation cherchait `<!-- BALISE -->` et a répondu « aucune balise resta
 scaffolding, `.github` org-templates, snippets partagés). Cousine directe de la leçon globale du
 15 juin 2026 (« faire évoluer le framework = modifier le TEMPLATE d'abord »), qu'elle complète par
 l'aval : *la descente gabarit → instance a besoin d'un contrôle qui couvre toutes les formes de
-marqueur, sinon la spécialisation est incomplète en silence.* **Promotion à valider par le chef de
-projet.**
+marqueur, sinon la spécialisation est incomplète en silence.*
+
+**Promue en global le 8 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un gabarit porte plusieurs syntaxes de marqueur : le contrôle de substitution
+doit toutes les couvrir, et la seconde forme ne se tranche pas par regex », avec l'empreinte `ea01e91`
+de la présente jumelle locale.
 
 > **Note de périmètre** : le gabarit du référentiel porte le même défaut aux deux endroits. Il n'a
 > **pas** été touché — décision du chef de projet du 8 août 2026 : il sera corrigé séparément, dans

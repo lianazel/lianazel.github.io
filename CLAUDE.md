@@ -75,7 +75,10 @@ puis le pied de page. La barre de navigation pointe vers quatre d'entre elles.
 **Palette** : définie par variables CSS dans `:root` (`--c1` à `--c4` et leurs variantes douces,
 `--dark`, `--card`, `--text`, `--sub`). Thème sombre unique, pas de bascule clair/sombre.
 
-**Bascule de langue** : un dictionnaire `t` à deux entrées (`fr`, `en`) porte **126 clés**. Chaque
+**Bascule de langue** : un dictionnaire `t` à deux entrées (`fr`, `en`) porte **132 clés déclarées**
+dans chaque langue, pour **126 utilisées** dans la page. L'écart de six se décompose en quatre
+traductions orphelines (dette D-4) et deux clés lues par le programme lui-même (`langBtn`,
+`copied_msg`), sans attribut correspondant. Chaque
 élément traduisible porte un attribut `data-i18n="<clé>"` ; la fonction `toggleLang()` parcourt ces
 éléments et remplace leur contenu. La langue par défaut est le français, et `document.documentElement.lang`
 est mis à jour à chaque bascule.
@@ -129,7 +132,11 @@ Ce projet **n'a aucun cadre de test tiers**, et n'en a pas besoin : il n'y a ni 
 paquet, ni serveur. Le filet est constitué de **contrôles écrits en JavaScript natif**, exécutés par
 l'interpréteur déjà présent sur la machine.
 
-**Commande** : `node scripts/check-i18n.mjs`
+**Commande** : `bash scripts/gate.sh`
+
+Cet enrobage est la seule entrée légitime : il éprouve d'abord le témoin défectueux, puis le site.
+L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au diagnostic
+ponctuel, jamais de filet.
 
 **Périmètre couvert** :
 
