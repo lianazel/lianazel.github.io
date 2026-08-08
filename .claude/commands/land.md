@@ -29,7 +29,9 @@ Commande **autonome et auto-gardée**. Préconditions : `/ship` clôturé SHIP (
 
 ## ÉTAPE 4 — BUMP SEMVER (idempotent)
 - Niveau : `feat/*`→minor, `fix/*`|`chore/*`→patch ; override `bump=` depuis $ARGUMENTS.
-- Mets à jour le manifeste de version (`pyproject.toml` ou `package.json` selon le projet) ET le pied de `CLAUDE.md`. Si déjà à la cible, saute.
+- **Manifeste de version de ce projet : `VERSION`** (fichier à la racine, une ligne). Le portfolio n'a **ni `package.json` ni `pyproject.toml`** : il n'a aucun gestionnaire de paquets, et c'est un **invariant** du `CLAUDE.md` §4.
+- **Garde d'existence, avant toute écriture** : vérifie que `VERSION` existe réellement à la racine. S'il est absent — **ARRÊTE-TOI et signale**. Ne devine pas le manifeste, n'en cherche pas un autre, n'en crée pas : un manifeste manquant est une anomalie de dépôt, pas un cas à rattraper en douce.
+- Mets à jour `VERSION` ET le pied de `CLAUDE.md`. Si déjà à la cible, saute.
 
 ## ÉTAPE 5 — JOURNAL + LEÇON (idempotent)
 - Écris l'entrée `tasks/JOURNAL_*.md` citant le HASH DE MERGE ; ajoute la leçon `tasks/lessons.md` s'il y en a une.
@@ -39,7 +41,7 @@ Commande **autonome et auto-gardée**. Préconditions : `/ship` clôturé SHIP (
 - Écris `.pipeline/STATUS.md` = `CLOSED — session <N> : <synthèse 1 ligne>`.
 
 ## ÉTAPE 7 — COMMIT DE CLÔTURE (staging PRÉCIS, jamais -A)
-- `git add <manifeste-version> CLAUDE.md tasks/JOURNAL_*.md tasks/lessons.md`
+- `git add VERSION CLAUDE.md tasks/JOURNAL_*.md tasks/lessons.md`
 - `git commit -m "docs: journal session <N> + bump <old> -> <new> — clôture (merge <hash>)"`
 - N'indexe AUCUN fichier non-suivi. (`STATUS.md` est gitignoré → hors commit, voulu.)
 

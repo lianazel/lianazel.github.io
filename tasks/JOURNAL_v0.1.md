@@ -51,6 +51,22 @@ valeurs étant identiques, l'écrasement était sans effet visible — mais le d
 silencieux le jour où les deux valeurs auraient divergé. Les deux déclarations redondantes de fin de
 bloc ont été supprimées ; aucune autre ligne d'`index.html` n'a bougé.
 
+### Correctif d'outillage embarqué — `/land`
+
+La commande `/land` héritée du gabarit demandait de mettre à jour « le manifeste de version
+(`pyproject.toml` ou `package.json` selon le projet) », et indexait `git add <manifeste-version>` —
+un marqueur d'instanciation resté non substitué, invisible au contrôle de balises parce qu'il est
+écrit en chevrons simples et non en commentaire HTML. Aucun des deux fichiers nommés n'existe ici, et
+c'est un **invariant** : le portfolio n'a aucun gestionnaire de paquets. Le premier atterrissage
+aurait bumpé dans le vide ou échoué à l'indexation.
+
+`.claude/commands/land.md` nomme désormais le manifeste réel du projet — **`VERSION`** — aux deux
+endroits, et l'ÉTAPE 4 porte une **garde d'existence** : si `VERSION` est absent, la commande s'arrête
+et signale, au lieu d'en deviner un autre.
+
+Le gabarit du référentiel porte le même défaut. Il n'a **pas** été touché : décision du chef de projet
+du 8 août 2026 — il sera corrigé séparément, dans son propre dépôt.
+
 ### Reste à faire
 
 Temps 3 du rituel de rétrofit — l'essai à chaud du harnais — est l'incrément suivant. La barrière de
