@@ -72,3 +72,34 @@ du 8 août 2026 — il sera corrigé séparément, dans son propre dépôt.
 Temps 3 du rituel de rétrofit — l'essai à chaud du harnais — est l'incrément suivant. La barrière de
 rendu (D-1) reste reportée par décision du chef de projet du 8 août 2026 ; elle est inscrite en tête
 de `tasks/ROADMAP.md`, pas oubliée.
+
+### Revue et atterrissage
+
+**Revue Cowork — verdict `NEEDS WORK`**, deux réserves, toutes deux sur le `CLAUDE.md` livré, toutes
+deux soldées dans le même incrément :
+
+1. **§6 — la commande de test désarmait le filet.** Le cadrage donnait `node scripts/check-i18n.mjs`,
+   qui **saute la preuve de morsure** : un lecteur du `CLAUDE.md` aurait lancé le contrôle sans jamais
+   éprouver le témoin, et un filet en panne se serait présenté comme vert. La commande est désormais
+   `bash scripts/gate.sh`, avec la raison écrite à côté.
+2. **§3 — le décompte du dictionnaire.** « 126 clés » est le nombre de clés **utilisées** ; le
+   dictionnaire en **déclare 132** par langue. L'écart de six est maintenant décomposé sur place
+   (quatre orphelines D-4, deux clés lues par le programme).
+
+**Atterrissage** — `/land chore/alignement-harnais` :
+
+| Étape | Résultat |
+|---|---|
+| Pré-gardes | `main` aligné sur `origin/main`, `STATUS = READY`, arbre propre, fusion sans conflit |
+| **Fusion** | **`977c5b4`** (`--no-ff`), 20 fichiers, +1196 / −2 |
+| Filet de tests | **vert sur `main` après fusion** — morsure OK, 0 erreur bloquante, 4 avertissements |
+| Version | **0.1.0 — inchangée, et c'est délibéré** (voir ci-dessous) |
+
+**Sur la version, la règle a été écartée en conscience.** `/land` prescrit `chore/*` → *patch*, donc
+0.1.0 → 0.1.1. Elle ne s'applique pas ici : `VERSION` **naît avec cet incrément** — son historique ne
+compte qu'un seul enregistrement, celui qu'on atterrit — et le pied du `CLAUDE.md` déclare `0.1.0`
+comme la version de ce cadrage. Bumper reviendrait à publier un projet dont la version initiale
+n'aurait jamais existé sur `main`, et à contredire un document livré le jour même. La clause
+d'idempotence de l'ÉTAPE 4 s'applique : **cible déjà atteinte, on saute**. Le passage à 0.1.1 se fera
+au premier incrément qui modifiera réellement le produit. *Décision à confirmer par le chef de projet
+avant publication ; elle se défait en une ligne tant que `main` n'est pas poussé.*
