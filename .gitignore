@@ -1,0 +1,12 @@
+# Secrets — garde de premier niveau, ne jamais retirer
+.env
+.env.*
+*.key
+*.pem
+
+# Reglages de poste — propres a la machine, jamais partages
+.claude/settings.local.json
+
+# Systeme
+.DS_Store
+Thumbs.db
