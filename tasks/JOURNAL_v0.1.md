@@ -6,7 +6,7 @@
 |---|---|
 | **Type** | CHORE (outillage) |
 | **Branche** | `chore/alignement-harnais` |
-| **Enregistrement** | `<hash renseigné par le commit de journal qui suit>` |
+| **Enregistrement** | `e9116c8` — inscrit par le commit de journal qui suit : un enregistrement ne peut pas contenir sa propre empreinte |
 | **Prompt pilote** | `prompts/v0.1/CHORE_alignement-harnais_v1.md` |
 | **Version** | 0.1.0 (premier `VERSION` du projet) |
 
