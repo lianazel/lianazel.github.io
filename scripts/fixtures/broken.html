@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!-- TEMOIN VOLONTAIREMENT DEFECTUEUX — preuve de morsure de la porte.
+     Ce fichier ne fait PAS partie du site. Il sert uniquement a prouver que
+     scripts/check-i18n.mjs echoue quand il doit echouer.
+     Si "node scripts/check-i18n.mjs scripts/fixtures/broken.html" retourne 0,
+     la porte est en panne : la reparer AVANT toute livraison.
+     Defauts semes ici, un par controle bloquant :
+       1. cle "orphan_key" utilisee dans la page, absente des deux blocs ;
+       2. cle "only_fr" declaree en fr, absente en en (asymetrie) ;
+       3. cle "dup_key" declaree deux fois dans le bloc fr (doublon) ;
+       4. ancre #nowhere sans element correspondant (ancre cassee) ;
+       5. un attribut data-i18n vide. -->
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Temoin defectueux</title></head>
+<body>
+<nav>
+  <a href="#present">Section presente</a>
+  <a href="#nowhere">Ancre cassee</a>
+</nav>
+
+<section id="present">
+  <h2 data-i18n="ok_key">Titre correct</h2>
+  <p data-i18n="orphan_key">Cle sans traduction</p>
+  <p data-i18n="dup_key">Cle dupliquee</p>
+  <p data-i18n="">Attribut vide</p>
+</section>
+
+<script>
+const t = {
+  fr: {
+    ok_key:"Titre correct", dup_key:"Premiere declaration",
+    only_fr:"Presente uniquement en francais",
+    dup_key:"Seconde declaration — ecrase la premiere",
+    langBtn:"🇬🇧 English"
+  },
+  en: {
+    ok_key:"Correct title", dup_key:"Duplicated key",
+    langBtn:"🇫🇷 Francais"
+  }
+};
+</script>
+</body>
+</html>
