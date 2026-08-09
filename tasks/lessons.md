@@ -185,4 +185,10 @@ un préalable ou une condition de sortie anticipée (porte CI, règle de lint av
 d'intégration qui saute quand une ressource manque). Raffinement direct de la leçon globale du
 9 août 2026 (« une assertion posée sur un identifiant nu peut être satisfaite par un autre
 contrôle ») : celle-ci disait *sur quoi* asseoir l'assertion, celle-là dit **combien** il en faut.
-Candidate à promotion — arbitrage du chef de projet.
+
+**Promue en global le 9 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Une assertion de vivacité se pose par chemin bloquant, pas par contrôle », avec
+l'empreinte `90a84f4` de la présente jumelle locale. Registre global porté de 67 à **68 entrées** ;
+les 403 lignes préexistantes vérifiées **intactes à l'identique** contre une copie prise avant
+écriture. Geste validé dans le fil de la session — pas de prompt CHORE dédié, la promotion figurant à
+l'inventaire fermé des gestes hors dépôt autorisés (entrée A-1).
