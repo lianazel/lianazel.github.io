@@ -1,0 +1,157 @@
+# Liste blanche des termes non traduisibles — porte de parite linguistique.
+#
+# Tout texte visible de la page doit etre SOIT couvert par un attribut
+# data-i18n, SOIT compose uniquement de mots inscrits ici.
+#
+# Regles de tenue :
+#   - un terme par ligne, suivi de '#' puis de son MOTIF ;
+#   - une entree sans motif est REFUSEE par le controle (liste relisible par
+#     quelqu'un qui ne l'a pas ecrite) ;
+#   - comparaison SENSIBLE A LA CASSE : un mot commun ne se glisse pas ici par
+#     la petite porte ;
+#   - une entree qui ne sert plus est signalee en avertissement — une liste qui
+#     accumule des entrees mortes finit par tout autoriser.
+#
+# Discriminant applique : ce mot designerait-il la meme chose dans un CV redige
+# en anglais ? Nom de produit, de societe, de langage, de norme ou de lieu :
+# oui, il entre ici. Intitule de poste, mois, domaine fonctionnel, phrase :
+# non, il se traduit.
+#
+# LIMITE CONNUE, ET ELLE EST PLUS LARGE QU'IL N'Y PARAIT — la correspondance se
+# fait MOT A MOT, sans egard a l'ordre ni a la langue du libelle. Un nom propre
+# compose oblige a inscrire chacun de ses mots separement (« World Bank API »
+# fait entrer « World » et « Bank »), et une fois ces mots inscrits, TOUTE suite
+# composee a 100% de mots listes passe : « Code Legacy », « Performance Mobile »,
+# « Groupe Informatique » franchiraient la porte alors qu'ils demandent une
+# traduction. Ce n'est pas un cas d'ecole : les suites non couvertes de la page
+# font une a trois mots, c'est donc la forme DOMINANTE du contenu controle.
+# (Constate en revue le 9 aout 2026, reserve R3, sur cinq etiquettes injectees.)
+#
+# Consequence de tenue : n'inscrire ici QUE des termes dont la presence dans un
+# libelle francais serait elle-meme anormale. Les entrees a surveiller sont
+# celles qui existent aussi en francais : Groupe, Informatique, Logistique,
+# Mobile, Performance, France, Code, Studio, Tech, Dev. Chacune est justifiee
+# par une raison sociale ou un nom de produit precis — pas par le mot seul.
+#
+# La parade de fond (essayer d'abord la SUITE ENTIERE, repli mot a mot ensuite)
+# est proposee en revue et releve d'un increment separe, avec son prompt.
+
+# --- Langages, frameworks, plateformes d'execution -------------------------
+.NET               # plateforme Microsoft
+C#                 # langage Microsoft
+EF                 # Entity Framework, abreviation consacree
+Core               # Entity Framework Core / .NET Core, element de nom de produit
+WPF                # Windows Presentation Foundation, Microsoft
+React              # bibliotheque Meta
+Three.js           # bibliotheque de rendu 3D
+Chart.js           # bibliotheque de graphiques
+JVM                # Java Virtual Machine, norme
+JWT                # JSON Web Token, RFC 7519
+REST               # style d'architecture, norme
+API                # interface de programmation, terme international
+Framework          # employe ici dans « Framework OOP », nom de composant
+OOP                # Object-Oriented Programming, deja en anglais
+Multi-threading    # terme technique international
+Workflow           # terme technique international
+Dynamic            # element du titre anglais « EF Core — Dynamic Context »
+Context            # element du titre anglais « EF Core — Dynamic Context »
+
+# --- Bases de donnees et langages de requete -------------------------------
+SQL                # norme ISO/IEC 9075
+Server             # element du nom de produit « SQL Server » (Microsoft)
+T-SQL              # dialecte Microsoft
+PL/SQL             # dialecte Oracle
+PostgreSQL         # SGBD
+MySQL              # SGBD
+HFSQL              # SGBD PC Soft
+Oracle             # editeur et SGBD
+Progress           # SGBD Progress Software
+DB2/400            # SGBD IBM
+DBA                # Database Administrator, abreviation internationale
+Tablespaces        # objet Oracle, terme technique
+Performance        # element de « Performance Tuning », intitule de cursus Oracle
+Tuning             # element de « Performance Tuning », intitule de cursus Oracle
+9i                 # numero de version Oracle
+
+# --- Ecosysteme IBM / AS-400 ------------------------------------------------
+IBM                # constructeur
+IBMi               # nom de systeme IBM
+AS/400             # nom de plateforme IBM
+OS/400             # systeme d'exploitation IBM
+RPG                # langage IBM
+RPG-ILE            # variante ILE du langage RPG
+III/IV/ILE         # generations du langage RPG
+CLLE               # Control Language ILE, langage IBM
+IFS                # Integrated File System, composant IBM
+Adelia             # atelier de genie logiciel Hardis
+Visual-Adelia      # variante graphique de l'atelier Adelia
+UNIBOL             # emulateur AS/400 sous UNIX
+UNIX               # famille de systemes d'exploitation
+Legacy             # employe ici dans « IBM / Legacy », deja en anglais
+
+# --- Ecosysteme PC Soft ------------------------------------------------------
+Windev             # atelier PC Soft
+Webdev             # atelier PC Soft, graphie du site
+WebDev             # atelier PC Soft, seconde graphie presente dans la page
+Mobile             # element de « Windev Mobile », nom de produit
+PCSoft             # editeur, element de raison sociale
+Android            # systeme d'exploitation Google
+
+# --- Outillage ---------------------------------------------------------------
+Git                # gestionnaire de versions
+GitHub             # plateforme d'hebergement
+LinkedIn           # reseau professionnel
+Swagger            # outil de documentation d'API
+JIRA               # outil de suivi Atlassian
+Visual             # element de « Visual Studio », nom de produit
+Studio             # element de « Visual Studio », nom de produit
+VS                 # element de « VS Code », nom de produit
+Code               # element de « VS Code » et « Claude Code », nom de produit
+Claude             # element de « Claude Code », nom de produit Anthropic
+CSV                # format de fichier, norme RFC 4180
+ERP                # progiciel de gestion integre, sigle international
+CRM                # gestion de la relation client, sigle international
+
+# --- Societes, marques et raisons sociales -----------------------------------
+InfoSquad          # raison sociale
+InfoGones          # raison sociale
+Groupe             # element de raison sociale (Groupe InfoGones, Prenant, Hardis)
+Sifa               # raison sociale
+Logistique         # element de la raison sociale « Sifa Logistique »
+Talentia           # raison sociale
+Software           # element de la raison sociale « Talentia Software »
+Prenant            # raison sociale
+Atoll-Solutions    # raison sociale
+Toyota             # constructeur automobile
+France             # element de la raison sociale « Toyota France »
+Hardis             # raison sociale
+Rentokil-Initial   # raison sociale
+STEF-TFE           # raison sociale
+Pyrénées           # element de la raison sociale « Pyrenees Informatique »
+Informatique       # element de la raison sociale « Pyrenees Informatique »
+Siemens            # raison sociale
+Healthcare         # element de la raison sociale « Siemens Healthcare »
+World              # element du nom propre « World Bank API »
+Bank               # element du nom propre « World Bank API »
+Lead               # element de l'etiquette « Lead Tech », deja en anglais
+Tech               # element de l'etiquette « Lead Tech », deja en anglais
+
+# --- Lieux --------------------------------------------------------------------
+Biarritz                # commune
+Rosny-sous-Bois         # commune
+Vitry-sur-Seine         # commune
+Saint-Ouen-l'Aumône     # commune, texte d'un lien externe
+
+# --- Projets, identifiants et coordonnees publiques ---------------------------
+GrainWatch              # nom de projet personnel
+GrainTrack3D            # nom de projet personnel
+FuelMapPrice            # nom de projet personnel
+CryptoAnalyser          # nom de projet personnel
+VN_3EN1_DEMAT           # nom de code d'un projet Toyota
+timeshare400.com        # nom de domaine, texte d'un lien externe
+devnet902@gmail.com     # adresse de contact, publique par destination
+CHERID                  # patronyme
+Jean-Christophe         # prenom
+Dev                     # logo typographique « <Dev /> », marque visuelle du site
+C1                      # niveau CECRL, notation internationale
+R&D                     # recherche et developpement, sigle identique en anglais
