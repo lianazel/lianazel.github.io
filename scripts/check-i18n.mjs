@@ -1,13 +1,19 @@
 #!/usr/bin/env node
 // Porte de qualite du portfolio : integrite du dictionnaire bilingue, ancres de
-// navigation, couverture de traduction du texte visible, et coherence des trois
-// occurrences de l'adresse de contact.
+// navigation, couverture de traduction du texte visible, coherence des trois
+// occurrences de l'adresse de contact, et tenue de cette adresse dans le budget
+// de largeur declare au CLAUDE.md §9.
 // Aucune dependance externe : n'utilise que la bibliotheque standard de Node.
 // Sortie : code 0 si tout passe, code 1 si au moins un controle bloquant echoue.
 //
 // Usage : node scripts/check-i18n.mjs [cible] [--min-runs=N] [--min-covered=N]
+//                                     [--cadrage=CHEMIN]
 //   --min-runs     seuil de non-vacuite : suites de texte visible attendues (defaut 200)
 //   --min-covered  seuil de non-vacuite : suites couvertes attendues        (defaut 100)
+//   --cadrage      fichier porteur du budget de largeur (defaut : ../CLAUDE.md,
+//                  resolu depuis le script ; la valeur fournie, elle, est
+//                  relative au REPERTOIRE COURANT). Sert au temoin de cadrage
+//                  muet, seule cible ou la garde du budget mord.
 // Les seuils sont desarmables pour les temoins, qui sont trop petits par
 // nature ; ils gardent leur valeur de production sur le site et sur le temoin
 // de cecite. Entree legitime : scripts/gate.sh, jamais l'appel direct.
@@ -19,8 +25,15 @@
 //   2. elle n'attrape PAS le contenu porte par un ATTRIBUT plutot que par du
 //      texte (href, title, aria-label) : un lien pointant vers une page
 //      francaise depuis la version anglaise passe silencieusement ;
-//   3. elle ne dit RIEN du rendu : un texte traduit qui deborde de son cadre
-//      lui est invisible ;
+//   3. du rendu, elle ne dit qu'UNE chose, et il faut connaitre sa portee
+//      exacte : le controle 8 verifie que l'ADRESSE tient dans le budget ECRIT
+//      au CLAUDE.md §9. Il compare donc un contenu a un nombre DECLARE, jamais
+//      a la feuille de style. Une REGRESSION DE REMBOURRAGE qui reduirait la
+//      place reelle ne le fait pas rougir : mesure faite le 9 aout 2026, le
+//      correctif de largeur annule a 100%, la porte reste VERTE en annoncant
+//      toujours 254 px disponibles. C'est la dette D-7. Tout le reste du rendu
+//      — mise en page, hauteurs, chevauchements, autres blocs — lui est
+//      totalement invisible ;
 //   4. elle controle le HTML DE DEPART, pas le DOM apres bascule : une valeur
 //      anglaise laissee en francais dans le dictionnaire lui echappe ;
 //   5. la liste blanche se compare MOT A MOT : une suite courte composee a
@@ -49,6 +62,25 @@ function numericFlag(name, fallback) {
 const MIN_RUNS = numericFlag('min-runs', 200);
 const MIN_COVERED = numericFlag('min-covered', 100);
 
+// Cadrage porteur du budget de largeur (controle 8). Par DEFAUT resolu depuis
+// l'emplacement du script, jamais depuis le repertoire courant : la porte doit
+// se comporter pareil d'ou qu'on l'appelle. Un chemin fourni via --cadrage est
+// en revanche relatif au repertoire courant, comme la cible elle-meme.
+// Redirigeable pour le TEMOIN DE CADRAGE MUET, qui
+// prouve que la garde de lisibilite du budget mord — sans lui, cette garde
+// n'aurait aucune cible ou se declencher et naitrait invisible.
+function pathFlag(name, fallback) {
+  const found = argv.slice(2).find((a) => a.startsWith(`--${name}=`));
+  if (found === undefined) return fallback;
+  const raw = found.slice(name.length + 3);
+  if (!raw) {
+    console.log(`ECHEC - option --${name} vide : attendu un chemin.`);
+    exit(1);
+  }
+  return raw;
+}
+const cadragePath = pathFlag('cadrage', new URL('../CLAUDE.md', import.meta.url));
+
 const target = argv.slice(2).find((a) => !a.startsWith('--')) ?? 'index.html';
 let html;
 try {
@@ -70,6 +102,7 @@ let runCount = 0;
 let coveredCount = 0;
 let allowSize = 0;
 let contactReport = '—';
+let budgetReport = '—';
 
 // --- 1. Extraction des cles reellement utilisees dans la page ---------------
 const usedKeys = new Set([...html.matchAll(/data-i18n="([^"]*)"/g)].map((m) => m[1]));
@@ -361,11 +394,11 @@ for (const source of CONTACT_SOURCES) {
   // classe email-text pour que ce controle devienne aveugle EN RESTANT VERT.
   //
   // POURQUOI ce message ne porte PAS le marqueur AVEUGLE des autres gardes :
-  // gate.sh 2/3 prouve la garde de non-vacuite du texte visible en asseyant sa
+  // gate.sh 2/4 prouve la garde de non-vacuite du texte visible en asseyant sa
   // verification sur la PRESENCE de ce marqueur dans la sortie de blind.html.
   // Or blind.html ne porte aucune adresse de contact : ce controle-ci y emet
   // trois erreurs. Si elles disaient AVEUGLE, elles satisferaient a elles
-  // seules l'assertion du 2/3 — la garde du texte visible pourrait mourir et la
+  // seules l'assertion du 2/4 — la garde du texte visible pourrait mourir et la
   // porte resterait verte. C'est la leçon du 9 aout 2026 (« une assertion posee
   // sur un identifiant nu peut etre satisfaite par un autre controle »),
   // rencontree cette fois par anticipation. Chaque garde parle de sa voix.
@@ -383,7 +416,7 @@ for (const source of CONTACT_SOURCES) {
 // d'autres : la condition qui suit fait taire TOUTE la comparaison des qu'une
 // extraction echoue, elle est donc la seule chose entre « une extraction casse »
 // et « le controle 7 ne dit plus rien ». Les deux chemins sont assertes dans
-// gate.sh — la divergence en 1/3, la garde en 2/3. Retirer l'une des deux
+// gate.sh — la divergence en 1/4, la garde en 2/4. Retirer l'une des deux
 // assertions rend ce controle a moitie invisible.
 if (contact.length === CONTACT_SOURCES.length) {
   const distinct = new Set(contact.map((c) => c.value));
@@ -402,7 +435,80 @@ if (contact.length === CONTACT_SOURCES.length) {
   }
 }
 
-// --- 12. Rapport -------------------------------------------------------------
+// --- 12. Controle 8 : l'adresse entre-t-elle dans le budget de largeur ? ----
+// Mode de panne ferme : une adresse plus longue que la place disponible deborde
+// de sa carte sur telephone. Constate en production le 9 aout 2026, invisible au
+// defilement (body{overflow-x:hidden}) et invisible a la porte, qui ne
+// surveillait aucune largeur.
+//
+// CE QU'IL MESURE : l'adresse SEULE, pas la pastille entiere. Le bouton a le
+// droit de passer sous l'adresse (flex-wrap), donc la largeur de la pastille
+// depend de la disposition choisie par le moteur. L'adresse, elle, ne se coupe
+// JAMAIS : c'est l'ATOME INSECABLE du bloc, et le seul objet dont le
+// debordement soit a la fois certain, calculable sans rendu, et fatal.
+//
+// BORNE HAUTE obligatoire : on emploie la largeur de caractere la plus LARGE de
+// l'intervalle mesure au diagnostic. C'est le seul sens dans lequel « ca passe »
+// est une conclusion solide — avec la borne basse, un vert ne prouverait rien.
+const CHAR_MAX_PX = 8.19;      // DejaVu Sans Mono, 0,602 em a 13,6 px (.85rem)
+const PASTILLE_CHROME_PX = 30.8; // rembourrage 2 x .9rem + bordures 2 x 1px
+
+// Le budget n'est PAS recopie ici : il est lu dans le cadrage, seule source.
+// Deux copies d'un meme nombre derivent toujours ; le script ne peut pas
+// contredire ce qui est ecrit si c'est ce qu'il lit. Ancrage sur un jeton ASCII
+// stable plutot que sur une phrase, dont la ponctuation et les accents bougent.
+// UNE seule branche d'echec, a dessein : cadrage illisible, jeton disparu ou
+// valeurs manquantes disent tous la meme chose — le controle n'a plus de
+// reference. Une branche unique ne peut pas mourir en silence pendant qu'une
+// autre reste assertee (lecon du 9 aout : une assertion par CHEMIN bloquant).
+let budget = null;
+let budgetCause = null;
+try {
+  const cadrage = readFileSync(cadragePath, 'utf8');
+  const anchor = cadrage.indexOf('`budget-largeur`');
+  if (anchor === -1) {
+    budgetCause = 'le jeton d\'ancrage a disparu du cadrage';
+  } else {
+    const values = [...cadrage.slice(anchor).matchAll(/`(\d+)px`/g)].map((m) => Number(m[1]));
+    if (values.length < 2) {
+      budgetCause = `${values.length} valeur(s) en pixels apres le jeton, deux attendues`;
+    } else {
+      budget = { screen: values[0], usable: values[1] };
+    }
+  }
+} catch (cause) {
+  budgetCause = `cadrage illisible (${cause.code ?? cause.message})`;
+}
+if (budgetCause) {
+  errors.push(
+    `Budget de largeur introuvable dans le cadrage : ${budgetCause}. ` +
+    `Sans reference ecrite, le controle de largeur ne prouve plus rien.`
+  );
+}
+
+// L'extraction de l'adresse n'est pas dupliquee : on reutilise celle du
+// controle 7, qui a deja prouve que les trois occurrences concordent. Si elle a
+// echoue, ce controle-ci se tait — le controle 7 a deja parle, et empiler deux
+// messages sur la meme cause brouille le diagnostic au lieu de l'affiner.
+const displayed = contact.find((c) => c.role === 'texte affiche');
+if (budget && displayed) {
+  const required = displayed.value.length * CHAR_MAX_PX + PASTILLE_CHROME_PX;
+  const r = Math.round(required * 10) / 10;
+  if (required > budget.usable) {
+    errors.push(
+      `Adresse trop large pour le budget de la carte de contact : ${r} px exiges ` +
+      `(${displayed.value.length} caracteres x ${CHAR_MAX_PX} px + ${PASTILLE_CHROME_PX} px de decor) ` +
+      `pour ${budget.usable} px disponibles a ${budget.screen} px d'ecran, soit ` +
+      `${Math.round((required - budget.usable) * 10) / 10} px de trop. ` +
+      `L'adresse ne se coupant jamais, elle deborderait de sa carte.`
+    );
+    budgetReport = `${r} px exiges / ${budget.usable} px — DEPASSEMENT`;
+  } else {
+    budgetReport = `${r} px exiges / ${budget.usable} px disponibles a ${budget.screen} px (marge ${Math.round((budget.usable - required) * 10) / 10} px)`;
+  }
+}
+
+// --- 13. Rapport -------------------------------------------------------------
 function report() {
   console.log(`Cible            : ${target}`);
   console.log(`Cles utilisees   : ${usedKeys.size}`);
@@ -413,6 +519,7 @@ function report() {
   // Un vert muet ne prouve rien : cette ligne rend visible, a chaque execution,
   // le fait que les trois extractions du controle 7 ont abouti.
   console.log(`Adresse contact  : ${contactReport}`);
+  console.log(`Budget largeur   : ${budgetReport}`);
   console.log('');
 
   for (const warning of warnings) console.log(`AVERTISSEMENT  ${warning}`);

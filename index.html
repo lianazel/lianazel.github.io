@@ -65,13 +65,20 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
 
   /* SECTIONS */
-  section { padding:5rem 2rem; max-width:1100px; margin:0 auto; }
+  /* Petit ecran d'abord : le rembourrage lateral de base est celui du TELEPHONE,
+     elargi ensuite (voir bloc PETIT ECRAN D'ABORD en fin de feuille). A 320px,
+     l'ancienne valeur de 2rem mangeait 64px sur 320 — cause C1 du diagnostic. */
+  section { padding:5rem 1rem; max-width:1100px; margin:0 auto; }
   .section-tag { color:var(--c1-soft); font-size:.85rem; font-weight:700; text-transform:uppercase; letter-spacing:2px; margin-bottom:.5rem; }
   h2 { font-size:2.2rem; font-weight:900; margin-bottom:3rem; }
   h2 span { background:linear-gradient(135deg,var(--c1),var(--c2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
 
   /* SKILLS */
-  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:1.5rem; }
+  /* Le plancher de colonne est borne par la place REELLEMENT disponible : sans
+     min(), 280px reste un plancher dur et la carte deborde des que le conteneur
+     offre moins (cas A du diagnostic, 24px a 320px). Borne dans la declaration
+     plutot qu'a un point de rupture : vaut a TOUTE largeur, y compris sous 320px. */
+  .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr)); gap:1.5rem; }
   .skill-card { background:var(--card); border-radius:16px; padding:1.5rem; border:1px solid rgba(255,255,255,.06); transition:.3s; }
   .skill-card:hover { transform:translateY(-5px); border-color:var(--c1); box-shadow:0 10px 30px rgba(108,99,255,.2); }
   .skill-icon { font-size:2rem; margin-bottom:1rem; }
@@ -109,13 +116,17 @@
 
   /* CONTACT */
   #contact { text-align:center; }
-  .contact-card { background:var(--card); border-radius:20px; padding:3rem; border:1px solid rgba(108,99,255,.2); max-width:600px; margin:0 auto; }
+  .contact-card { background:var(--card); border-radius:20px; padding:2rem 1rem; border:1px solid rgba(108,99,255,.2); max-width:600px; margin:0 auto; }
   .contact-links { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-top:1.5rem; }
   .clink { display:flex; align-items:center; gap:.5rem; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); color:var(--text); text-decoration:none; padding:.7rem 1.5rem; border-radius:50px; font-size:.9rem; transition:.3s; }
   .clink:hover { background:var(--c1); border-color:var(--c1); transform:translateY(-2px); }
 
   /* EMAIL DISPLAY + COPY */
-  .email-display { display:inline-flex; align-items:center; gap:.6rem; margin-top:1rem; padding:.45rem .9rem; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:50px; font-size:.85rem; }
+  /* flex-wrap : quand la place manque, le bouton passe SOUS l'adresse et la
+     pilule devient un bloc a deux niveaux. L'adresse, elle, ne se coupe JAMAIS
+     (ni word-break ni overflow-wrap) : coupee au milieu d'un domaine, elle se
+     recopie mal — ce serait pire que le debordement corrige. Cause C3. */
+  .email-display { display:inline-flex; flex-wrap:wrap; justify-content:center; align-items:center; gap:.6rem; margin-top:1rem; padding:.45rem .9rem; background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.08); border-radius:50px; font-size:.85rem; }
   .email-text { color:var(--sub); font-family:'Consolas','Courier New',monospace; user-select:all; }
   .copy-btn { background:none; border:1px solid rgba(108,99,255,.4); color:var(--c1-soft); padding:.2rem .8rem; border-radius:50px; font-size:.72rem; cursor:pointer; transition:.3s; font-weight:600; letter-spacing:.3px; }
   .copy-btn:hover { background:var(--c1); color:#fff; border-color:var(--c1); }
@@ -124,6 +135,22 @@
   footer { text-align:center; padding:2rem; color:var(--sub); font-size:.85rem; border-top:1px solid rgba(255,255,255,.05); }
   .reveal { opacity:0; transform:translateY(30px); transition:.7s ease; }
   .reveal.visible { opacity:1; transform:none; }
+
+  /* PETIT ECRAN D'ABORD — ELARGISSEMENTS
+     Ces regles s'ecrivent en largeur MINIMALE : les valeurs de base ci-dessus
+     sont celles du telephone, et l'on ELARGIT quand la place le permet. C'est
+     le sens impose par la methode, et l'inverse des deux regles historiques en
+     max-width (barre de navigation, grille de projets), laissees intactes :
+     la dette D-2 se rembourse par tranches, jamais en bloc.
+     601 et non 600 : la regle historique ci-dessus est en max-width:600px, et
+     les deux seraient VRAIES a exactement 600px. Sans conflit de proprietes
+     aujourd'hui, mais le prochain selecteur ajoute de part et d'autre serait
+     arbitre par l'ordre du fichier — un piege qui ne se voit qu'une fois pose.
+     Budget de largeur associe : voir CLAUDE.md §9. */
+  @media (min-width:601px) {
+    section { padding:5rem 2rem; }
+    .contact-card { padding:3rem; }
+  }
 </style>
 </head>
 <body>

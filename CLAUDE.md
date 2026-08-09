@@ -138,7 +138,7 @@ Cet enrobage est la seule entrée légitime : il éprouve d'abord les deux témo
 L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au diagnostic
 ponctuel, jamais de filet.
 
-**Sept contrôles bloquants** — chacun fait échouer la porte :
+**Huit contrôles bloquants** — chacun fait échouer la porte :
 
 1. **Complétude du dictionnaire** — toute clé `data-i18n` présente dans la page possède une
    traduction en français **et** en anglais. Une clé manquante afficherait du texte non traduit à un
@@ -156,12 +156,22 @@ ponctuel, jamais de filet.
 7. **Cohérence de l'adresse de contact** — les trois occurrences d'`index.html` (lien `mailto:`, texte
    affiché, constante de `copyEmail()`) portent la même adresse. Le contrôle **ne connaît aucune adresse
    en dur** : il les compare entre elles, sans quoi il deviendrait faux au prochain changement.
+8. **Budget de largeur** — l'adresse affichée entre dans la place utile déclarée au §9. Le contrôle mesure
+   **l'adresse seule** : le bouton pouvant passer sous elle, la largeur de la pastille est variable, tandis
+   que l'adresse ne se coupe jamais — c'est l'**atome insécable** du bloc. Calcul en **borne haute** de
+   largeur de caractère, seul sens où « ça passe » est une conclusion solide. Le budget **n'est pas recopié
+   dans le script** : il est lu au §9, qui en est la source unique.
 
-**Deux gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
-reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites, et chacune des
-trois extractions de l'adresse doit trouver **exactement une** occurrence. Ces deux gardes parlent de
-voix distinctes, à dessein : un marqueur partagé permettrait à l'une de satisfaire l'assertion de
-l'autre, et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrôle 7).
+**Trois gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
+reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites ; chacune des
+trois extractions de l'adresse doit trouver **exactement une** occurrence ; et le budget du §9 doit être
+lisible, faute de quoi le contrôle 8 se tairait sur un cadrage amputé. Ces gardes parlent de **voix
+distinctes**, à dessein : un marqueur partagé permettrait à l'une de satisfaire l'assertion de l'autre,
+et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrôle 7).
+
+**Le compte se fait par chemin bloquant, jamais par contrôle.** Un contrôle qui protège son extraction
+par une garde en porte deux, et c'est la garde qui meurt en silence — chacune a donc son assertion et
+son témoin.
 
 **Deux avertissements informatifs**, qui ne bloquent pas : clé traduite jamais utilisée (dette D-4,
 quatre attendues) et entrée de liste blanche jamais utilisée.
@@ -172,15 +182,19 @@ D-1 ci-dessous. **La validation visuelle reste entièrement humaine.** Il ne voi
 traduction *fausse*, ni le contenu porté par un attribut (`href`, `title`, `aria-label`) : l'en-tête de
 `check-i18n.mjs` énumère ces limites, et il fait autorité sur elles.
 
-**Preuve de morsure — deux témoins**, et le filet les éprouve avant le site :
+**Preuve de morsure — trois témoins**, et le filet les éprouve avant le site :
 
-- `scripts/fixtures/broken.html`, **témoin défectueux** : sept défauts semés, un par contrôle bloquant.
-  Il doit échouer **en nommant** chacun d'eux — `gate.sh` porte une assertion par contrôle, posée sur
+- `scripts/fixtures/broken.html`, **témoin défectueux** : huit défauts semés, un par contrôle bloquant.
+  Il doit échouer **en nommant** chacun d'eux — `gate.sh` porte une assertion par chemin bloquant, posée sur
   le **message propre** du contrôle et jamais sur un identifiant nu.
 - `scripts/fixtures/blind.html`, **témoin de cécité** : page saine sur les contrôles 1 à 6 mais presque
   vide de texte, soit l'état exact que produirait une extraction cassée. Il doit échouer **pour cécité**.
   Ne portant aucune adresse de contact, il fait aussi mordre la garde du contrôle 7 — et c'est ce qui
-  rend cette garde prouvable : `gate.sh` 2/3 assied dessus sa seconde assertion.
+  rend cette garde prouvable : `gate.sh` 2/4 assied dessus sa seconde assertion.
+- `scripts/fixtures/cadrage-sans-budget.md`, **témoin de cadrage muet** : tient lieu de `CLAUDE.md` le
+  temps d'une exécution, sans le jeton d'ancrage du budget. Il doit échouer **en nommant le budget
+  manquant**. C'est l'unique cible où la garde du contrôle 8 mord — les trois autres lisent le vrai
+  cadrage. **Ne rien y ajouter** : c'est l'absence qui est utile.
 
 Un filet qui passe sur un témoin est en panne, pas en bonne santé — il doit être réparé avant toute
 livraison. Et une assertion ne se relit pas : **elle se prouve**, en neutralisant son contrôle sur une
@@ -212,11 +226,12 @@ comme règles produirait des alertes sur du code parfaitement sain.
 | # | Déviation | Impact | Plan de remboursement |
 |---|---|---|---|
 | **D-1** | **Aucune barrière sur le rendu.** Rien ne détecte un débordement ou une mise en page cassée avant publication. | Un défaut visuel peut atteindre la production sans être vu. | Poser une barrière de rendu (satellite `VISION_METHOD`, palier local). **Décision reportée par le chef de projet le 8 août 2026** — à reprendre. |
-| **D-2** | **Conception grand écran d'abord.** Les deux règles d'adaptation sont écrites en largeur **maximale** (`max-width: 600px` et `700px`), donc en dégradation depuis le grand écran. La méthode impose l'inverse. | Aucun défaut visible constaté ; écart de méthode. | Inverser le sens des règles d'adaptation au prochain toucher significatif de la feuille de style. Ne pas le faire en bloc. |
+| **D-2** | **Conception grand écran d'abord — remboursement entamé.** La feuille porte **trois** règles d'adaptation : deux historiques en largeur **maximale** (`max-width: 600px` et `700px`), donc en dégradation depuis le grand écran, et **une en `min-width`** posée le 9 août 2026 sur les rembourrages de `section` et `.contact-card`. | Aucun défaut visible constaté ; écart de méthode sur les deux règles restantes. | **Première tranche remboursée le 9 août 2026** (correctif du budget de largeur). Reste à inverser les deux `max-width` historiques — barre de navigation et grille de projets — au prochain toucher significatif de la feuille. Ne pas le faire en bloc. |
 | **D-3** | **Deux clés dupliquées** dans le bloc anglais du dictionnaire (`copy_btn`, `copied_msg`). Les valeurs étant identiques, l'écrasement est **sans effet visible**. | Nul aujourd'hui ; piège si les valeurs divergent un jour. | Corrigé lors de la passe d'alignement du 8 août 2026 (suppression des deux déclarations redondantes). |
 | **D-4** | **Quatre clés traduites jamais utilisées** : `e7_title`, `e7_desc`, `p3_title`, `p3_desc`. Soit du contenu retiré dont la traduction est restée, soit des attributs `data-i18n` oubliés sur des éléments existants. | Nul. | À trancher au prochain toucher du contenu : rebrancher ou supprimer. Le filet de tests les signale **sans bloquer**. |
 | **D-5** | **Police système non embarquée.** Le style demande `Segoe UI` sans la fournir. Sur un poste qui ne l'a pas, le navigateur retombe sur une police sensiblement plus large. | Rendu différent hors environnement Windows — **et mesures faussées** pour tout outil d'inspection tournant sous Linux. | Aucune action sur le site. **Conséquence à retenir** : toute mesure de mise en page faite ailleurs que sous Windows doit d'abord prouver quelle police a réellement été utilisée. |
 | **D-6** | **Repli sur une commande dépréciée** (`document.execCommand('copy')`) dans la copie de l'adresse. | Nul — c'est un repli, le chemin moderne est prioritaire. | Retirer le jour où les navigateurs ciblés le rendent inutile. |
+| **D-7** | **Le budget de largeur du §9 est déclaré, jamais mesuré.** Le contrôle 8 compare l'adresse à un nombre écrit dans ce document ; rien ne relie ce nombre aux rembourrages réels de la feuille de style. **Mesuré le 9 août 2026** : le correctif du budget de largeur annulé à 100 %, la porte reste **verte** et continue d'annoncer « 254 px disponibles » alors que la place réelle est retombée à 158. | La porte ferme la cause **aggravante** (un contenu qui s'allonge) et **pas** la cause dominante C1 du diagnostic (un rembourrage qui régresse). Un futur toucher de `section` ou `.contact-card` peut rouvrir le débordement sans qu'aucun contrôle ne rougisse. | Faire **dériver** le budget de la feuille : le contrôle lit les rembourrages réels, recalcule la place utile, et la compare au nombre du §9 — divergence = erreur bloquante. Le §9 reste la source du **contrat**, la feuille devient la source du **fait**. Piste chiffrée au §5-2 du rapport de diagnostic ; relève d'un `/ship`, pas d'un correctif (§2 « durcissement ≠ correctif »). |
 
 ---
 
@@ -233,6 +248,42 @@ de débordement voulu, et le bouton de langue ne disparaît jamais.
 
 **Accessibilité constatée** : aucune image dans la page, donc aucun texte alternatif manquant. Les
 liens portent un intitulé explicite. Le contraste du thème sombre n'a **pas** été mesuré — à faire.
+
+### Budget de largeur (`budget-largeur`)
+
+Le projet vise une largeur d'écran minimale de `320px`. À cette largeur, la carte de contact offre
+`254px` utiles à son contenu — c'est la place restante une fois retirés les rembourrages latéraux de
+la section et de la carte, et les bordures.
+
+**Le calcul, pour qu'il se refasse sans ouvrir la feuille** : `320 − 2×16 (section) − 2×16 (carte)
+− 2×1 (bordures) = 254`. Les deux rembourrages sont les valeurs de base, en `1rem`, restaurées à
+`2rem` et `3rem` au-dessus du point de rupture.
+
+**Ces deux nombres sont la référence du contrôle 8 de la porte**, qui les lit ici même plutôt que de
+les recopier — une valeur écrite à deux endroits finit toujours par diverger.
+
+> ⚠️ **Ce sont un contrat, pas une mesure.** Rien ne relie ces nombres aux rembourrages réels de la
+> feuille de style : le contrôle 8 fait confiance à ce qui est écrit ici. **Les recalculer à la main
+> après tout toucher de `section` ou de `.contact-card`** — c'est la dette **D-7**, et elle a été
+> mesurée : correctif CSS annulé, la porte reste verte en annonçant toujours 254 px.
+
+**Le sens de dérivation est inverse de l'intuition et il ne se renverse pas** — le budget découle de
+la mise en page, jamais du contenu du jour. Si un contenu n'entre pas dans le budget, c'est la mise en
+page qu'on corrige, pas le budget qu'on desserre : un budget ajusté au cas qu'il doit surveiller ne
+surveille plus rien.
+
+**Marge disponible, à connaître avant de changer d'adresse** : l'adresse actuelle exige 235,55 px, il
+reste **18,45 px**. La plus longue adresse admissible sous ce budget fait **27 caractères**. Au-delà,
+le §9 prescrit de corriger la mise en page — mais les rembourrages sont déjà à `1rem` et il n'y a plus
+grand-chose à reprendre sans toucher la carte elle-même.
+
+**Limite du modèle** : tous les rembourrages sont en `rem`. Si l'utilisateur agrandit la police par
+défaut de son navigateur, le besoin croît **et** la place décroît, tandis que le budget reste en
+pixels fixes. Le contrôle 8 est aveugle à ce cas.
+
+*Établi le 9 août 2026, après le diagnostic du débordement de la pastille de contact. Avant ce
+correctif, la même mesure donnait **158 px** — la moitié de l'écran partait en rembourrage constant,
+et la pastille en réclamait 290 au minimum.*
 
 ---
 

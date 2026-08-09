@@ -15,7 +15,16 @@
           ment le titre et les liens de navigation de ce temoin) ;
        7. le lien mailto: et le texte affiche portent deux adresses DIFFERENTES
           — c'est le mode de panne silencieux que le controle 7 ferme : la page
-          affiche une adresse, le bouton « Copier » en place une autre.
+          affiche une adresse, le bouton « Copier » en place une autre ;
+       8. l'adresse affichee est TROP LARGE pour le budget ecrit au CLAUDE.md
+          (40 caracteres) : elle deborderait de sa carte sur telephone. Une
+          seule chaine porte les deux defauts 7 et 8, a dessein — elle diverge
+          du lien ET depasse le budget.
+
+     ATTENTION — le defaut n° 8 est calibre sur la valeur VIVANTE du CLAUDE.md
+     §9 : 40 caracteres exigent 358,4 px. Il cesse de mordre si le budget y est
+     porte au-dela de 358 px. Allonger alors cette chaine, sinon l'assertion du
+     1/4 echouerait en accusant a tort un « controle mort ».
 
      Les TROIS occurrences de l'adresse sont presentes ici (lien, texte affiche,
      constante), et une seule diverge : sans les trois, le temoin echouerait sur
@@ -50,7 +59,7 @@
 
 <div class="email-display">
   <a href="mailto:contact@temoin.test" data-i18n="ok_key">Ecrire</a>
-  <span class="email-text" data-i18n="email_txt">divergent@temoin.test</span>
+  <span class="email-text" data-i18n="email_txt">adresse-beaucoup-trop-longue@temoin.test</span>
 </div>
 
 <script>
@@ -59,12 +68,12 @@ const t = {
     ok_key:"Titre correct", dup_key:"Premiere declaration",
     only_fr:"Presente uniquement en francais",
     dup_key:"Seconde declaration — ecrase la premiere",
-    email_txt:"divergent@temoin.test",
+    email_txt:"adresse-beaucoup-trop-longue@temoin.test",
     langBtn:"🇬🇧 English"
   },
   en: {
     ok_key:"Correct title", dup_key:"Duplicated key",
-    email_txt:"divergent@temoin.test",
+    email_txt:"adresse-beaucoup-trop-longue@temoin.test",
     langBtn:"🇫🇷 Francais"
   }
 };
