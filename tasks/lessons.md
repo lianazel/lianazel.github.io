@@ -94,7 +94,12 @@ vérifiée en neutralisant son contrôle sur une copie hors dépôt (remplacemen
 par une exception). Sans cette épreuve, l'assertion vacueuse serait partie en production.
 
 **Applicable globalement ?** : **Oui** — tout harnais de test qui asserte sur une sortie textuelle
-(porte CI, contrôle de lint, test d'intégration lisant des journaux). Candidate à promotion.
+(porte CI, contrôle de lint, test d'intégration lisant des journaux).
+
+**Promue en global le 9 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Une assertion posée sur un identifiant nu peut être satisfaite par un autre
+contrôle », avec l'empreinte `e092df8` de la présente jumelle locale. Geste porté par
+`prompts/v0.2/CHORE_promotion-lecons-globales_v1.md`.
 
 ---
 
@@ -127,4 +132,9 @@ Deux compléments tirés du même incrément :
 
 **Applicable globalement ?** : **Oui** — vaut pour toute garde, tout garde-fou de sécurité, toute
 assertion défensive. Cousine directe de la leçon ci-dessus : l'une dit *prouve que ton assertion
-détecte*, l'autre *prouve que ta garde attrape*. Candidate à promotion.
+détecte*, l'autre *prouve que ta garde attrape*.
+
+**Promue en global le 9 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Une garde qu'on n'a pas vue mordre sur son défaut n'est pas une garde, c'est
+une croyance », avec l'empreinte `e092df8` de la présente jumelle locale. Geste porté par
+`prompts/v0.2/CHORE_promotion-lecons-globales_v1.md`.
