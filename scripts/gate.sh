@@ -23,7 +23,7 @@ fail() {
 }
 
 echo "--- 1/3 · Preuve de morsure (le temoin defectueux doit echouer) ---"
-# Seuils de non-vacuite desarmes : ce temoin fait sept suites de texte, pas deux
+# Seuils de non-vacuite desarmes : ce temoin fait dix suites de texte, pas deux
 # cents. On ne deforme pas le temoin pour qu'il franchisse la garde ; on retire
 # la garde de SON perimetre, et le controle 2 la prouve ailleurs.
 out_broken="$(node scripts/check-i18n.mjs scripts/fixtures/broken.html --min-runs=0 --min-covered=0 2>&1)"
@@ -32,7 +32,7 @@ code_broken=$?
 case "$out_broken" in
   *AVEUGLE*) fail "le temoin defectueux echoue par CECITE, pas sur ses defauts semes." ;;
 esac
-# Assertions POSITIVES : UNE PAR CONTROLE BLOQUANT, six en tout. Leur absence
+# Assertions POSITIVES : UNE PAR CONTROLE BLOQUANT, sept en tout. Leur absence
 # signale un controle mort, la ou l'absence de "AVEUGLE" ne signalerait rien.
 #
 # Le compte est ce qui fait la valeur de ce bloc : avec deux assertions sur six
@@ -59,7 +59,10 @@ assert_names 'Cle dupliquee dans le bloc "fr" : dup_key'   "de doublon"
 assert_names 'Ancre de navigation cassee : #nowhere'       "d'integrite des ancres"
 assert_names 'Un attribut data-i18n est vide.'             "d'attribut vide"
 assert_names 'Texte visible non traduit : "Cette"'         "de couverture du texte visible"
-echo "OK - le temoin echoue en nommant ses six defauts semes."
+# Motif = la phrase du controle, jamais une adresse : une adresse circule dans
+# la liste blanche, dans la ligne de rapport et dans les messages voisins.
+assert_names 'Adresse de contact incoherente entre les trois occurrences' "de coherence de l'adresse de contact"
+echo "OK - le temoin echoue en nommant ses sept defauts semes."
 echo ""
 
 echo "--- 2/3 · Garde de non-vacuite (le temoin de cecite doit echouer) ---"
@@ -71,7 +74,20 @@ case "$out_blind" in
   *AVEUGLE*) : ;;
   *) fail "le temoin de cecite echoue, mais pas pour cecite : la preuve ne vaut rien." ;;
 esac
-echo "OK - la garde nomme la cecite."
+# Le controle 7 a DEUX chemins bloquants : la divergence, assertee en 1/3 sur le
+# temoin defectueux, et cette garde de non-vacuite — qui n'a aucun temoin la ou
+# la divergence en a un. blind.html ne porte aucune adresse de contact : la
+# garde y tire ses trois erreurs a chaque execution, l'ancrage est stable.
+#
+# Sans cette assertion, la garde naissait INVISIBLE (revue du 9 aout, R1).
+# Mesure, pas theorie : neutralisee, la porte restait VERTE pendant qu'une page
+# affichant la nouvelle adresse copiait l'ancienne — c'est-a-dire exactement le
+# mode de panne silencieux que le controle 7 existe pour fermer.
+case "$out_blind" in
+  *"Adresse de contact introuvable ou multiple"*) : ;;
+  *) fail "le temoin de cecite ne nomme plus la garde de non-vacuite du controle 7 : garde morte ?" ;;
+esac
+echo "OK - la garde nomme la cecite, et celle du controle 7 est vivante."
 echo ""
 
 echo "--- 3/3 · Site reel (doit passer) ---"

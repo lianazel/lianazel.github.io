@@ -2,11 +2,17 @@
 <!-- TEMOIN DE CECITE — preuve que la garde de non-vacuite mord.
      Ce fichier ne fait PAS partie du site.
 
-     Il est volontairement SAIN sur tous les autres controles : dictionnaire
-     complet, symetrique, sans doublon ; ancre de navigation valide ; aucun
-     texte visible non couvert. Sa seule anomalie est d'etre PRESQUE VIDE de
-     texte visible — c'est exactement l'etat que produirait une extraction
-     cassee sur le vrai site.
+     Il est volontairement SAIN sur les controles 1 a 6 : dictionnaire complet,
+     symetrique, sans doublon ; ancre de navigation valide ; aucun texte visible
+     non couvert. Son anomalie voulue est d'etre PRESQUE VIDE de texte visible
+     — c'est exactement l'etat que produirait une extraction cassee sur le vrai
+     site.
+
+     Il ne porte PAS non plus d'adresse de contact : la garde de non-vacuite du
+     controle 7 y tire donc ses trois erreurs a chaque execution. Ce n'est pas
+     un defaut de ce temoin, c'est ce qui rend cette garde PROUVABLE — gate.sh
+     2/3 asserte sa presence, faute de quoi elle naitrait invisible. Ne pas
+     ajouter d'adresse ici : cela desarmerait cette preuve en silence.
 
      Attendu : "node scripts/check-i18n.mjs scripts/fixtures/blind.html"
      (seuils par defaut, NON desarmes) doit echouer avec un message contenant

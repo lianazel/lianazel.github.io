@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Porte de qualite du portfolio : integrite du dictionnaire bilingue, ancres de
-// navigation, et couverture de traduction du texte visible.
+// navigation, couverture de traduction du texte visible, et coherence des trois
+// occurrences de l'adresse de contact.
 // Aucune dependance externe : n'utilise que la bibliotheque standard de Node.
 // Sortie : code 0 si tout passe, code 1 si au moins un controle bloquant echoue.
 //
@@ -68,6 +69,7 @@ let ids = new Set();
 let runCount = 0;
 let coveredCount = 0;
 let allowSize = 0;
+let contactReport = '—';
 
 // --- 1. Extraction des cles reellement utilisees dans la page ---------------
 const usedKeys = new Set([...html.matchAll(/data-i18n="([^"]*)"/g)].map((m) => m[1]));
@@ -324,7 +326,83 @@ if (MIN_RUNS > 0 && runCount >= MIN_RUNS) {
   }
 }
 
-// --- 11. Rapport -------------------------------------------------------------
+// --- 11. Controle 7 : coherence des trois occurrences de l'adresse ----------
+// Mode de panne ferme, et il est SILENCIEUX : la page AFFICHE une adresse
+// pendant que le bouton « Copier » en place une AUTRE dans le presse-papiers.
+// Le rendu est parfaitement normal, le visiteur colle une adresse morte, et
+// personne ne l'apprend jamais.
+//
+// Le controle ne connait AUCUNE adresse en dur : il verifie que les trois
+// occurrences concordent ENTRE ELLES. Une porte qui contiendrait la valeur
+// attendue deviendrait fausse au prochain changement, et il faudrait penser a
+// la mettre a jour — c'est-a-dire exactement le defaut qu'elle previent.
+//
+// Ancrage sur la SYNTAXE, jamais sur la mise en forme : ni numero de ligne, ni
+// retour a la ligne, ni indentation (leçon du 8 aout 2026 — un motif ancre en
+// debut de ligne avait fabrique vingt faux defauts sur ce meme fichier).
+const CONTACT_SOURCES = [
+  // Coupe au '?' : mailto:x@y?subject=... reste comparable a l'adresse nue.
+  { role: 'lien mailto:', pattern: /href="mailto:([^"?]*)/g },
+  // Jeton de classe exact, mais classes voisines tolerees (class="email-text mono").
+  { role: 'texte affiche', pattern: /\bclass="[^"]*\bemail-text\b[^"]*"[^>]*>([^<]*)</g },
+  // Guillemets simples ou doubles : le style du fichier ne fait pas la regle.
+  { role: 'constante copyEmail', pattern: /\bconst\s+email\s*=\s*(['"])([^'"]*)\1/g, group: 2 },
+];
+
+const contact = [];
+for (const source of CONTACT_SOURCES) {
+  source.pattern.lastIndex = 0;
+  const found = [...html.matchAll(source.pattern)].map((m) => (m[source.group ?? 1] ?? '').trim());
+  if (found.length === 1) {
+    contact.push({ role: source.role, value: found[0] });
+    continue;
+  }
+  // Garde de non-vacuite. Sans elle, il suffit qu'un remaniement renomme la
+  // classe email-text pour que ce controle devienne aveugle EN RESTANT VERT.
+  //
+  // POURQUOI ce message ne porte PAS le marqueur AVEUGLE des autres gardes :
+  // gate.sh 2/3 prouve la garde de non-vacuite du texte visible en asseyant sa
+  // verification sur la PRESENCE de ce marqueur dans la sortie de blind.html.
+  // Or blind.html ne porte aucune adresse de contact : ce controle-ci y emet
+  // trois erreurs. Si elles disaient AVEUGLE, elles satisferaient a elles
+  // seules l'assertion du 2/3 — la garde du texte visible pourrait mourir et la
+  // porte resterait verte. C'est la leçon du 9 aout 2026 (« une assertion posee
+  // sur un identifiant nu peut etre satisfaite par un autre controle »),
+  // rencontree cette fois par anticipation. Chaque garde parle de sa voix.
+  errors.push(
+    `Adresse de contact introuvable ou multiple — ${source.role} : ${found.length} occurrence(s), une seule attendue. ` +
+    `Tant que ce point n'est pas retabli, la coherence des trois occurrences n'est plus prouvee.`
+  );
+}
+
+// UNE seule branche de comparaison, a dessein : une divergence quelconque
+// produit une seule erreur, quelle que soit l'occurrence fautive.
+//
+// ATTENTION — ce controle a DEUX chemins bloquants, pas un : cette comparaison
+// et la garde de non-vacuite ci-dessus. La garde n'est pas une securite parmi
+// d'autres : la condition qui suit fait taire TOUTE la comparaison des qu'une
+// extraction echoue, elle est donc la seule chose entre « une extraction casse »
+// et « le controle 7 ne dit plus rien ». Les deux chemins sont assertes dans
+// gate.sh — la divergence en 1/3, la garde en 2/3. Retirer l'une des deux
+// assertions rend ce controle a moitie invisible.
+if (contact.length === CONTACT_SOURCES.length) {
+  const distinct = new Set(contact.map((c) => c.value));
+  if (distinct.size > 1) {
+    // L'erreur enumere les TROIS roles avec leur valeur plutot que d'en
+    // designer un comme reference : si c'est le mailto: qu'on a oublie de
+    // changer, le designer comme reference accuserait les deux autres.
+    errors.push(
+      `Adresse de contact incoherente entre les trois occurrences de la page : ` +
+      `${contact.map((c) => `${c.role} "${c.value}"`).join(', ')}. ` +
+      `Le bouton « Copier » ne place pas l'adresse affichee.`
+    );
+    contactReport = `INCOHERENTE (${distinct.size} valeurs distinctes)`;
+  } else {
+    contactReport = `${contact[0].value} (3 occurrences concordantes)`;
+  }
+}
+
+// --- 12. Rapport -------------------------------------------------------------
 function report() {
   console.log(`Cible            : ${target}`);
   console.log(`Cles utilisees   : ${usedKeys.size}`);
@@ -332,6 +410,9 @@ function report() {
   console.log(`Ancres verifiees : ${anchors.size}`);
   console.log(`Texte visible    : ${runCount} suite(s), dont ${coveredCount} couverte(s)`);
   console.log(`Liste blanche    : ${allowSize} terme(s)`);
+  // Un vert muet ne prouve rien : cette ligne rend visible, a chaque execution,
+  // le fait que les trois extractions du controle 7 ont abouti.
+  console.log(`Adresse contact  : ${contactReport}`);
   console.log('');
 
   for (const warning of warnings) console.log(`AVERTISSEMENT  ${warning}`);

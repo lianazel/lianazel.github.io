@@ -12,10 +12,22 @@
        5. un attribut data-i18n vide ;
        6. du texte visible non couvert par un attribut de traduction et absent
           de la liste blanche (la phrase francaise de la section, et accessoire-
-          ment le titre et les liens de navigation de ce temoin).
+          ment le titre et les liens de navigation de ce temoin) ;
+       7. le lien mailto: et le texte affiche portent deux adresses DIFFERENTES
+          — c'est le mode de panne silencieux que le controle 7 ferme : la page
+          affiche une adresse, le bouton « Copier » en place une autre.
+
+     Les TROIS occurrences de l'adresse sont presentes ici (lien, texte affiche,
+     constante), et une seule diverge : sans les trois, le temoin echouerait sur
+     la garde de non-vacuite du controle 7 au lieu d'echouer sur la divergence
+     — il prouverait alors autre chose que ce qu'on lui demande de prouver.
+     Les deux elements ajoutes portent un attribut data-i18n pour la meme
+     raison : sans lui, leur texte deviendrait un SECOND defaut de couverture
+     du texte visible (le n° 6 ci-dessus), et ce temoin promet un defaut par
+     controle, pas deux.
 
      Ce temoin est appele avec les seuils de non-vacuite DESARMES
-     (--min-runs=0 --min-covered=0) : il fait sept suites de texte, pas deux
+     (--min-runs=0 --min-covered=0) : il fait dix suites de texte, pas deux
      cents. gate.sh verifie en retour qu'il echoue en NOMMANT ses defauts, et
      jamais par cecite — sinon un plantage du controle passerait pour une
      morsure. -->
@@ -36,19 +48,30 @@
   <p>Cette phrase francaise n'est couverte par aucun attribut de traduction.</p>
 </section>
 
+<div class="email-display">
+  <a href="mailto:contact@temoin.test" data-i18n="ok_key">Ecrire</a>
+  <span class="email-text" data-i18n="email_txt">divergent@temoin.test</span>
+</div>
+
 <script>
 const t = {
   fr: {
     ok_key:"Titre correct", dup_key:"Premiere declaration",
     only_fr:"Presente uniquement en francais",
     dup_key:"Seconde declaration — ecrase la premiere",
+    email_txt:"divergent@temoin.test",
     langBtn:"🇬🇧 English"
   },
   en: {
     ok_key:"Correct title", dup_key:"Duplicated key",
+    email_txt:"divergent@temoin.test",
     langBtn:"🇫🇷 Francais"
   }
 };
+// Troisieme occurrence de l'adresse : elle CONCORDE avec le lien mailto:,
+// c'est le texte affiche qui diverge. Sans cette ligne, le controle 7
+// echouerait sur sa garde de non-vacuite au lieu d'echouer sur la divergence.
+const email = 'contact@temoin.test';
 </script>
 </body>
 </html>
