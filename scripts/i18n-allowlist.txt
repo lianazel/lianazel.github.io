@@ -149,7 +149,7 @@ FuelMapPrice            # nom de projet personnel
 CryptoAnalyser          # nom de projet personnel
 VN_3EN1_DEMAT           # nom de code d'un projet Toyota
 timeshare400.com        # nom de domaine, texte d'un lien externe
-devnet902@gmail.com     # adresse de contact, publique par destination
+devnetasimov451@proton.me # adresse de contact, publique par destination
 CHERID                  # patronyme
 Jean-Christophe         # prenom
 Dev                     # logo typographique « <Dev /> », marque visuelle du site

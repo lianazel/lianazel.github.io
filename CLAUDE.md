@@ -134,11 +134,11 @@ l'interpréteur déjà présent sur la machine.
 
 **Commande** : `bash scripts/gate.sh`
 
-Cet enrobage est la seule entrée légitime : il éprouve d'abord le témoin défectueux, puis le site.
+Cet enrobage est la seule entrée légitime : il éprouve d'abord les deux témoins, puis le site.
 L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au diagnostic
 ponctuel, jamais de filet.
 
-**Périmètre couvert** :
+**Sept contrôles bloquants** — chacun fait échouer la porte :
 
 1. **Complétude du dictionnaire** — toute clé `data-i18n` présente dans la page possède une
    traduction en français **et** en anglais. Une clé manquante afficherait du texte non traduit à un
@@ -148,14 +148,43 @@ ponctuel, jamais de filet.
    par la seconde déclaration.
 4. **Intégrité des ancres** — chaque lien interne de la barre de navigation pointe vers une section
    qui existe réellement.
+5. **Attribut de traduction vide** — un `data-i18n=""` ne désigne aucune clé et ne serait jamais traduit.
+6. **Couverture du texte visible** — tout texte visible de la page est **soit** couvert par un attribut
+   `data-i18n`, **soit** composé uniquement de termes inscrits dans la liste blanche
+   `scripts/i18n-allowlist.txt` (104 entrées, chacune avec son motif écrit). Y ajouter un terme est un
+   geste conscient et tracé, jamais un contournement silencieux.
+7. **Cohérence de l'adresse de contact** — les trois occurrences d'`index.html` (lien `mailto:`, texte
+   affiché, constante de `copyEmail()`) portent la même adresse. Le contrôle **ne connaît aucune adresse
+   en dur** : il les compare entre elles, sans quoi il deviendrait faux au prochain changement.
+
+**Deux gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
+reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites, et chacune des
+trois extractions de l'adresse doit trouver **exactement une** occurrence. Ces deux gardes parlent de
+voix distinctes, à dessein : un marqueur partagé permettrait à l'une de satisfaire l'assertion de
+l'autre, et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrôle 7).
+
+**Deux avertissements informatifs**, qui ne bloquent pas : clé traduite jamais utilisée (dette D-4,
+quatre attendues) et entrée de liste blanche jamais utilisée.
 
 **Ce que ce filet ne couvre pas**, et il faut le savoir : la mise en page, le rendu visuel, le
 comportement sur téléphone. Aucun contrôle automatisé ne les surveille aujourd'hui — voir la dette
-D-1 ci-dessous. **La validation visuelle reste entièrement humaine.**
+D-1 ci-dessous. **La validation visuelle reste entièrement humaine.** Il ne voit pas davantage une
+traduction *fausse*, ni le contenu porté par un attribut (`href`, `title`, `aria-label`) : l'en-tête de
+`check-i18n.mjs` énumère ces limites, et il fait autorité sur elles.
 
-**Preuve de morsure** : `scripts/fixtures/broken.html` est un cas témoin volontairement défectueux
-sur lequel le contrôle **doit** échouer. Un filet qui passe sur le témoin est en panne, pas en bonne
-santé — il doit être réparé avant toute livraison.
+**Preuve de morsure — deux témoins**, et le filet les éprouve avant le site :
+
+- `scripts/fixtures/broken.html`, **témoin défectueux** : sept défauts semés, un par contrôle bloquant.
+  Il doit échouer **en nommant** chacun d'eux — `gate.sh` porte une assertion par contrôle, posée sur
+  le **message propre** du contrôle et jamais sur un identifiant nu.
+- `scripts/fixtures/blind.html`, **témoin de cécité** : page saine sur les contrôles 1 à 6 mais presque
+  vide de texte, soit l'état exact que produirait une extraction cassée. Il doit échouer **pour cécité**.
+  Ne portant aucune adresse de contact, il fait aussi mordre la garde du contrôle 7 — et c'est ce qui
+  rend cette garde prouvable : `gate.sh` 2/3 assied dessus sa seconde assertion.
+
+Un filet qui passe sur un témoin est en panne, pas en bonne santé — il doit être réparé avant toute
+livraison. Et une assertion ne se relit pas : **elle se prouve**, en neutralisant son contrôle sur une
+copie hors dépôt et en vérifiant que la porte rougit.
 
 ---
 
