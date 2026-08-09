@@ -192,7 +192,7 @@ n'a essayé de la faire mentir.
    mord mais nomme mal. Le motif correct existe déjà dans le fichier (`TAG`) et n'a pas été réemployé.
    Sévérité faible, aucun risque de cécité. Durcissement, donc évolution.
 
-### Validation humaine due avant publication
+### Validation humaine due avant publication (session 4)
 
 L'adresse passe de **20 à 25 caractères**, en police à chasse fixe, dans une pastille `inline-flex` sans
 `flex-wrap`, sans `max-width`, sans `word-break`, dont le `padding:3rem` n'est réduit par aucune règle
@@ -200,3 +200,123 @@ sous 600 px. **Rien dans ce projet ne détecte un débordement** (dette D-1), et
 Windows serait fausse (dette D-5). **La pastille de contact doit être regardée à l'œil entre 320 et
 360 px de large.** À vérifier aussi en situation réelle : que le bouton « Copier » place bien la nouvelle
 adresse — la porte prouve la concordance dans la source, pas le comportement du navigateur.
+
+---
+
+## 9 août 2026 — Budget de largeur sur petit écran (session 5)
+
+| | |
+|---|---|
+| **Type** | CORRECTIF (`/fix`), fondé sur diagnostic |
+| **Branche** | `fix/budget-largeur-mobile` — 1 enregistrement |
+| **Fusion** | **`8687284`** (`--no-ff`) — 12 fichiers |
+| **Diagnostic** | `AUDIT_pastille-contact_v1.md` → `RAPPORT_DIAGNOSTIC_pastille-contact_v1.md` |
+| **Prompt pilote** | `prompts/v0.3/CORRECTIF_budget-largeur-mobile_v2.md` (la v1 est périmée) |
+| **Version** | **0.3.0 → 0.3.1** (patch : `fix/*`) |
+| **Feuille de route** | solde **C-1** ; entame le remboursement de **D-2** |
+
+### Le défaut, et sa vraie cause
+
+Signalé à la clôture de la session 4 comme point de validation humaine, confirmé le jour même par le
+chef de projet sur le site publié : la pastille de contact **sortait de sa carte sur tout téléphone en
+portrait**. Le diagnostic a montré que l'allongement de l'adresse n'en était pas la cause — **162 px
+sur 320, la moitié de l'écran, partaient en rembourrage constant de 320 à 1 100 px**, laissant 158 px
+utiles là où la pastille en réclamait 290 au minimum. Le seuil de tenue était déjà hors d'atteinte de
+tout téléphone **avant** l'incrément de la session 4.
+
+Diagnostic conduit **sans navigateur ni dépendance**, par lecture des règles et modèle arithmétique à
+deux bornes de police. Il a aussi trouvé que la pastille n'était pas un cas isolé.
+
+### Ce que l'incrément pose
+
+**Petit écran d'abord, première tranche de D-2** : les rembourrages de `section` et `.contact-card`
+prennent leurs valeurs **téléphone** en base, élargies par une règle en `min-width` — le premier bloc
+de ce projet écrit dans le bon sens. Place utile portée de **158 à 254 px**. Les deux règles
+historiques en `max-width` restent intactes : la dette se rembourse par tranches.
+
+**La pastille se replie** : le bouton passe sous l'adresse quand la place manque. **L'adresse ne se
+coupe jamais** — coupée au milieu d'un domaine, elle se recopie mal, ce serait pire que le défaut
+corrigé.
+
+**Le plancher de la grille de compétences** est borné par la place disponible, dans la déclaration
+plutôt qu'à un point de rupture : vaut à toute largeur, y compris sous 320 px.
+
+**Contrôle 8** — l'adresse **seule**, atome insécable du bloc puisque le bouton peut désormais se
+replier, doit tenir dans le budget écrit au §9 du cadrage. Le budget est **lu** là-bas, jamais
+recopié : une valeur écrite à deux endroits finit par diverger.
+
+Ce choix a créé une **garde de lisibilité**, donc un chemin bloquant de plus, qu'aucun témoin existant
+ne faisait mordre — elle serait née invisible. D'où un **troisième témoin** (`cadrage-sans-budget.md`)
+et une **quatrième étape** de porte. C'est la leçon de la session 4 appliquée **avant** la revue.
+
+### Revue — verdict `NEEDS WORK`, huit réserves
+
+**R1 est le fait marquant, et elle porte sur ce que le correctif prétend garantir.** Reproduite avant
+d'être acceptée : **correctif CSS annulé à 100 %, la porte reste verte** et continue d'annoncer
+« 254 px disponibles » quand la place réelle est retombée à 158. Le budget est un **contrat déclaré,
+jamais un fait mesuré** — le contrôle 8 ferme la cause *aggravante* (un contenu qui s'allonge) et pas
+la cause *dominante* C1 (un rembourrage qui régresse).
+
+Traitée en documentation, le durcissement relevant d'un `/ship` : **dette D-7** créée, §9 complété, et
+la formule « le script ne peut donc pas les contredire » — qui se lisait comme une garantie —
+remplacée. L'impossibilité de contredire est précisément ce qui rend le nombre invérifiable.
+
+**R4** a rappelé qu'une décision doit être appliquée entièrement : en mettant le §6 à jour, j'avais
+laissé **D-2 annoncer « deux règles » alors que j'en ajoutais une troisième**. R2, R5, R6 et R7
+soldées ; **R8** portée au chef de projet, le fichier visé étant du Tech Lead.
+
+### Filet de tests
+
+| | |
+|---|---|
+| Porte sur `main` après fusion | **verte**, code 0 |
+| Étapes | **4** — trois témoins éprouvés avant le site |
+| Contrôles bloquants | **8** |
+| Chemins bloquants / assertions | **11 / 11**, toutes prouvées vivantes |
+| Épreuves en bac à sable | 5 (E5, E6, R0 de la revue, R5, mutation A) |
+| Mesures i18n | inchangées — 342 suites, 188 couvertes, 104 termes |
+
+### Validation humaine — faite, et elle a rapporté
+
+Le chef de projet a validé à 320 px, dans les deux langues, captures à l'appui. **La pastille repliée
+tient** : adresse sur une ligne, bouton en dessous, dans la carte. **Les cartes de compétences
+tiennent.** Hero et Expérience sans débordement.
+
+### ⚠️ Le cas B n'est plus une prédiction — constaté le 9 août 2026
+
+Le diagnostic avait relevé trois constructions de la même famille : le cas **A** (grille de
+compétences, certain — **corrigé ici**), le cas **B** (`nav ul`, **prédit sans être constaté**) et le
+cas **C** (cas limites, sans conclusion). Le rapport insistait : *« il mérite une vérification humaine,
+pas une correction sur ma parole »*, et le prompt a suivi cette prudence en le mettant hors périmètre.
+
+**La validation visuelle l'a constaté.** À 320 px, **en français**, le lien `Contact` de la barre de
+navigation est **coupé** : la barre affiche `Compétences Expérience Projets Conta…`. En **anglais**,
+`Skills Experience Projects Contact` passe sans problème — les libellés y sont plus courts.
+
+Deux choses que le modèle n'avait pas su dire, et que l'œil a données : le défaut est **réel**, et il
+est **propre à la version française**.
+
+- **Cause** : `nav ul { display:flex; gap:1.5rem }` **sans `flex-wrap`**, quatre libellés insécables.
+  La règle `max-width:600px` resserre les rembourrages de `nav` mais ne touche **ni** l'espacement
+  **ni** la taille des liens.
+- **Non régressif** : vérifié, cet incrément ne touche aucune règle de `nav` — la seule occurrence du
+  mot dans son différentiel est un commentaire. Le défaut est **antérieur**.
+- **Hors mandat, à dessein** : le prompt disait « n'y touche pas », ce bloc étant refondu par **E-2**.
+- **À traiter dans E-2**, qui pose précisément un menu de débordement — le cas B est l'argument le plus
+  concret en faveur de cet incrément, et il vaut désormais **constat**, plus prédiction.
+
+### Reste non observé
+
+L'état transitoire « Copié ! » / « Copied! » (deux secondes), la **traversée du seuil à 600 px** dans
+les deux sens, et le **contraste de rembourrage avec le Hero** — qui conserve 32 px sous spécificité
+d'identifiant quand les sections passent à 16. Aucun n'est inquiétant ; aucun n'est validé.
+
+### Leçon
+
+**Aucune enregistrée.** L'incrément a *appliqué* la leçon de la session 4 (une assertion par chemin
+bloquant) plutôt que d'en produire une nouvelle : la garde du budget a reçu son témoin avant que la
+revue ne la réclame. Une candidate a été identifiée et laissée à l'arbitrage : *une porte qui compare
+un contenu à un nombre **déclaré** protège le contenu, jamais la mise en page dont ce nombre dérive —
+tant que la source du fait n'est pas lue, la garantie est une convention.* Elle est proche de la leçon
+globale du 2026-08-05 sur le vert muet, et mérite peut-être d'y être rattachée plutôt que de vivre
+seule. C'est aussi exactement ce que **D-7** décrit.

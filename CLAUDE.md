@@ -317,4 +317,4 @@ et la pastille en réclamait 290 au minimum.*
 
 ---
 
-*Version du projet : **0.3.0** · Cadrage rédigé le 8 août 2026 · Méthode v2.27.*
+*Version du projet : **0.3.1** · Cadrage rédigé le 8 août 2026 · Méthode v2.27.*
