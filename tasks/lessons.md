@@ -65,3 +65,66 @@ de la présente jumelle locale.
 > **Note de périmètre** : le gabarit du référentiel porte le même défaut aux deux endroits. Il n'a
 > **pas** été touché — décision du chef de projet du 8 août 2026 : il sera corrigé séparément, dans
 > son propre dépôt, par son propre rituel.
+
+---
+
+## 9 août 2026 — Une assertion posée sur un identifiant nu peut être satisfaite par un autre contrôle
+
+**Type** : Erreur
+
+**Contexte** : la porte `gate.sh` vérifie que le témoin défectueux échoue **en nommant** ses défauts,
+et non seulement par son code de retour. Une revue a montré que 4 des 6 contrôles pouvaient mourir en
+silence. Correction : une assertion par contrôle, chacune cherchant dans la sortie l'identifiant du
+défaut semé — `only_fr` pour la symétrie, `dup_key` pour le doublon, etc.
+
+**Erreur** : l'assertion `only_fr` était **vacueuse**. Contrôle de symétrie neutralisé en bac à
+sable, la porte est restée **verte**. Cause : `only_fr` est aussi le nom d'une **clé orpheline**, que
+le contrôle informatif annonce en `AVERTISSEMENT`. Le motif était satisfait par la sortie **d'un
+autre contrôle**, non bloquant de surcroît. L'assertion censée fermer le trou de R1 le rouvrait —
+même classe de défaut, dans sa propre correction.
+
+**Correction/Pattern** : **une assertion de vivacité porte le MESSAGE PROPRE du contrôle qu'elle
+prouve vivant, jamais un identifiant nu.** `presente en "fr" mais absente en "en" : only_fr`, pas
+`only_fr`. Un identifiant circule — il apparaît dans les avertissements, les journaux, les messages
+voisins. Une phrase d'erreur, elle, n'appartient qu'à un contrôle.
+
+Corollaire de méthode : **une assertion ne se relit pas, elle se prouve.** Chacune des six a été
+vérifiée en neutralisant son contrôle sur une copie hors dépôt (remplacement de `errors.push(` par
+`[].push(` — no-op valide qui simule un contrôle *mort*, et non un fichier cassé qui se trahirait
+par une exception). Sans cette épreuve, l'assertion vacueuse serait partie en production.
+
+**Applicable globalement ?** : **Oui** — tout harnais de test qui asserte sur une sortie textuelle
+(porte CI, contrôle de lint, test d'intégration lisant des journaux). Candidate à promotion.
+
+---
+
+## 9 août 2026 — Une garde qu'on n'a pas vue mordre sur son défaut n'est pas une garde, c'est une croyance
+
+**Type** : Erreur
+
+**Contexte** : R2 signalait un angle mort — un balisage déséquilibré **gonfle** la couverture et vide
+le contrôle en silence, là où les seuils de non-vacuité ne surveillent que le **manque**. La revue
+proposait une condition précise : en fin d'extraction, erreur si la pile de balises n'est pas vide.
+
+**Erreur** : la condition est plausible à la lecture, et **inopérante sur le scénario même qu'elle
+vise**. `</body>` puis `</html>` referment tout, y compris la balise laissée ouverte : à la fin, la
+pile **est** vide. Mesuré — un `<span data-i18n>` non fermé fait passer la page à **344 suites sur
+344 « couvertes »**, le contrôle est mort, et la porte reste **verte** avec la garde en place. La
+correction aurait été enregistrée, documentée, et parfaitement inutile.
+
+**Correction/Pattern** : **avant d'adopter une correction de garde, la faire échouer sur le défaut
+qu'elle prétend attraper.** Si elle ne rougit pas, elle ne corrige rien — quel que soit le sérieux de
+qui l'a proposée, et quelle que soit sa cohérence apparente.
+
+Deux compléments tirés du même incrément :
+
+1. **Chercher le bon point d'observation.** Ici, le déséquilibre n'est visible qu'à l'instant du
+   **dépilement multiple**, pas à la fin du parcours. Une garde placée au mauvais endroit peut être
+   juste dans sa formulation et aveugle dans les faits.
+2. **Mesurer les faux positifs AVANT de durcir.** Les trois cibles réelles comptaient 0 fermeture
+   implicite et 0 fermeture orpheline : le durcissement ne coûtait rien au vert légitime. Sans ce
+   relevé, on durcit à l'aveugle et on découvre la casse en production.
+
+**Applicable globalement ?** : **Oui** — vaut pour toute garde, tout garde-fou de sécurité, toute
+assertion défensive. Cousine directe de la leçon ci-dessus : l'une dit *prouve que ton assertion
+détecte*, l'autre *prouve que ta garde attrape*. Candidate à promotion.
