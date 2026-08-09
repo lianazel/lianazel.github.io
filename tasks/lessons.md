@@ -138,3 +138,51 @@ détecte*, l'autre *prouve que ta garde attrape*.
 seul, sous le titre « Une garde qu'on n'a pas vue mordre sur son défaut n'est pas une garde, c'est
 une croyance », avec l'empreinte `e092df8` de la présente jumelle locale. Geste porté par
 `prompts/v0.2/CHORE_promotion-lecons-globales_v1.md`.
+
+---
+
+## 9 août 2026 — Une assertion de vivacité se pose par chemin bloquant, pas par contrôle
+
+**Type** : Erreur (relevée en revue)
+
+**Contexte** : incrément « adresse de contact », 7ᵉ contrôle bloquant de `scripts/check-i18n.mjs`. Le
+contrôle compare les trois occurrences de l'adresse dans la page, et une **garde de non-vacuité**
+protège son extraction : chaque motif doit trouver exactement une occurrence, faute de quoi le
+contrôle s'exécuterait sur du vide. `gate.sh` porte, depuis la revue du 9 août, la règle écrite dans
+son propre commentaire : *tout nouveau contrôle bloquant ajoute ici son assertion, sinon il naîtra
+invisible.*
+
+**Erreur** : j'ai lu cette règle comme **une assertion par contrôle**, et j'en ai posé une — celle de
+la divergence, semée dans le témoin défectueux. Or ce contrôle a **deux** chemins bloquants : la
+comparaison, et la garde qui la rend possible. Le second n'était asserté nulle part.
+
+Mesuré, pas déduit. Garde neutralisée (`errors.push(` → `[].push(` sur ce seul site), la porte reste
+**verte**. Sur cette porte mutilée, j'ai composé la panne réelle : un remaniement anodin renomme la
+classe `email-text`, la constante de `copyEmail()` reste sur l'ancienne adresse. Résultat : la page
+affiche la nouvelle adresse, le bouton « Copier » place l'ancienne, **et la porte sort en code 0** —
+c'est-à-dire exactement le mode de panne que ce contrôle venait d'être écrit pour fermer.
+
+Aggravant : j'avais **documenté l'inverse** en décision de conception (« une seule branche, donc
+aucune ne peut mourir sans que l'assertion s'en aperçoive »). L'affirmation était fausse et donnait
+au lecteur une garantie qui n'existait pas.
+
+**Correction/Pattern** : **compter les chemins qui peuvent pousser une erreur, pas les contrôles.**
+Un contrôle qui protège son extraction par une garde en a au moins deux, et c'est **la garde** qui
+meurt en silence — parce qu'une condition du type « si l'extraction a abouti » fait taire tout le
+reste du contrôle sans rien signaler.
+
+Deux compléments du même incident :
+
+1. **La garde a besoin d'une cible où elle mord naturellement.** Ici, le témoin de cécité ne porte
+   aucune adresse : la garde y tire ses erreurs à chaque exécution, l'ancrage est stable et gratuit.
+   Chercher cette cible existante avant d'en fabriquer une.
+2. **Une décision de conception écrite est une affirmation, donc elle s'éprouve comme le code.** La
+   mienne a survécu à la spec, à l'implémentation et à mes propres tests parce que personne — moi le
+   premier — n'a essayé de la faire mentir.
+
+**Applicable globalement ?** : **Oui** — tout harnais de test dont un contrôle comporte une garde,
+un préalable ou une condition de sortie anticipée (porte CI, règle de lint avec échappatoire, test
+d'intégration qui saute quand une ressource manque). Raffinement direct de la leçon globale du
+9 août 2026 (« une assertion posée sur un identifiant nu peut être satisfaite par un autre
+contrôle ») : celle-ci disait *sur quoi* asseoir l'assertion, celle-là dit **combien** il en faut.
+Candidate à promotion — arbitrage du chef de projet.
