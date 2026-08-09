@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!-- TEMOIN DE CECITE — preuve que la garde de non-vacuite mord.
+     Ce fichier ne fait PAS partie du site.
+
+     Il est volontairement SAIN sur tous les autres controles : dictionnaire
+     complet, symetrique, sans doublon ; ancre de navigation valide ; aucun
+     texte visible non couvert. Sa seule anomalie est d'etre PRESQUE VIDE de
+     texte visible — c'est exactement l'etat que produirait une extraction
+     cassee sur le vrai site.
+
+     Attendu : "node scripts/check-i18n.mjs scripts/fixtures/blind.html"
+     (seuils par defaut, NON desarmes) doit echouer avec un message contenant
+     le mot AVEUGLE. S'il retourne 0, la garde de non-vacuite est morte : la
+     porte pourrait alors verdir sur une page dont elle ne lit plus rien.
+
+     Ce temoin garde ses seuils de production : le desarmer reviendrait a
+     supprimer ce qu'il prouve. -->
+<html lang="fr">
+<head><meta charset="UTF-8"><title data-i18n="blind_title">Temoin de cecite</title></head>
+<body>
+<nav>
+  <a href="#present" data-i18n="blind_nav">Section presente</a>
+</nav>
+
+<section id="present">
+  <h2 data-i18n="blind_h2">Titre correct</h2>
+</section>
+
+<script>
+const t = {
+  fr: {
+    blind_title:"Temoin de cecite", blind_nav:"Section presente",
+    blind_h2:"Titre correct", langBtn:"🇬🇧 English"
+  },
+  en: {
+    blind_title:"Blindness fixture", blind_nav:"Existing section",
+    blind_h2:"Correct title", langBtn:"🇫🇷 Francais"
+  }
+};
+</script>
+</body>
+</html>

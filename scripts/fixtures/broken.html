@@ -9,7 +9,17 @@
        2. cle "only_fr" declaree en fr, absente en en (asymetrie) ;
        3. cle "dup_key" declaree deux fois dans le bloc fr (doublon) ;
        4. ancre #nowhere sans element correspondant (ancre cassee) ;
-       5. un attribut data-i18n vide. -->
+       5. un attribut data-i18n vide ;
+       6. du texte visible non couvert par un attribut de traduction et absent
+          de la liste blanche (la phrase francaise de la section, et accessoire-
+          ment le titre et les liens de navigation de ce temoin).
+
+     Ce temoin est appele avec les seuils de non-vacuite DESARMES
+     (--min-runs=0 --min-covered=0) : il fait sept suites de texte, pas deux
+     cents. gate.sh verifie en retour qu'il echoue en NOMMANT ses defauts, et
+     jamais par cecite — sinon un plantage du controle passerait pour une
+     morsure. -->
+
 <html lang="fr">
 <head><meta charset="UTF-8"><title>Temoin defectueux</title></head>
 <body>
@@ -23,6 +33,7 @@
   <p data-i18n="orphan_key">Cle sans traduction</p>
   <p data-i18n="dup_key">Cle dupliquee</p>
   <p data-i18n="">Attribut vide</p>
+  <p>Cette phrase francaise n'est couverte par aucun attribut de traduction.</p>
 </section>
 
 <script>
