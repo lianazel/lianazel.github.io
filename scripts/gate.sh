@@ -40,18 +40,25 @@ esac
 # du 9 aout 2026, R1 — les quatre etats ont ete constates en bac a sable).
 # TOUT NOUVEAU CONTROLE BLOQUANT AJOUTE ICI SON ASSERTION, sinon il naitra
 # invisible.
+#
+# Le motif est le MESSAGE DU CONTROLE, jamais l'identifiant nu du defaut seme.
+# Raison mesuree, pas theorique : "only_fr" est aussi le nom d'une cle orpheline,
+# que le controle informatif annonce en AVERTISSEMENT. Assertion posee sur
+# "only_fr" seul, le controle de symetrie a ete tue en bac a sable et la porte
+# est restee VERTE — l'avertissement d'un autre controle satisfaisait le motif.
+# Un identifiant se repete ; une phrase d'erreur appartient a un seul controle.
 assert_names() { # <motif attendu dans la sortie> <controle qu'il prouve vivant>
   case "$out_broken" in
     *"$1"*) : ;;
-    *) fail "le temoin echoue sans nommer '$1' : controle $2 mort ?" ;;
+    *) fail "le temoin echoue sans le message du controle $2 (motif '$1') : controle mort ?" ;;
   esac
 }
-assert_names "orphan_key"           "de completude"
-assert_names "only_fr"              "de symetrie"
-assert_names "dup_key"              "de doublon"
-assert_names "nowhere"              "d'integrite des ancres"
-assert_names "data-i18n est vide"   "d'attribut vide"
-assert_names "phrase francaise"     "de couverture du texte visible"
+assert_names 'mais absente du bloc "fr" : orphan_key'      "de completude"
+assert_names 'presente en "fr" mais absente en "en" : only_fr' "de symetrie"
+assert_names 'Cle dupliquee dans le bloc "fr" : dup_key'   "de doublon"
+assert_names 'Ancre de navigation cassee : #nowhere'       "d'integrite des ancres"
+assert_names 'Un attribut data-i18n est vide.'             "d'attribut vide"
+assert_names 'Texte visible non traduit : "Cette"'         "de couverture du texte visible"
 echo "OK - le temoin echoue en nommant ses six defauts semes."
 echo ""
 

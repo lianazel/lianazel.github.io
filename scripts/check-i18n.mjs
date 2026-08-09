@@ -194,18 +194,29 @@ function words(text) {
 }
 
 function visibleRuns(source) {
+  // Ce qui est retire est remplace par des espaces, en CONSERVANT les sauts de
+  // ligne : la source depouillee garde ainsi la meme longueur et le meme
+  // decoupage en lignes que le fichier d'origine. Sans cela, ecraser le <style>
+  // et le <script> en une seule espace decalerait toute la numerotation, et les
+  // lignes citees dans les anomalies designeraient un autre endroit du fichier.
+  const blanchir = (m) => m.replace(/[^\n]/g, ' ');
   const src = source
-    .replace(/<!--[\s\S]*?-->/g, ' ')
-    .replace(/<!DOCTYPE[^>]*>/gi, ' ')
-    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, ' ')
-    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, ' ');
+    .replace(/<!--[\s\S]*?-->/g, blanchir)
+    .replace(/<!DOCTYPE[^>]*>/gi, blanchir)
+    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, blanchir)
+    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, blanchir);
 
   const stack = [];
-  let covered = 0; // nombre d'ancetres ouverts portant data-i18n
+  let covered = 0;      // nombre d'ancetres ouverts portant data-i18n
+  let anomaly = null;   // premiere anomalie de structure : on garde la PREMIERE,
+                        // les suivantes n'en sont le plus souvent que l'echo
   const runs = [];
   let last = 0;
   let match;
   TAG.lastIndex = 0;
+  // Numero de ligne pour situer l'anomalie : « quelque part dans le fichier »
+  // n'est pas un diagnostic reparable.
+  const lineOf = (index) => src.slice(0, index).split('\n').length;
   const push = (text) => {
     const clean = decode(text).trim();
     if (clean) runs.push({ text: clean, covered: covered > 0 });
@@ -216,11 +227,21 @@ function visibleRuns(source) {
     const [, closing, rawName, attrs] = match;
     const name = rawName.toLowerCase();
     if (closing) {
+      let opened = -1;
       for (let i = stack.length - 1; i >= 0; i--) {
-        if (stack[i].name !== name) continue;
-        for (let k = stack.length - 1; k >= i; k--) if (stack[k].i18n) covered--;
-        stack.length = i;
-        break;
+        if (stack[i].name === name) { opened = i; break; }
+      }
+      if (opened === -1) {
+        if (!anomaly) anomaly = `fermeture orpheline </${name}> ligne ${lineOf(match.index)}`;
+      } else {
+        // Depiler plus d'un element = les elements au-dessus n'ont jamais ete
+        // fermes explicitement. C'est ICI que le desequilibre se voit, et nulle
+        // part ailleurs : la fermeture d'un ancetre les emporte tous.
+        if (opened !== stack.length - 1 && !anomaly) {
+          anomaly = `<${stack[stack.length - 1].name}> jamais ferme, emporte par </${name}> ligne ${lineOf(match.index)}`;
+        }
+        for (let k = stack.length - 1; k >= opened; k--) if (stack[k].i18n) covered--;
+        stack.length = opened;
       }
     } else if (!VOID.has(name) && !/\/\s*$/.test(attrs)) {
       const i18n = /\sdata-i18n\s*=/.test(attrs);
@@ -229,12 +250,27 @@ function visibleRuns(source) {
     }
   }
   push(src.slice(last));
-  // Balisage desequilibre = sur-couverture SILENCIEUSE. Une balise non fermee
-  // laisse son data-i18n ouvert : tout le texte qui suit est compte couvert, et
-  // le controle 5 se vide sans que les seuils de non-vacuite bronchent (ils ne
-  // surveillent que le manque, jamais l'exces). Un <p> implicitement ferme est
-  // du HTML5 valide, que le navigateur ferme et que cette pile ne ferme pas.
-  return { runs, balanced: stack.length === 0 && covered === 0 };
+  // Assertion STRUCTURELLE : l'extraction n'est fiable que si le balisage est
+  // equilibre. Balisage desequilibre = sur-couverture SILENCIEUSE. Une balise
+  // non fermee laisse son data-i18n ouvert : tout le texte qui suit est compte
+  // couvert, et le controle 5 se vide sans que les seuils de non-vacuite
+  // bronchent (ils ne surveillent que le manque, jamais l'exces). Un <p>
+  // implicitement ferme est du HTML5 valide, que le navigateur ferme et que
+  // cette pile ne ferme pas.
+  //
+  // Pourquoi la pile vide en fin de parcours ne SUFFIT PAS — mesure, pas
+  // theorie : un <span data-i18n> jamais ferme injecte apres <body> fait passer
+  // index.html a 344 suites sur 344 « couvertes », et la porte reste VERTE,
+  // parce que </body> puis </html> referment tout. La pile est vide a la fin,
+  // et `covered` retombe a zero avec elle — les deux moities de la condition
+  // sont satisfaites alors que le controle 5 est mort. Le desequilibre ne se
+  // voit qu'a l'instant du depilement multiple, d'ou l'anomalie relevee dans la
+  // boucle. La pile vide reste asserte : elle attrape le cas ou meme </html>
+  // manque.
+  if (!anomaly && stack.length !== 0) {
+    anomaly = `pile non vide en fin de parcours : ${stack.map((e) => `<${e.name}>`).join(', ')}`;
+  }
+  return { runs, anomaly };
 }
 
 const extraction = visibleRuns(html);
@@ -259,8 +295,8 @@ if (!allowLoaded || allow.size === 0) {
 // Le versant OPPOSE des deux seuils : eux gardent contre le manque, celui-ci
 // garde contre l'exces. Sans lui, un balisage desequilibre gonfle la couverture
 // et vide le controle 5 en restant vert.
-if (!extraction.balanced) {
-  errors.push(`${BLIND} : balisage desequilibre (balise non fermee ou fermeture orpheline), la couverture est surestimee.`);
+if (extraction.anomaly) {
+  errors.push(`${BLIND} : extraction non fiable — ${extraction.anomaly}. La couverture est surestimee, le controle 5 ne prouve plus rien.`);
 }
 
 // --- 10. Controle 5 : couverture de traduction du texte visible --------------
