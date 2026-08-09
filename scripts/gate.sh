@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 # Porte de qualite du portfolio — filet de tests appele par /ship et /land.
-# Trois controles, dans cet ordre :
+# Quatre controles, dans cet ordre :
 #   1. le temoin defectueux DOIT echouer, en NOMMANT ses defauts semes ;
 #   2. le temoin de cecite DOIT echouer, en NOMMANT la cecite ;
-#   3. le site reel DOIT passer.
+#   3. le temoin de cadrage muet DOIT echouer, en NOMMANT le budget manquant ;
+#   4. le site reel DOIT passer.
 # Un filet qui passe sur un temoin est en panne, pas en bonne sante.
 #
 # Pourquoi les controles 1 et 2 lisent la SORTIE et pas seulement le code de
@@ -22,7 +23,7 @@ fail() {
   exit 1
 }
 
-echo "--- 1/3 · Preuve de morsure (le temoin defectueux doit echouer) ---"
+echo "--- 1/4 · Preuve de morsure (le temoin defectueux doit echouer) ---"
 # Seuils de non-vacuite desarmes : ce temoin fait dix suites de texte, pas deux
 # cents. On ne deforme pas le temoin pour qu'il franchisse la garde ; on retire
 # la garde de SON perimetre, et le controle 2 la prouve ailleurs.
@@ -32,7 +33,18 @@ code_broken=$?
 case "$out_broken" in
   *AVEUGLE*) fail "le temoin defectueux echoue par CECITE, pas sur ses defauts semes." ;;
 esac
-# Assertions POSITIVES : UNE PAR CONTROLE BLOQUANT, sept en tout. Leur absence
+# Symetrique de la garde ci-dessus, pour le budget. Sans elle, un §9 malforme
+# (une espace dans `254 px`) ou desserre au-dela de 358 px fait cesser de mordre
+# le defaut n° 8 — et l'echec se lirait « controle mort », accusation fausse qui
+# envoie le mainteneur chercher au mauvais endroit. Un diagnostic errone coute
+# plus cher qu'une absence de diagnostic.
+case "$out_broken" in
+  *"Budget de largeur introuvable dans le cadrage"*)
+    fail "le temoin defectueux echoue parce que le budget du CLAUDE.md §9 est illisible, pas sur ses defauts semes." ;;
+esac
+# Assertions POSITIVES : UNE PAR CHEMIN BLOQUANT, huit DANS CE BLOC — onze au
+# total sur la porte, les trois autres etant les gardes de non-vacuite assertees
+# en 2/4 (cecite, adresse) et en 3/4 (budget). Leur absence
 # signale un controle mort, la ou l'absence de "AVEUGLE" ne signalerait rien.
 #
 # Le compte est ce qui fait la valeur de ce bloc : avec deux assertions sur six
@@ -62,10 +74,11 @@ assert_names 'Texte visible non traduit : "Cette"'         "de couverture du tex
 # Motif = la phrase du controle, jamais une adresse : une adresse circule dans
 # la liste blanche, dans la ligne de rapport et dans les messages voisins.
 assert_names 'Adresse de contact incoherente entre les trois occurrences' "de coherence de l'adresse de contact"
-echo "OK - le temoin echoue en nommant ses sept defauts semes."
+assert_names 'Adresse trop large pour le budget de la carte de contact' "de budget de largeur"
+echo "OK - le temoin echoue en nommant ses huit defauts semes."
 echo ""
 
-echo "--- 2/3 · Garde de non-vacuite (le temoin de cecite doit echouer) ---"
+echo "--- 2/4 · Garde de non-vacuite (le temoin de cecite doit echouer) ---"
 # Seuils de PRODUCTION, volontairement : c'est ce que ce temoin prouve.
 out_blind="$(node scripts/check-i18n.mjs scripts/fixtures/blind.html 2>&1)"
 code_blind=$?
@@ -74,7 +87,7 @@ case "$out_blind" in
   *AVEUGLE*) : ;;
   *) fail "le temoin de cecite echoue, mais pas pour cecite : la preuve ne vaut rien." ;;
 esac
-# Le controle 7 a DEUX chemins bloquants : la divergence, assertee en 1/3 sur le
+# Le controle 7 a DEUX chemins bloquants : la divergence, assertee en 1/4 sur le
 # temoin defectueux, et cette garde de non-vacuite — qui n'a aucun temoin la ou
 # la divergence en a un. blind.html ne porte aucune adresse de contact : la
 # garde y tire ses trois erreurs a chaque execution, l'ancrage est stable.
@@ -90,7 +103,25 @@ esac
 echo "OK - la garde nomme la cecite, et celle du controle 7 est vivante."
 echo ""
 
-echo "--- 3/3 · Site reel (doit passer) ---"
+echo "--- 3/4 · Garde de cadrage (le budget de largeur doit etre lisible) ---"
+# Le controle 8 lit son budget dans CLAUDE.md, seule source du nombre. Une
+# lecture qui echoue le rendrait MUET : il se tairait sur un cadrage ampute
+# pendant qu'une adresse trop large passerait. Cette garde n'a aucune cible ou
+# mordre naturellement — les trois autres cibles lisent toutes le vrai cadrage.
+# On lui en donne donc une : un cadrage volontairement depourvu du jeton.
+# Sans ce temoin, la garde naitrait invisible (lecon du 9 aout 2026 : une
+# assertion par CHEMIN bloquant, et la garde est un chemin a part entiere).
+out_cadrage="$(node scripts/check-i18n.mjs index.html --cadrage=scripts/fixtures/cadrage-sans-budget.md 2>&1)"
+code_cadrage=$?
+[ "$code_cadrage" -ne 0 ] || fail "la garde du budget ne mord plus : un cadrage sans budget passerait pour vert."
+case "$out_cadrage" in
+  *'Budget de largeur introuvable dans le cadrage'*) : ;;
+  *) fail "le temoin de cadrage echoue, mais pas sur le budget manquant : la preuve ne vaut rien." ;;
+esac
+echo "OK - la garde nomme le budget manquant."
+echo ""
+
+echo "--- 4/4 · Site reel (doit passer) ---"
 # Pas d'assertion de sortie ici : la garde de non-vacuite est armee sur cette
 # cible, c'est elle qui interdit un vert obtenu sur une extraction morte.
 node scripts/check-i18n.mjs index.html
