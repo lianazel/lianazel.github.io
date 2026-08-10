@@ -249,6 +249,7 @@ comme règles produirait des alertes sur du code parfaitement sain.
 | **D-9** | **La garde du budget exige deux valeurs et en consomme trois.** Depuis l'ajout de la largeur du panneau au §9, `check-i18n.mjs` lit trois nombres mais ne garde que les deux premiers. | **Mauvais diagnostic**, pas trou de couverture : le §9 amputé de sa troisième valeur laisse le contrôle 9 **muet** en appel direct, et fait rougir la porte sur *« contrôle mort ? »* — le mainteneur cherche un contrôle mort là où la cause est un cadrage amputé. C'est exactement ce que la garde du bloc 1/4 avait été écrite pour éviter sur le contrôle 8. | Porter la garde à `values.length < 3` et son message à « trois attendues ». Une ligne. |
 | **D-10** | **Le filet compte 21 sites d'erreur pour 13 assertions.** Les neuf contrôles et les quatre gardes sont assertés ; les autres chemins ne le sont pas. **Six ont été vus mourir porte verte** le 9 août 2026 : anomalie de balisage, liste blanche absente, entrée de liste blanche sans motif, liste blanche illisible, seuil de suites couvertes, et **la symétrie EN→FR** — clé retirée du bloc français, porte restée verte. État **antérieur** aux incréments du 9 août, qui ne l'ont pas aggravé. | Une partie du filet ne prouve pas sa vivacité. La famille `AVEUGLE` est assertée sur un **marqueur partagé**, satisfait par n'importe lequel de ses quatre membres — le défaut que le projet documente par ailleurs, jamais appliqué à cette famille. | Asseoir chaque chemin sur son **message propre**, et semer l'asymétrie dans **les deux sens** dans le témoin défectueux. Incrément dédié : le correctif est mécanique mais touche la porte entière. |
 | **D-11** | **Deux points mineurs relevés en revue le 9 août 2026.** (a) `ResizeObserver` observe `nav`, l'élément que son propre rappel redimensionne : pas de divergence — `layoutNav` est idempotente et sa sortie ne dépend que de la largeur — mais une notification supplémentaire par franchissement de seuil, et vraisemblablement un `ResizeObserver loop completed with undelivered notifications` en console. (b) **Sans JavaScript à 320 px, les liens sont ROGNÉS, pas débordés** : `#nav-links{overflow:hidden}` est inconditionnel. | (a) bruit de console, aucun effet fonctionnel. (b) l'état sans JavaScript n'est pas pire qu'avant l'incrément — c'est exactement l'état d'avant — mais il n'est pas « propre » : le menu est le seul remède, et il exige le programme. | (a) **La cause est éteinte depuis le 10 août 2026** : le panneau étant sorti du flux (`position:absolute`), la barre ne change plus de hauteur à l'ouverture — **mesuré, elle reste à 65 px** là où elle passait à 200. L'observateur ne reçoit donc plus la notification qu'il se déclenchait à lui-même. Reste le cas du franchissement de seuil, où la hauteur change réellement : ne réagir qu'au changement de **largeur**, deux lignes. (b) rien à corriger : à énoncer justement, ce que fait la présente ligne. |
+| **D-12** | **La barre occupe deux rangées de 602 px à 900 px au moins.** **Mesuré deux fois** le 10 août 2026, indépendamment, dans les deux langues : **114 px de haut contre 65**. Au-dessus du seuil, l'identité riche revient (449 px) et le droit de passer à la ligne avec elle ; une rangée complète exigerait **983 px** de fenêtre. | **C'est le défaut visible qui reste après le correctif du 10 août**, et il touche tablettes, fenêtres de bureau réduites et écrans partagés. **Préexistant** — il ne vient pas de ce correctif, qui n'a fait que le rendre net en soldant le régime téléphone. **E-2b l'aggravera** : la section « À propos » ajoutera des entrées, donc de la largeur. | Trois voies, à instruire : dégraisser l'identité riche (le détail de localisation coûte à lui seul ~293 px) · étendre le régime compact au-delà de 601 px · ou assumer les deux rangées et l'écrire comme un choix. **Hors mandat du correctif du 10 août** ; à trancher **avant E-2b**, pas après. |
 
 ---
 
@@ -326,22 +327,51 @@ liens portent un intitulé explicite. Le contraste du thème sombre n'a **pas** 
 > 10 août 2026, prise avec la variante V1 de la barre. En dessous, la barre reste fonctionnelle mais
 > l'identité est réduite à son strict nécessaire.
 >
-> **Mesuré à 320 px après correctif**, dans les deux langues **et dans les deux états du menu** :
-> une rangée, aucun débordement, bouton de langue **entier**, panneau **pleine largeur sous la barre**.
-> Le socle y occupe 313 px pour 320 disponibles — **7 px de marge**.
+> **À 320 px, sous le plancher, le comportement dépend de la police — et il faut les deux bornes.**
+> Une seule d'entre elles serait un mensonge partout ailleurs que sur le poste qui l'a mesurée.
 >
-> **Y compris sur pointeur grossier**, ce que la première mesure avait manqué : la règle
-> `(hover:none) and (pointer:coarse)` porte le rembourrage du bouton à trois barres de `.45rem` à
-> `.7rem`. Mesuré en forçant cette règle à 320 px : le bouton passe de 38 à **42 px** — et non 46, car
-> il se comprime — **sans rognage ni débordement**, en français comme en anglais. La cible tactile est
-> donc **réduite de 4 px** par rapport à l'intention ; c'est le seul effet, et il est écrit ici.
+> | Police effectivement résolue | Socle | Bouton de langue | Mesuré par |
+> |---|---|---|---|
+> | **`Segoe UI`** (poste Windows, ou WSL2 exposant les polices Windows) | 313 px pour 320 | entier, **7 px de marge** | Claude Code, 10 août 2026 |
+> | **Police de repli** — donc **tout téléphone réel** | > 320 | **débordement de 5 px**, dans les deux langues | Tech Lead, 10 août 2026 |
 >
-> Il n'y a donc **aucune dégradation** sous le plancher. C'est un fait mesuré, pas une garantie : sept
-> pixels ne survivraient pas à un libellé d'identité plus long.
+> **Sur un téléphone à 320 px, le bouton de langue déborde donc de 5 px.** C'est une dégradation
+> **datée et bornée**, sous le plancher de 360 px où elle est assumée — pas un défaut tu. Au-dessus du
+> plancher, aucune des deux bornes ne déborde.
 >
-> **Police effectivement résolue lors de ces mesures : `Segoe UI`** — vérifié par mesure différentielle
-> (155,83 px contre 161,73 pour le repli générique et 182,36 pour DejaVu Sans). La dette **D-5** exige
-> cette preuve avant toute mesure de mise en page faite hors Windows ; elle est acquittée ici.
+> **Sur pointeur grossier**, la règle `(hover:none) and (pointer:coarse)` porte le rembourrage du bouton
+> à trois barres de `.45rem` à `.7rem` : mesuré, il passe de 38 à **42 px** — et non 46, car il se
+> comprime. Aucun rognage supplémentaire, mais la **cible tactile est réduite de 4 px** par rapport à
+> l'intention de la règle.
+>
+> **Preuve de police (dette D-5)** : mesure différentielle sur « CHERID Jean-Christophe » à `.82rem` —
+> `Segoe UI` 155,83 px · repli générique 161,73 px · DejaVu Sans 182,36 px. Les trois diffèrent, donc
+> `Segoe UI` **était bien résolue** lors de la mesure de la première borne. La dette exige cette preuve
+> avant toute mesure de mise en page faite hors Windows.
+
+### Les six états de la barre — l'énumération qui rend la prochaine campagne falsifiable
+
+Une mesure de rendu ne vaut que par ce qu'elle **dit ne pas avoir couvert**. La barre est un composant
+à états : voici les siens, sur trois axes, soit **huit combinaisons**.
+
+| Axe | États |
+|---|---|
+| **Menu** | fermé · **ouvert** |
+| **Langue** | français · anglais |
+| **Pointeur** | fin (survol disponible) · **grossier** (tactile) |
+
+**Deux conditions supplémentaires** ne se combinent pas comme les autres et s'énumèrent à part :
+**avec / sans JavaScript** (sans lui, le menu n'existe pas et les liens sont rognés), et le **régime**
+(téléphone ≤ 601 px · riche ≥ 602 px).
+
+**Ce que la campagne du 10 août a réellement couvert** : les huit combinaisons des trois axes, à 320,
+375, 430 et 601 px. **Ce qu'elle n'a pas couvert** : le comportement sans JavaScript, le clavier
+(ouverture, `Échap`, retour du focus), et Safari iOS — toutes les mesures viennent d'un moteur Chromium.
+
+> **La règle qui en découle** : un composant à états ne se mesure jamais dans un seul de ses états, et
+> l'artefact de mesure **énumère les cases non couvertes** au lieu de déclarer « inchangé ». Le
+> 10 août 2026, une campagne de 14 largeurs × 2 langues a manqué un défaut majeur parce qu'elle
+> n'avait couvert **qu'un seul état du menu** — celui qui n'était pas cassé.
 >
 > ⚠️ **Les deux budgets ci-dessous restent calculés à 320 px, et c'est délibéré.** Ils deviennent une
 > **marge** : leur dérivation reste vraie, aucun nombre écrit ne devient faux, et le contrôle 9 reste
