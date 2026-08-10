@@ -320,3 +320,123 @@ un contenu à un nombre **déclaré** protège le contenu, jamais la mise en pag
 tant que la source du fait n'est pas lue, la garantie est une convention.* Elle est proche de la leçon
 globale du 2026-08-05 sur le vert muet, et mérite peut-être d'y être rattachée plutôt que de vivre
 seule. C'est aussi exactement ce que **D-7** décrit.
+
+---
+
+## 9-10 août 2026 — Menu de débordement de la barre de navigation (session 6, E-2a)
+
+| | |
+|---|---|
+| **Type** | EVOL (produit + outillage) |
+| **Branche** | `feat/menu-debordement` — 2 enregistrements, à dessein séparés |
+| **Fusion** | **`0cd0f18`** (`--no-ff`) — 14 fichiers, +1221 / −50 |
+| **Prompt pilote** | `prompts/v0.3/EVOL_menu-debordement_v3.md` (v1 et v2 périmées, bandeau à l'appui) |
+| **Version** | **0.3.1 → 0.4.0** (minor : `feat/*`, le produit change réellement) |
+| **Feuille de route** | solde **E-2a** ; seconde tranche de **D-2** |
+
+### Le défaut, et ce que la capture a ajouté au modèle
+
+Le diagnostic du 9 août avait **prédit** un débordement de `nav ul` sans le constater — cas B — et
+avait eu la prudence de le dire : *« il mérite une vérification humaine, pas une correction sur ma
+parole »*. La capture du chef de projet l'a fait passer à **constaté**, et a livré ce que le modèle
+n'avait pas su donner : **le défaut est propre au français**. `Compétences Expérience Projets Conta…`
+en français, la barre passe en anglais — les libellés y sont plus courts.
+
+### Ce que l'incrément pose
+
+**Un menu de débordement par place réelle**, jamais par nombre fixe d'entrées : un seuil du type
+« sous 600 px on masque trois entrées » deviendrait faux au premier libellé ajouté ou traduit.
+L'ordre de priorité **fait foi au §9 du cadrage**, le balisage le porte, le programme ne le
+redéclare pas — Projets part en dernier, Contact en premier, déjà redondant.
+
+**Le patron `UX_METHOD` §3.7 appliqué tel quel** : un seul booléen, dont `renderMenu()` dérive l'icône
+*et* l'état d'accessibilité ; `menuAria()` en fonction pure ; deux tracés SVG incorporés ; `Échap` qui
+referme et rend le focus ; panneau en flux sans JavaScript.
+
+**Le piège du bouton de langue, fermé avant qu'il ne morde.** Son libellé était piloté **deux fois** —
+attribut de traduction et écriture directe. Idempotent tant que les deux disaient la même chose, et
+faux dès que ce libellé varie : ce que cet incrément fait justement. L'écriture directe a disparu.
+Le bouton **ne disparaît jamais, il rétrécit** — la langue n'est pas un réglage, c'est la condition
+pour lire quoi que ce soit, et cette raison est désormais écrite au cadrage.
+
+**Seconde tranche de D-2** : la règle d'adaptation de la barre est passée en largeur minimale. Il ne
+reste que la grille de projets.
+
+### Un invariant corrigé avant d'être implémenté
+
+Le §2.5 de la v2 exigeait que **la somme** des libellés tienne dans la place disponible. C'est
+l'invariant d'**avant** le menu : une fois le débordement en place, les entrées qui ne tiennent pas
+quittent la barre. Mesuré avant d'écrire une ligne — **374 px en français, 340 en anglais, pour 288
+disponibles** : le contrôle aurait été **rouge dans les deux langues sur du code correct**, et rouge
+encore après le correctif, puisque celui-ci ne raccourcit pas les libellés, il les déplace.
+
+Le rédacteur a corrigé en v3 : l'invariant devient **« le libellé le plus long tient dans le panneau »**.
+C'est la **seconde fois dans la même journée** qu'une garde était spécifiée contre une propriété que le
+changement ordonné rendait caduque — la première fut la pastille autorisée à se replier. Le motif est
+identique, et il est noté.
+
+### Filet de tests
+
+| | |
+|---|---|
+| Porte sur `main` après fusion | **verte**, code 0 |
+| Contrôles bloquants | **9** · gardes de non-vacuité : **4** · assertions : **13** |
+| Épreuves de vivacité | E8 (mesure) et E9 (garde) — toutes deux vues mordre |
+| Témoins | 3, `blind.html` **non touché** : c'est son absence d'entrées qui rend la garde prouvable |
+
+### Revue — `NEEDS WORK` de l'agent, `SHIP` du Tech Lead sous trois conditions
+
+L'agent a rendu douze réserves ; le Tech Lead a tranché **SHIP** après avoir revérifié E8/E9 de façon
+indépendante. Trois conditions, toutes tenues : **commit séparé** pour le champ `Statut` des prompts —
+chantier distinct, différentiel lisible —, et **inscription au cadrage de deux constats mesurés**.
+
+**D-8, et elle est bloquante pour E-2b.** Reproduite avant d'être acceptée : une entrée ajoutée **sans**
+`data-nav-priority` sort de la mesure — **380 px exigés pour 281 déclarés, porte verte, code 0** — et
+met un `NaN` dans le tri, que la comparaison traite comme « égal ». L'ordre de retrait redevient celui
+du document : **Projets quitterait la barre avant Contact**, l'inverse exact du tableau du §9. Un seul
+attribut oublié éteint la garde *et* inverse la priorité. Or E-2b consiste précisément à ajouter des
+entrées de navigation.
+
+**D-9** — la lecture du budget exige deux valeurs et en consomme trois : un §9 amputé fait rougir la
+porte sur « contrôle mort ? », mauvais diagnostic. **D-11** — l'observateur surveille l'élément que son
+rappel redimensionne, et **sans JavaScript à 320 px les liens sont rognés, pas débordés** : ma
+formulation « inoffensif » était optimiste.
+
+**D-10, ajoutée sur autorisation du chef de projet, et elle corrige une phrase de moi.** J'avais écrit
+« 13 chemins bloquants, 13 assertions ». Mesuré : **21 sites d'erreur pour 13 assertions**, et **six
+chemins vus mourir porte verte** — dont la symétrie EN→FR, clé retirée du bloc français, porte restée
+verte. L'état **précède** cet incrément et n'a pas été aggravé par lui ; mais l'énoncé faux, lui, était
+dans la source de vérité.
+
+**Un chiffre également corrigé** : le §9 annonçait 288 px de panneau en affirmant qu'il n'ajoutait aucun
+rembourrage latéral. Faux de 6,4 px — `.nav-panel a` porte `padding:.7rem .2rem`. Budget porté à
+**281 px**, longueur admissible de 33 à 32 caractères. Sans effet sur le verdict, mais D-7 enseigne
+précisément qu'un nombre déclaré doit être vrai.
+
+### Leçon
+
+**Aucune enregistrée.** L'incrément a surtout *appliqué* les leçons des sessions précédentes — une
+assertion par chemin bloquant, la garde qui reçoit son témoin avant que la revue ne la réclame, la
+spécification confrontée à la mesure avant l'implémentation.
+
+Une candidate est laissée à l'arbitrage : *une garde qui découvre son périmètre par un attribut du
+balisage ne garde que ce que cet attribut désigne — l'oubli de l'attribut est alors indistinguable de
+l'absence de défaut, et la garde s'éteint dans le geste même qu'elle devait surveiller.* C'est D-8
+énoncée en règle, et elle est proche de la leçon globale du 9 août sur les chemins bloquants.
+
+### Validation humaine due avant publication
+
+Rien de ce qui suit n'est prouvé — c'est l'incrément le plus exposé au défaut visuel de la feuille de
+route, et `VISION_METHOD` n'est toujours pas instancié (**D-1**) :
+
+- **ouverture et fermeture du menu** à 320, 360 et 375 px, **dans les deux langues** ;
+- **franchissement du seuil dans les deux sens**, moment où les entrées entrent et sortent de la barre ;
+- **bouton de langue rétréci**, et **bascule effectuée depuis lui** — le chemin le plus profondément
+  modifié : trois `<span>` au lieu d'un texte, et l'écriture directe supprimée ;
+- **cible tactile** du bouton à trois barres — un doigt fait environ 45 px ;
+- **clavier** : ouverture, `Échap`, retour du focus au bouton ;
+- **ordre d'effacement** : Contact d'abord, Projets en dernier.
+
+**Signalé plutôt que tu** : la transition du panneau ne joue pas à l'apparition, le passage par
+`display` ne s'animant pas. L'ouverture est sèche. Aucune propriété de mise en page n'est animée, comme
+le §3.6 l'exige, mais l'effet est plus abrupt que ce que « animation » laisse attendre.
