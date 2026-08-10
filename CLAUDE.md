@@ -238,8 +238,8 @@ comme règles produirait des alertes sur du code parfaitement sain.
 
 | # | Déviation | Impact | Plan de remboursement |
 |---|---|---|---|
-| **D-1** | **Aucune barrière sur le rendu.** Rien ne détecte un débordement ou une mise en page cassée avant publication. | Un défaut visuel peut atteindre la production sans être vu. | Poser une barrière de rendu (satellite `VISION_METHOD`, palier local). **Décision reportée par le chef de projet le 8 août 2026** — à reprendre. |
-| **D-2** | **Conception grand écran d'abord — remboursement aux trois quarts.** Il ne reste **qu'une** règle en largeur **maximale** : `max-width:700px` sur la grille de projets. Les rembourrages de `section` et `.contact-card` (9 août) puis toute la **barre de navigation** (9 août, incrément E-2a) sont passés en `min-width`. | Aucun défaut visible constaté ; écart de méthode sur la seule règle restante. | **Deux tranches remboursées le 9 août 2026.** Reste la grille de projets, à inverser au prochain toucher de ce bloc — elle n'a été touchée par aucun des deux incréments, et on ne rembourse pas en bloc. |
+| **D-1** | **Aucune barrière sur le rendu.** Rien dans le dépôt ne détecte un débordement ou une mise en page cassée avant publication. Le satellite `VISION_METHOD` **existe** (v1.2, `TWAIM_R&D/VISION_METHOD/`) : il n'est pas absent, il n'est **pas instancié ici**. | Un défaut visuel peut atteindre la production sans être vu — **et c'est arrivé**. **Incident daté du 10 août 2026** : l'incrément E-2a a livré un menu de débordement qui ne s'armait à **aucune largeur de téléphone réel**, parce que la barre passant à la ligne, le signal `scrollWidth > clientWidth` ne pouvait rien voir de 360 à 601 px. Porte verte, revue passée, défaut visible en production sur un iPhone 14 Pro Max, dans les deux langues. La porte ne voit aucun pixel : elle ne pouvait pas l'attraper. | Instancier la porte **structurelle** de `VISION_METHOD` (géométrie, débordement, plusieurs largeurs, deux langues). Elle exige un navigateur piloté et une configuration : l'invariant de sécurité n° 1 en fait une **décision du chef de projet**, non prise à ce jour. En attendant, la mesure se fait **hors dépôt**, à la main — c'est une béquille, pas une barrière. |
+| **D-2** | **Conception grand écran d'abord — il ne reste qu'une règle.** `max-width:700px` sur la grille de projets, et rien d'autre. Les rembourrages de `section` et `.contact-card` (9 août), puis la **barre de navigation** en deux passes (9 août E-2a, 10 août correctif V1), sont tous en `min-width`. **Aucune règle en `max-width` n'a été ajoutée depuis le 8 août.** | Aucun défaut visible ; écart de méthode sur la seule règle restante. | **Non soldée, mais à une règle près.** Reste la grille de projets, à inverser au prochain toucher de ce bloc. *Note de couture : les deux blocs d'enrichissement ne partagent pas le même seuil — `602px` pour la barre (pour que 601 tienne encore sur une rangée, mesuré), `601px` pour `section` et `.contact-card`. Écart d'un pixel, sans conflit de propriétés, à aligner le jour où l'un des deux est retouché.* |
 | **D-3** | **Deux clés dupliquées** dans le bloc anglais du dictionnaire (`copy_btn`, `copied_msg`). Les valeurs étant identiques, l'écrasement est **sans effet visible**. | Nul aujourd'hui ; piège si les valeurs divergent un jour. | Corrigé lors de la passe d'alignement du 8 août 2026 (suppression des deux déclarations redondantes). |
 | **D-4** | **Quatre clés traduites jamais utilisées** : `e7_title`, `e7_desc`, `p3_title`, `p3_desc`. Soit du contenu retiré dont la traduction est restée, soit des attributs `data-i18n` oubliés sur des éléments existants. | Nul. | À trancher au prochain toucher du contenu : rebrancher ou supprimer. Le filet de tests les signale **sans bloquer**. |
 | **D-5** | **Police système non embarquée.** Le style demande `Segoe UI` sans la fournir. Sur un poste qui ne l'a pas, le navigateur retombe sur une police sensiblement plus large. | Rendu différent hors environnement Windows — **et mesures faussées** pour tout outil d'inspection tournant sous Linux. | Aucune action sur le site. **Conséquence à retenir** : toute mesure de mise en page faite ailleurs que sous Windows doit d'abord prouver quelle police a réellement été utilisée. |
@@ -248,7 +248,7 @@ comme règles produirait des alertes sur du code parfaitement sain.
 | **D-8** | **Le contrôle 9 ne voit que les `<li>` porteurs de `data-nav-priority`.** Une entrée ajoutée **sans** l'attribut sort de la mesure **et** met un `NaN` dans le tri de priorité. **Mesuré le 9 août 2026** : entrée de 44 caractères ajoutée sans attribut → **380 px exigés pour 288 déclarés**, la porte annonce toujours « 4 libellé(s) » et sort en **code 0**. Et `Number(undefined)` valant `NaN`, le comparateur rend `NaN` — traité comme « égal » — d'où l'ordre de retrait `skills > exp > proj > contact` au lieu de `contact > skills > exp > proj` : **Projets quitterait la barre avant Contact**, l'inverse exact du tableau du §9. | **Bloquant pour E-2a bis / E-2b**, dont l'objet est précisément d'ajouter des entrées de navigation. Un seul attribut oublié éteint la garde et inverse la priorité, en silence. | Un **dixième contrôle** de conformité : comparer le nombre de `<li>` de `#nav-links` au nombre d'entrées porteuses d'un rang **numérique et unique**, et confronter ces rangs au tableau du §9. Divergence = erreur bloquante à voix propre, avec son défaut semé et son assertion. Et `layoutNav` doit refuser de trier sur un rang non numérique plutôt que de produire un ordre arbitraire. **À faire avant E-2b, pas après.** |
 | **D-9** | **La garde du budget exige deux valeurs et en consomme trois.** Depuis l'ajout de la largeur du panneau au §9, `check-i18n.mjs` lit trois nombres mais ne garde que les deux premiers. | **Mauvais diagnostic**, pas trou de couverture : le §9 amputé de sa troisième valeur laisse le contrôle 9 **muet** en appel direct, et fait rougir la porte sur *« contrôle mort ? »* — le mainteneur cherche un contrôle mort là où la cause est un cadrage amputé. C'est exactement ce que la garde du bloc 1/4 avait été écrite pour éviter sur le contrôle 8. | Porter la garde à `values.length < 3` et son message à « trois attendues ». Une ligne. |
 | **D-10** | **Le filet compte 21 sites d'erreur pour 13 assertions.** Les neuf contrôles et les quatre gardes sont assertés ; les autres chemins ne le sont pas. **Six ont été vus mourir porte verte** le 9 août 2026 : anomalie de balisage, liste blanche absente, entrée de liste blanche sans motif, liste blanche illisible, seuil de suites couvertes, et **la symétrie EN→FR** — clé retirée du bloc français, porte restée verte. État **antérieur** aux incréments du 9 août, qui ne l'ont pas aggravé. | Une partie du filet ne prouve pas sa vivacité. La famille `AVEUGLE` est assertée sur un **marqueur partagé**, satisfait par n'importe lequel de ses quatre membres — le défaut que le projet documente par ailleurs, jamais appliqué à cette famille. | Asseoir chaque chemin sur son **message propre**, et semer l'asymétrie dans **les deux sens** dans le témoin défectueux. Incrément dédié : le correctif est mécanique mais touche la porte entière. |
-| **D-11** | **Deux points mineurs relevés en revue le 9 août 2026.** (a) `ResizeObserver` observe `nav`, l'élément que son propre rappel redimensionne : pas de divergence — `layoutNav` est idempotente et sa sortie ne dépend que de la largeur — mais une notification supplémentaire par franchissement de seuil, et vraisemblablement un `ResizeObserver loop completed with undelivered notifications` en console. (b) **Sans JavaScript à 320 px, les liens sont ROGNÉS, pas débordés** : `#nav-links{overflow:hidden}` est inconditionnel. | (a) bruit de console, aucun effet fonctionnel. (b) l'état sans JavaScript n'est pas pire qu'avant l'incrément — c'est exactement l'état d'avant — mais il n'est pas « propre » : le menu est le seul remède, et il exige le programme. | (a) ne réagir qu'au changement de **largeur**, deux lignes. (b) rien à corriger : à énoncer justement, ce que fait la présente ligne. |
+| **D-11** | **Deux points mineurs relevés en revue le 9 août 2026.** (a) `ResizeObserver` observe `nav`, l'élément que son propre rappel redimensionne : pas de divergence — `layoutNav` est idempotente et sa sortie ne dépend que de la largeur — mais une notification supplémentaire par franchissement de seuil, et vraisemblablement un `ResizeObserver loop completed with undelivered notifications` en console. (b) **Sans JavaScript à 320 px, les liens sont ROGNÉS, pas débordés** : `#nav-links{overflow:hidden}` est inconditionnel. | (a) bruit de console, aucun effet fonctionnel. (b) l'état sans JavaScript n'est pas pire qu'avant l'incrément — c'est exactement l'état d'avant — mais il n'est pas « propre » : le menu est le seul remède, et il exige le programme. | (a) **La cause est éteinte depuis le 10 août 2026** : le panneau étant sorti du flux (`position:absolute`), la barre ne change plus de hauteur à l'ouverture — **mesuré, elle reste à 65 px** là où elle passait à 200. L'observateur ne reçoit donc plus la notification qu'il se déclenchait à lui-même. Reste le cas du franchissement de seuil, où la hauteur change réellement : ne réagir qu'au changement de **largeur**, deux lignes. (b) rien à corriger : à énoncer justement, ce que fait la présente ligne. |
 
 ---
 
@@ -285,10 +285,20 @@ quitter la barre :
 > avant Contact**. Le même oubli éteint le contrôle 9. **Mesuré, et bloquant pour E-2b** : voir la
 > dette **D-8**.
 
+**La barre ne passe pas à la ligne sur téléphone**, et c'est le cœur du correctif du 10 août 2026.
+Tant qu'elle en avait le droit, la liste des liens descendait d'une rangée et y retrouvait sa largeur
+naturelle : `scrollWidth` **égalait** `clientWidth` de 360 à 601 px, et le programme ne pouvait
+structurellement voir aucun débordement — le menu ne s'armait jamais. **Une barre qui passe à la ligne
+n'est plus une barre.** Le droit de passer à la ligne revient **au-dessus de 601 px**, où il est
+nécessaire : l'identité riche y occupe 449 px et une rangée complète exigerait **983 px** de fenêtre.
+
+**Sur téléphone, l'identité est réduite** : le logo `<Dev />` et son séparateur ne s'affichent pas, la
+ligne de localisation non plus. Le nom complet reste. C'est la variante V1, décidée le 10 août 2026 —
+motif : le logo n'apporte rien, alors que le socle dépassait de 116 px à 320.
+
 **Sans JavaScript** : le panneau reste en flux et vide, le bouton à trois barres est masqué, et les
 quatre liens demeurent dans la barre — donc, à 320 px en français, **le dernier libellé est rogné**
-(`#nav-links{overflow:hidden}` est inconditionnel). C'est exactement l'état d'avant cet incrément :
-le menu est le seul remède, et il exige le programme.
+(`#nav-links{overflow:hidden}` est inconditionnel). Le menu est le seul remède, et il exige le programme.
 
 ### Le bouton de langue ne disparaît jamais — il rétrécit
 
@@ -310,6 +320,34 @@ liens portent un intitulé explicite. Le contraste du thème sombre n'a **pas** 
 
 ### Budget de largeur (`budget-largeur`)
 
+> ### Plancher d'écran : **360 px**, décidé le 10 août 2026
+>
+> Le projet vise désormais une largeur d'écran minimale de **360 px** — décision du chef de projet du
+> 10 août 2026, prise avec la variante V1 de la barre. En dessous, la barre reste fonctionnelle mais
+> l'identité est réduite à son strict nécessaire.
+>
+> **Mesuré à 320 px après correctif**, dans les deux langues **et dans les deux états du menu** :
+> une rangée, aucun débordement, bouton de langue **entier**, panneau **pleine largeur sous la barre**.
+> Le socle y occupe 313 px pour 320 disponibles — **7 px de marge**.
+>
+> **Y compris sur pointeur grossier**, ce que la première mesure avait manqué : la règle
+> `(hover:none) and (pointer:coarse)` porte le rembourrage du bouton à trois barres de `.45rem` à
+> `.7rem`. Mesuré en forçant cette règle à 320 px : le bouton passe de 38 à **42 px** — et non 46, car
+> il se comprime — **sans rognage ni débordement**, en français comme en anglais. La cible tactile est
+> donc **réduite de 4 px** par rapport à l'intention ; c'est le seul effet, et il est écrit ici.
+>
+> Il n'y a donc **aucune dégradation** sous le plancher. C'est un fait mesuré, pas une garantie : sept
+> pixels ne survivraient pas à un libellé d'identité plus long.
+>
+> **Police effectivement résolue lors de ces mesures : `Segoe UI`** — vérifié par mesure différentielle
+> (155,83 px contre 161,73 pour le repli générique et 182,36 pour DejaVu Sans). La dette **D-5** exige
+> cette preuve avant toute mesure de mise en page faite hors Windows ; elle est acquittée ici.
+>
+> ⚠️ **Les deux budgets ci-dessous restent calculés à 320 px, et c'est délibéré.** Ils deviennent une
+> **marge** : leur dérivation reste vraie, aucun nombre écrit ne devient faux, et le contrôle 9 reste
+> plus sévère que nécessaire. **Ne pas les « corriger » à 360 par cohérence apparente** — ce serait
+> desserrer deux gardes sans rien mesurer.
+
 Le projet vise une largeur d'écran minimale de `320px`. À cette largeur, la carte de contact offre
 `254px` utiles à son contenu — c'est la place restante une fois retirés les rembourrages latéraux de
 la section et de la carte, et les bordures.
@@ -318,11 +356,18 @@ la section et de la carte, et les bordures.
 − 2×1 (bordures) = 254`. Les deux rembourrages sont les valeurs de base, en `1rem`, restaurées à
 `2rem` et `3rem` au-dessus du point de rupture.
 
-Le **panneau du menu de débordement** dispose, à la même largeur d'écran, de `281px` utiles :
-`320 − 2×16` de rembourrage de la barre, **moins `2×3,2` de rembourrage latéral des liens du panneau**
-(`.nav-panel a { padding:.7rem .2rem }`). C'est la référence du **contrôle 9**, qui vérifie qu'un
-libellé de navigation y tient. **Longueur maximale admissible : 32 caractères** ; le plus long
-aujourd'hui, « Compétences », en fait 11.
+Le **panneau du menu de débordement** dispose, à la même largeur d'écran, de `289px` utiles.
+**Re-dérivé le 10 août 2026**, la géométrie du panneau ayant changé : il est désormais **sorti du flux**
+(`position:absolute`) et couvre toute la largeur de la barre, avec son propre rembourrage. Le calcul est
+donc `320 − 2×12` (rembourrage du panneau, `.75rem`) `− 2×3,2` (rembourrage latéral des liens,
+`.nav-panel a { padding:.7rem .2rem }`) = **289,6**, arrondi à l'entier inférieur.
+
+C'est la référence du **contrôle 9**, qui vérifie qu'un libellé de navigation y tient. **Longueur
+maximale admissible : 33 caractères** ; le plus long aujourd'hui, « Compétences », en fait 11.
+
+> Ce nombre a été **recalculé, pas conservé**. L'ancienne valeur de 281 px dérivait d'un panneau qui
+> vivait dans le flux de la barre ; elle serait restée « sûre » par excès, mais fausse. C'est la
+> discipline que la dette **D-7** impose : un nombre déclaré doit être vrai, pas seulement prudent.
 
 **Ces trois nombres** — largeur d'écran minimale, place utile dans la carte, place utile dans le
 panneau — sont lus ici même par les contrôles 8 et 9.
