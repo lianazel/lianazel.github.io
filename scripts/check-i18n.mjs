@@ -103,6 +103,7 @@ let coveredCount = 0;
 let allowSize = 0;
 let contactReport = '—';
 let budgetReport = '—';
+let navReport = '—';
 
 // --- 1. Extraction des cles reellement utilisees dans la page ---------------
 const usedKeys = new Set([...html.matchAll(/data-i18n="([^"]*)"/g)].map((m) => m[1]));
@@ -161,7 +162,10 @@ for (const key of [...declared.en].sort()) {
 }
 
 // --- 5. Cles orphelines : informatif, jamais bloquant (dette D-4) -----------
-const technicalKeys = new Set(['langBtn', 'copy_btn', 'copied_msg']); // lues par le code, pas par data-i18n
+// Lues par le code, pas par data-i18n. 'langBtn' en est SORTIE le 9 aout 2026 :
+// le libelle du bouton de langue vit desormais en trois morceaux portes par des
+// attributs de traduction, et la cle n'existe plus.
+const technicalKeys = new Set(['copy_btn', 'copied_msg', 'menu_open', 'menu_close']);
 for (const key of [...declared.fr].sort()) {
   if (!usedKeys.has(key) && !technicalKeys.has(key)) {
     warnings.push(`Cle traduite jamais utilisee dans la page : ${key}`);
@@ -473,7 +477,7 @@ try {
     if (values.length < 2) {
       budgetCause = `${values.length} valeur(s) en pixels apres le jeton, deux attendues`;
     } else {
-      budget = { screen: values[0], usable: values[1] };
+      budget = { screen: values[0], usable: values[1], panel: values[2] ?? null };
     }
   }
 } catch (cause) {
@@ -508,7 +512,76 @@ if (budget && displayed) {
   }
 }
 
-// --- 13. Rapport -------------------------------------------------------------
+// --- 13. Controle 9 : un libelle de navigation tient-il dans le panneau ? ---
+// Mode de panne ferme : un libelle trop long deborde du panneau du menu. Le
+// menu va NAITRE avec de nouveaux libelles visibles, et E-2b lui en ajoutera
+// d'autres — sans cette garde, le piege se rejouerait au premier mot un peu
+// long, et personne ne penserait a regarder.
+//
+// LE LIBELLE SEUL, JAMAIS LEUR SOMME. Dans le panneau les entrees s'empilent
+// verticalement : leur somme n'a aucune signification. Exiger qu'elle tienne
+// ferait rougir la porte sur l'etat meme que le menu existe pour produire —
+// mesure du 9 aout 2026 : 374 px en francais, 340 en anglais, pour 288
+// disponibles, donc rouge dans les deux langues sur du code correct.
+//
+// ⛔ CE QUE CE CONTROLE NE FAIT PAS : il ne garantit PAS que le socle de la
+// barre — identite, bouton a trois barres, bouton de langue retreci — tienne.
+// Propriete examinee et ECARTEE du calcul arithmetique, pour deux raisons
+// mesurees : la barre est autorisee a passer a la ligne, donc « le socle
+// tient » n'est pas une propriete d'une seule rangee ; et les libelles sont en
+// police PROPORTIONNELLE, ce qui porte l'incertitude d'environ 9 % (controle 8,
+// chasse fixe) a environ 30 % — sur un cas aussi serre, la garde rougirait sur
+// une mise en page qui tient reellement. Cette propriete releve de la porte
+// STRUCTURELLE de VISION_METHOD, qui mesure sur un rendu reel.
+//
+// ⏳ ET CE CONTROLE EST PROVISOIRE, A DESSEIN. La porte structurelle de
+// VISION_METHOD couvre la meme propriete — le debordement — mais en la MESURANT
+// sur un rendu reel plutot qu'en la calculant depuis les declarations de la
+// feuille de style. Le jour ou ce satellite sera instancie (dette D-1), ce
+// controle arithmetique deviendra redondant et pourra etre retire. Sans cette
+// phrase, quelqu'un trouvera un jour deux dispositifs qui verifient la meme
+// chose et supprimera le mauvais.
+const NAV_CHAR_MAX_PX = 8.64;  // 0,60 em a 14,4 px (.9rem) — borne haute des polices de repli
+
+// Les libelles se decouvrent par le balisage, jamais par une liste en dur : ce
+// sont les cles portees par les entrees de navigation, que le menu deplace.
+const navKeys = [...html.matchAll(/<li[^>]*\bdata-nav-priority="[^"]*"[^>]*>\s*<a[^>]*\bdata-i18n="([^"]+)"/g)]
+  .map((m) => m[1]);
+
+if (navKeys.length === 0) {
+  // Garde de non-vacuite. Un remaniement du balisage suffirait sinon a rendre ce
+  // controle aveugle EN RESTANT VERT. Voix propre, jamais le marqueur partage.
+  errors.push(
+    "Libelles de navigation introuvables : aucune entree porteuse de data-nav-priority. " +
+    "Le controle de largeur du menu ne prouve plus rien."
+  );
+} else if (budget && budget.panel) {
+  // Les DEUX langues, et on retient le pire : le defaut du 9 aout n'existait
+  // qu'en francais, et un calcul fait une seule fois ne l'aurait pas vu.
+  let worst = null;
+  for (const langue of ['fr', 'en']) {
+    for (const key of navKeys) {
+      const found = blocks[langue].match(new RegExp(`\\b${key}\\s*:\\s*"([^"]*)"`));
+      if (!found) continue;   // absence deja dite par le controle de completude
+      const label = found[1];
+      const width = [...label].length * NAV_CHAR_MAX_PX;
+      if (!worst || width > worst.width) worst = { langue, label, width };
+    }
+  }
+  if (worst && worst.width > budget.panel) {
+    errors.push(
+      `Libelle de navigation trop large pour le panneau du menu : "${worst.label}" en "${worst.langue}" ` +
+      `exige ${Math.round(worst.width * 10) / 10} px (${[...worst.label].length} caracteres x ${NAV_CHAR_MAX_PX} px) ` +
+      `pour ${budget.panel} px disponibles, soit ${Math.round((worst.width - budget.panel) * 10) / 10} px de trop.`
+    );
+    navReport = `"${worst.label}" (${worst.langue}) — DEPASSEMENT`;
+  } else if (worst) {
+    navReport = `${navKeys.length} libelle(s), le plus large "${worst.label}" (${worst.langue}) ` +
+      `= ${Math.round(worst.width * 10) / 10} px / ${budget.panel} px`;
+  }
+}
+
+// --- 14. Rapport -------------------------------------------------------------
 function report() {
   console.log(`Cible            : ${target}`);
   console.log(`Cles utilisees   : ${usedKeys.size}`);
@@ -520,6 +593,7 @@ function report() {
   // le fait que les trois extractions du controle 7 ont abouti.
   console.log(`Adresse contact  : ${contactReport}`);
   console.log(`Budget largeur   : ${budgetReport}`);
+  console.log(`Libelles nav     : ${navReport}`);
   console.log('');
 
   for (const warning of warnings) console.log(`AVERTISSEMENT  ${warning}`);

@@ -134,11 +134,11 @@ l'interpréteur déjà présent sur la machine.
 
 **Commande** : `bash scripts/gate.sh`
 
-Cet enrobage est la seule entrée légitime : il éprouve d'abord les deux témoins, puis le site.
+Cet enrobage est la seule entrée légitime : il éprouve d'abord les trois témoins, puis le site.
 L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au diagnostic
 ponctuel, jamais de filet.
 
-**Huit contrôles bloquants** — chacun fait échouer la porte :
+**Neuf contrôles bloquants** — chacun fait échouer la porte :
 
 1. **Complétude du dictionnaire** — toute clé `data-i18n` présente dans la page possède une
    traduction en français **et** en anglais. Une clé manquante afficherait du texte non traduit à un
@@ -161,17 +161,29 @@ ponctuel, jamais de filet.
    que l'adresse ne se coupe jamais — c'est l'**atome insécable** du bloc. Calcul en **borne haute** de
    largeur de caractère, seul sens où « ça passe » est une conclusion solide. Le budget **n'est pas recopié
    dans le script** : il est lu au §9, qui en est la source unique.
+9. **Largeur des libellés de navigation** — le libellé de menu le plus long, **des deux langues**, tient
+   dans la largeur utile du panneau déclarée au §9. Le contrôle mesure **un libellé seul, jamais leur
+   somme** : dans le panneau les entrées s'empilent. **Il est provisoire** — la porte structurelle de
+   `VISION_METHOD` couvre la même propriété en la mesurant sur un rendu réel ; le jour où ce satellite
+   sera instancié (dette D-1), ce contrôle arithmétique deviendra redondant. Il **ne garantit pas** que le
+   socle de la barre tienne : voir le commentaire au-dessus du contrôle, qui dit pourquoi.
 
-**Trois gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
+**Quatre gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
 reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites ; chacune des
-trois extractions de l'adresse doit trouver **exactement une** occurrence ; et le budget du §9 doit être
-lisible, faute de quoi le contrôle 8 se tairait sur un cadrage amputé. Ces gardes parlent de **voix
+trois extractions de l'adresse doit trouver **exactement une** occurrence ; le budget du §9 doit être
+lisible, faute de quoi le contrôle 8 se tairait sur un cadrage amputé ; et les libellés de navigation
+doivent être trouvés, sans quoi le contrôle 9 se tairait sur un balisage remanié. Ces gardes parlent de **voix
 distinctes**, à dessein : un marqueur partagé permettrait à l'une de satisfaire l'assertion de l'autre,
 et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrôle 7).
 
 **Le compte se fait par chemin bloquant, jamais par contrôle.** Un contrôle qui protège son extraction
 par une garde en porte deux, et c'est la garde qui meurt en silence — chacune a donc son assertion et
 son témoin.
+
+> ⚠️ **Cette règle est la cible, pas l'état.** Mesuré le 9 août 2026 : `check-i18n.mjs` porte
+> **21 sites d'erreur** pour **13 assertions**. Les neuf contrôles et les quatre gardes sont assertés ;
+> les chemins restants ne le sont pas, et **six ont été vus mourir porte verte**. C'est la dette
+> **D-10**. Ne pas lire « 13 assertions » comme « 13 chemins couverts ».
 
 **Deux avertissements informatifs**, qui ne bloquent pas : clé traduite jamais utilisée (dette D-4,
 quatre attendues) et entrée de liste blanche jamais utilisée.
@@ -184,13 +196,14 @@ traduction *fausse*, ni le contenu porté par un attribut (`href`, `title`, `ari
 
 **Preuve de morsure — trois témoins**, et le filet les éprouve avant le site :
 
-- `scripts/fixtures/broken.html`, **témoin défectueux** : huit défauts semés, un par contrôle bloquant.
+- `scripts/fixtures/broken.html`, **témoin défectueux** : neuf défauts semés, un par contrôle bloquant.
   Il doit échouer **en nommant** chacun d'eux — `gate.sh` porte une assertion par chemin bloquant, posée sur
   le **message propre** du contrôle et jamais sur un identifiant nu.
 - `scripts/fixtures/blind.html`, **témoin de cécité** : page saine sur les contrôles 1 à 6 mais presque
   vide de texte, soit l'état exact que produirait une extraction cassée. Il doit échouer **pour cécité**.
-  Ne portant aucune adresse de contact, il fait aussi mordre la garde du contrôle 7 — et c'est ce qui
-  rend cette garde prouvable : `gate.sh` 2/4 assied dessus sa seconde assertion.
+  Ne portant **ni adresse de contact ni entrée de navigation prioritaire**, il fait aussi mordre les
+  gardes des contrôles **7 et 9** — et c'est ce qui les rend prouvables : `gate.sh` 2/4 assied dessus
+  ses deux autres assertions. **Ne rien lui ajouter de tout cela** : c'est l'absence qui est utile.
 - `scripts/fixtures/cadrage-sans-budget.md`, **témoin de cadrage muet** : tient lieu de `CLAUDE.md` le
   temps d'une exécution, sans le jeton d'ancrage du budget. Il doit échouer **en nommant le budget
   manquant**. C'est l'unique cible où la garde du contrôle 8 mord — les trois autres lisent le vrai
@@ -226,12 +239,16 @@ comme règles produirait des alertes sur du code parfaitement sain.
 | # | Déviation | Impact | Plan de remboursement |
 |---|---|---|---|
 | **D-1** | **Aucune barrière sur le rendu.** Rien ne détecte un débordement ou une mise en page cassée avant publication. | Un défaut visuel peut atteindre la production sans être vu. | Poser une barrière de rendu (satellite `VISION_METHOD`, palier local). **Décision reportée par le chef de projet le 8 août 2026** — à reprendre. |
-| **D-2** | **Conception grand écran d'abord — remboursement entamé.** La feuille porte **trois** règles d'adaptation : deux historiques en largeur **maximale** (`max-width: 600px` et `700px`), donc en dégradation depuis le grand écran, et **une en `min-width`** posée le 9 août 2026 sur les rembourrages de `section` et `.contact-card`. | Aucun défaut visible constaté ; écart de méthode sur les deux règles restantes. | **Première tranche remboursée le 9 août 2026** (correctif du budget de largeur). Reste à inverser les deux `max-width` historiques — barre de navigation et grille de projets — au prochain toucher significatif de la feuille. Ne pas le faire en bloc. |
+| **D-2** | **Conception grand écran d'abord — remboursement aux trois quarts.** Il ne reste **qu'une** règle en largeur **maximale** : `max-width:700px` sur la grille de projets. Les rembourrages de `section` et `.contact-card` (9 août) puis toute la **barre de navigation** (9 août, incrément E-2a) sont passés en `min-width`. | Aucun défaut visible constaté ; écart de méthode sur la seule règle restante. | **Deux tranches remboursées le 9 août 2026.** Reste la grille de projets, à inverser au prochain toucher de ce bloc — elle n'a été touchée par aucun des deux incréments, et on ne rembourse pas en bloc. |
 | **D-3** | **Deux clés dupliquées** dans le bloc anglais du dictionnaire (`copy_btn`, `copied_msg`). Les valeurs étant identiques, l'écrasement est **sans effet visible**. | Nul aujourd'hui ; piège si les valeurs divergent un jour. | Corrigé lors de la passe d'alignement du 8 août 2026 (suppression des deux déclarations redondantes). |
 | **D-4** | **Quatre clés traduites jamais utilisées** : `e7_title`, `e7_desc`, `p3_title`, `p3_desc`. Soit du contenu retiré dont la traduction est restée, soit des attributs `data-i18n` oubliés sur des éléments existants. | Nul. | À trancher au prochain toucher du contenu : rebrancher ou supprimer. Le filet de tests les signale **sans bloquer**. |
 | **D-5** | **Police système non embarquée.** Le style demande `Segoe UI` sans la fournir. Sur un poste qui ne l'a pas, le navigateur retombe sur une police sensiblement plus large. | Rendu différent hors environnement Windows — **et mesures faussées** pour tout outil d'inspection tournant sous Linux. | Aucune action sur le site. **Conséquence à retenir** : toute mesure de mise en page faite ailleurs que sous Windows doit d'abord prouver quelle police a réellement été utilisée. |
 | **D-6** | **Repli sur une commande dépréciée** (`document.execCommand('copy')`) dans la copie de l'adresse. | Nul — c'est un repli, le chemin moderne est prioritaire. | Retirer le jour où les navigateurs ciblés le rendent inutile. |
 | **D-7** | **Le budget de largeur du §9 est déclaré, jamais mesuré.** Le contrôle 8 compare l'adresse à un nombre écrit dans ce document ; rien ne relie ce nombre aux rembourrages réels de la feuille de style. **Mesuré le 9 août 2026** : le correctif du budget de largeur annulé à 100 %, la porte reste **verte** et continue d'annoncer « 254 px disponibles » alors que la place réelle est retombée à 158. | La porte ferme la cause **aggravante** (un contenu qui s'allonge) et **pas** la cause dominante C1 du diagnostic (un rembourrage qui régresse). Un futur toucher de `section` ou `.contact-card` peut rouvrir le débordement sans qu'aucun contrôle ne rougisse. | Faire **dériver** le budget de la feuille : le contrôle lit les rembourrages réels, recalcule la place utile, et la compare au nombre du §9 — divergence = erreur bloquante. Le §9 reste la source du **contrat**, la feuille devient la source du **fait**. Piste chiffrée au §5-2 du rapport de diagnostic ; relève d'un `/ship`, pas d'un correctif (§2 « durcissement ≠ correctif »). |
+| **D-8** | **Le contrôle 9 ne voit que les `<li>` porteurs de `data-nav-priority`.** Une entrée ajoutée **sans** l'attribut sort de la mesure **et** met un `NaN` dans le tri de priorité. **Mesuré le 9 août 2026** : entrée de 44 caractères ajoutée sans attribut → **380 px exigés pour 288 déclarés**, la porte annonce toujours « 4 libellé(s) » et sort en **code 0**. Et `Number(undefined)` valant `NaN`, le comparateur rend `NaN` — traité comme « égal » — d'où l'ordre de retrait `skills > exp > proj > contact` au lieu de `contact > skills > exp > proj` : **Projets quitterait la barre avant Contact**, l'inverse exact du tableau du §9. | **Bloquant pour E-2a bis / E-2b**, dont l'objet est précisément d'ajouter des entrées de navigation. Un seul attribut oublié éteint la garde et inverse la priorité, en silence. | Un **dixième contrôle** de conformité : comparer le nombre de `<li>` de `#nav-links` au nombre d'entrées porteuses d'un rang **numérique et unique**, et confronter ces rangs au tableau du §9. Divergence = erreur bloquante à voix propre, avec son défaut semé et son assertion. Et `layoutNav` doit refuser de trier sur un rang non numérique plutôt que de produire un ordre arbitraire. **À faire avant E-2b, pas après.** |
+| **D-9** | **La garde du budget exige deux valeurs et en consomme trois.** Depuis l'ajout de la largeur du panneau au §9, `check-i18n.mjs` lit trois nombres mais ne garde que les deux premiers. | **Mauvais diagnostic**, pas trou de couverture : le §9 amputé de sa troisième valeur laisse le contrôle 9 **muet** en appel direct, et fait rougir la porte sur *« contrôle mort ? »* — le mainteneur cherche un contrôle mort là où la cause est un cadrage amputé. C'est exactement ce que la garde du bloc 1/4 avait été écrite pour éviter sur le contrôle 8. | Porter la garde à `values.length < 3` et son message à « trois attendues ». Une ligne. |
+| **D-10** | **Le filet compte 21 sites d'erreur pour 13 assertions.** Les neuf contrôles et les quatre gardes sont assertés ; les autres chemins ne le sont pas. **Six ont été vus mourir porte verte** le 9 août 2026 : anomalie de balisage, liste blanche absente, entrée de liste blanche sans motif, liste blanche illisible, seuil de suites couvertes, et **la symétrie EN→FR** — clé retirée du bloc français, porte restée verte. État **antérieur** aux incréments du 9 août, qui ne l'ont pas aggravé. | Une partie du filet ne prouve pas sa vivacité. La famille `AVEUGLE` est assertée sur un **marqueur partagé**, satisfait par n'importe lequel de ses quatre membres — le défaut que le projet documente par ailleurs, jamais appliqué à cette famille. | Asseoir chaque chemin sur son **message propre**, et semer l'asymétrie dans **les deux sens** dans le témoin défectueux. Incrément dédié : le correctif est mécanique mais touche la porte entière. |
+| **D-11** | **Deux points mineurs relevés en revue le 9 août 2026.** (a) `ResizeObserver` observe `nav`, l'élément que son propre rappel redimensionne : pas de divergence — `layoutNav` est idempotente et sa sortie ne dépend que de la largeur — mais une notification supplémentaire par franchissement de seuil, et vraisemblablement un `ResizeObserver loop completed with undelivered notifications` en console. (b) **Sans JavaScript à 320 px, les liens sont ROGNÉS, pas débordés** : `#nav-links{overflow:hidden}` est inconditionnel. | (a) bruit de console, aucun effet fonctionnel. (b) l'état sans JavaScript n'est pas pire qu'avant l'incrément — c'est exactement l'état d'avant — mais il n'est pas « propre » : le menu est le seul remède, et il exige le programme. | (a) ne réagir qu'au changement de **largeur**, deux lignes. (b) rien à corriger : à énoncer justement, ce que fait la présente ligne. |
 
 ---
 
@@ -241,10 +258,52 @@ comme règles produirait des alertes sur du code parfaitement sain.
 **État réel** : l'inverse (déviation D-2). Tout **nouveau** bloc d'interface s'écrit en petit écran
 d'abord, sans réécrire l'existant en bloc.
 
-Barre de navigation actuelle, de gauche à droite : identité (initiales, nom, localisation) · liens
-vers Compétences, Expérience, Projets · bouton de bascule de langue. En dessous de 600 pixels de
-largeur, le détail de localisation disparaît et les espacements se resserrent — c'est le comportement
-de débordement voulu, et le bouton de langue ne disparaît jamais.
+Barre de navigation, de gauche à droite : identité (initiales, nom, localisation) · liens vers
+Compétences, Expérience, Projets, Contact · bouton à trois barres · bouton de bascule de langue.
+La règle d'adaptation de la barre est écrite en **largeur minimale** depuis le 9 août 2026 : les
+valeurs de base sont celles du téléphone, et l'on élargit au-dessus du seuil.
+
+### Menu de débordement — ordre de priorité
+
+Quand la place manque, les entrées quittent la barre et rejoignent un panneau replié. **Le débordement
+se décide sur la place réellement disponible, jamais sur un nombre fixe d'entrées** : un seuil du type
+« sous 600 px on masque trois entrées » deviendrait faux au premier libellé ajouté ou traduit.
+
+**Ce rang fait foi ici, et le balisage s'y conforme** (`data-nav-priority`) — rang 1 = **dernière** à
+quitter la barre :
+
+| Rang | Entrée | Pourquoi ce rang |
+|---|---|---|
+| 1 | **Projets** | Dernière à partir : c'est là que vivra la carte du harnais, le différenciateur du portfolio. |
+| 2 | **Expérience** | Trente-cinq ans de parcours : ce qu'un recruteur vient chercher. |
+| 3 | **Compétences** | Première section après le hero, atteinte en un défilement. |
+| 4 | **Contact** | Part en premier : **déjà redondant** — le bloc de contact est en bas de page et le hero porte un bouton « Me contacter ». Deux chemins y mènent déjà. |
+
+> ⚠️ **Rien ne relie mécaniquement les attributs du balisage à ce tableau**, et c'est pire qu'une
+> simple divergence invisible : un attribut **oublié** met un `NaN` dans le tri, ce que la comparaison
+> traite comme « égal » — l'ordre de retrait redevient alors celui du document, et **Projets partirait
+> avant Contact**. Le même oubli éteint le contrôle 9. **Mesuré, et bloquant pour E-2b** : voir la
+> dette **D-8**.
+
+**Sans JavaScript** : le panneau reste en flux et vide, le bouton à trois barres est masqué, et les
+quatre liens demeurent dans la barre — donc, à 320 px en français, **le dernier libellé est rogné**
+(`#nav-links{overflow:hidden}` est inconditionnel). C'est exactement l'état d'avant cet incrément :
+le menu est le seul remède, et il exige le programme.
+
+### Le bouton de langue ne disparaît jamais — il rétrécit
+
+**Invariant.** Sous le seuil, le bouton ne garde que le drapeau et deux lettres (`EN` / `FR`) au lieu
+de `🇬🇧 English` / `🇫🇷 Français`. **On dégrade, on ne masque pas.**
+
+**La raison, qui n'est pas évidente et doit rester écrite** : la langue n'est pas un réglage, c'est **la
+condition pour lire quoi que ce soit**. Un visiteur anglophone arrivé sur la version française doit
+pouvoir basculer **avant** d'avoir compris l'interface — donc sans avoir à deviner qu'un bouton à trois
+barres cache une entrée nommée, en français, « Réglages ».
+
+Conséquence de conception : le libellé vit en **trois morceaux** dans le dictionnaire (drapeau,
+abréviation, mot), et le raccourcissement relève de la **présentation**. Aucune chaîne de langue n'est
+écrite dans le programme — l'écriture directe qui doublait l'attribut de traduction a été supprimée le
+9 août 2026, avant qu'elle ne devienne fausse en faisant varier ce libellé.
 
 **Accessibilité constatée** : aucune image dans la page, donc aucun texte alternatif manquant. Les
 liens portent un intitulé explicite. Le contraste du thème sombre n'a **pas** été mesuré — à faire.
@@ -259,7 +318,16 @@ la section et de la carte, et les bordures.
 − 2×1 (bordures) = 254`. Les deux rembourrages sont les valeurs de base, en `1rem`, restaurées à
 `2rem` et `3rem` au-dessus du point de rupture.
 
-**Ces deux nombres sont la référence du contrôle 8 de la porte**, qui les lit ici même plutôt que de
+Le **panneau du menu de débordement** dispose, à la même largeur d'écran, de `281px` utiles :
+`320 − 2×16` de rembourrage de la barre, **moins `2×3,2` de rembourrage latéral des liens du panneau**
+(`.nav-panel a { padding:.7rem .2rem }`). C'est la référence du **contrôle 9**, qui vérifie qu'un
+libellé de navigation y tient. **Longueur maximale admissible : 32 caractères** ; le plus long
+aujourd'hui, « Compétences », en fait 11.
+
+**Ces trois nombres** — largeur d'écran minimale, place utile dans la carte, place utile dans le
+panneau — sont lus ici même par les contrôles 8 et 9.
+
+**Ces nombres sont la référence des contrôles 8 et 9**, qui les lisent ici même plutôt que de
 les recopier — une valeur écrite à deux endroits finit toujours par diverger.
 
 > ⚠️ **Ce sont un contrat, pas une mesure.** Rien ne relie ces nombres aux rembourrages réels de la
