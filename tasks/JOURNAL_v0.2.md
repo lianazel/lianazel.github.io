@@ -602,3 +602,95 @@ du §9, tenu sur un vrai téléphone avec la vraie police du système.
 
 C'est la première fois de la journée qu'une mesure a **prédit** un comportement et qu'un appareil réel
 l'a **confirmé**. La béquille de D-1 a fait son travail.
+
+---
+
+## 10 août 2026 — Une assertion par chemin bloquant (session 9, D-10 et D-9)
+
+| | |
+|---|---|
+| **Type** | EVOL (outillage seul — le site n'est pas touché) |
+| **Branche** | `feat/vivacite-du-filet` — 2 enregistrements |
+| **Fusion** | **`615279b`** (`--no-ff`) — 12 fichiers, +670 / −131 |
+| **Prompt pilote** | `prompts/v0.4/EVOL_vivacite-du-filet_v1.md` |
+| **Version** | **0.4.2 → 0.5.0** (minor : `feat/*`, la porte change réellement de nature) |
+| **Dettes** | **D-10** soldée (principal) · **D-9** soldée (accessoire) |
+
+### Ce que l'incrément répare, et pourquoi ça comptait
+
+La porte disait vert sur des chemins morts. Mesuré : **24 chemins bloquants pour 13 assertions**.
+Quatre gardes partageaient le marqueur `AVEUGLE` et **une seule** assertion, que n'importe laquelle
+des quatre satisfaisait. Trois chemins n'avaient **aucune cible où mordre** — pas « non assertés » :
+**structurellement improuvables**, la liste blanche étant lue à un chemin fixe.
+
+**Après : 24 chemins, 24 assertions**, chacune sur une phrase qui n'appartient qu'à elle, **chacune
+prouvée vivante isolément** par neutralisation sur copie hors dépôt — copie verte avant et après,
+un chemin à la fois. `gate.sh` passe de 4 à 9 blocs. Cinq témoins neufs. Une option `--allowlist=`
+ouverte pour donner une prise aux trois chemins qui n'en avaient pas.
+
+### La question ouverte du prompt, tranchée : oui au contrôle qui *mesure* le compte
+
+Le §5.5 laissait le choix, avec une réserve sérieuse sur la fragilité d'un contrôle qui lit du code
+source par motif. **Retenu**, pour une raison qui n'est pas théorique : le cadrage annonçait « 21 sites
+d'erreur » — nombre écrit que rien ne mesurait, **et faux**, puisqu'il oubliait les trois refus de
+travailler. La réserve est **retenue et écrite dans le code**, pas balayée : la garde rougira sur un
+remaniement légitime, et c'est assumé — ce remaniement-là *doit* faire relire l'inventaire.
+
+### La revue a trouvé, dans le bloc censé fermer le défaut, le défaut lui-même
+
+Verdict **`NEEDS WORK`**, et il était fondé. Le bloc 8/9 portait **deux comparaisons jumelles** : le
+témoin ne validait jamais celle du fichier réel. **Reproduit avant correction** — comparaison primaire
+neutralisée et 22ᵉ chemin ajouté, la porte sortait en **code 0** en affichant *« conformes au
+declare »*.
+
+**Une porte qui affirme une conformité qu'elle n'a pas vérifiée est pire qu'une porte muette.** Une
+seule couture (`compte_conforme`) pour les deux assertions, reprouvée dans trois sens de mutation.
+Quatre autres énoncés du cadrage étaient faux ou surcrédités — dont « le nombre annoncé **ici** est
+lui-même surveillé », alors que `gate.sh` ne lit jamais ce document pour ce compte : **D-7 réintroduite
+dans la section qui solde D-10**.
+
+### Trois constats que je n'attendais pas, tous mesurés
+
+1. **Sept chemins morts-verts, pas six.** Le seuil de suites extraites partageait le sort de son
+   jumeau : l'assertion `AVEUGLE` se satisfaisait de l'un **ou** de l'autre.
+2. **Le décompte du cadrage était faux par défaut** — 21 au lieu de 24. Celui du prompt était juste.
+3. **Trois témoins cassés par leur propre commentaire**, qui citait le jeton dont ils prouvaient
+   l'absence — le contrôle balaie le fichier entier. Dont `compte-divergent.mjs`, annonçant deux sites
+   et en portant trois, le troisième dans la phrase qui les annonçait : **la maladie D-7 en miniature,
+   dans la minute où j'écrivais son remède.**
+
+### Ma propre campagne s'est trompée avant la porte
+
+**21/24 au premier passage.** Les trois écarts n'étaient pas des chemins morts : quand la mort d'un
+chemin fait **passer** son témoin entier, c'est l'assertion de *morsure* qui rougit, pas celle de
+*message*. **Mon tableau d'attentes était faux, pas la porte** — corrigé sur le message réellement
+produit, jamais l'inverse. Ajuster la porte pour satisfaire une attente erronée aurait été
+exactement la faute que cet incrément répare.
+
+### Deux leçons
+
+*Un témoin est lu en entier : son commentaire fait partie de la mesure.* · *Un chemin qui lit une
+ressource à chemin fixe est improuvable tant qu'on ne lui donne pas de couture — et le coût de réveil
+d'un chemin mort est un signal de conception, pas une mesure de difficulté.*
+
+Les deux paraissent universelles ; **promotion en global non faite**, elle appartient au chef de projet.
+
+### Ce que cet incrément ne prouve toujours pas
+
+Rien du rendu (**D-1**), rien du budget confronté à la feuille de style (**D-7**), rien de la
+conformité `data-nav-priority` ↔ §9 (**D-8**, toujours bloquante pour E-2b). La porte n'est pas
+devenue complète : elle est devenue **vraie sur ce qu'elle prétend**.
+
+### Trois points laissés au chef de projet
+
+1. `blind.html` référence « gate.sh 2/3 » — faux **avant** cet incrément, plus faux après (bloc 2/9).
+   Fichier hors périmètre, défaut préexistant : **non touché**, signalé.
+2. La revue a mesuré que la campagne coûte **1,6 s** : elle est donc outillable (`scripts/mutants.sh`,
+   hors porte). **Écarté du mandat**, remonté comme candidat — avec sa réserve : un mutant franc ne dit
+   rien d'un seuil desserré ni d'une condition inversée.
+3. Promotion des deux leçons en global.
+
+### Filet de tests
+
+Porte **verte** sur `main` après fusion, **9 blocs**, **4 avertissements** attendus (dette D-4).
+`index.html` **rigoureusement intact** — vérifié par `git diff --quiet`.

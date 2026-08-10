@@ -542,4 +542,4 @@ avant. Et pour lever un doute sur un appareil, ouvrir l'adresse avec une chaîne
 
 ---
 
-*Version du projet : **0.4.2** · Cadrage rédigé le 8 août 2026 · Méthode v2.27.*
+*Version du projet : **0.5.0** · Cadrage rédigé le 8 août 2026 · Méthode v2.27.*
