@@ -694,3 +694,95 @@ devenue complète : elle est devenue **vraie sur ce qu'elle prétend**.
 
 Porte **verte** sur `main` après fusion, **9 blocs**, **4 avertissements** attendus (dette D-4).
 `index.html` **rigoureusement intact** — vérifié par `git diff --quiet`.
+
+---
+
+## 10 août 2026 — L'accroche dit ce que le harnais fait (session 10)
+
+| | |
+|---|---|
+| **Type** | EVOL (contenu — premier incrément à toucher le site depuis trois sessions) |
+| **Branche** | `feat/accroche-qualite-avant-vitesse` — 2 enregistrements |
+| **Fusion** | **`7939d6a`** (`--no-ff`) — 2 fichiers, +125 / −3 |
+| **Prompt pilote** | `prompts/v0.5/EVOL_accroche-qualite-avant-vitesse_v1.md` |
+| **Version** | **0.5.0 → 0.6.0** (minor : `feat/*`, le contenu public change) |
+| **Dette** | aucune soldée — corrige une **incohérence de discours** |
+
+### Le défaut
+
+La première phrase du site promettait de « piloter l'IA pour livrer **vite et bien** », alors que le
+harnais revendiqué affiche « **qualité avant vitesse** ». Seule ligne du site qui contredisait ce
+qu'il revendique, au-dessus de la ligne de flottaison. *« Vite et bien » est une promesse ; « qualité
+avant vitesse » est un arbitrage — et un arbitrage se vérifie, ce qu'une promesse ne fait pas.*
+
+**Aucune porte ne pouvait l'attraper**, et c'est écrit dans l'en-tête de `check-i18n.mjs` : le filet
+n'attrape pas une phrase **fausse**, seulement une phrase **absente**. Relevé par l'œil du chef de
+projet, en comparant deux pages.
+
+### Ce que l'incrément pose
+
+Trois lignes, et rien d'autre : texte visible du hero, clé `hero_sub` des blocs `fr` et `en`. Les
+chaînes ont été **extraites du prompt par programme, jamais retapées** — le texte visible et la valeur
+du dictionnaire sont deux copies que rien ne compare, et une transcription manuelle de 197 caractères
+est le geste qui fabrique la divergence d'un caractère. Identité **vérifiée à l'octet après écriture**,
+pas supposée.
+
+### Trois affirmations du prompt démenties par la mesure
+
+1. **L'apostrophe de l'existant est droite** (`U+0027`), pas typographique — le §5.2 disait l'inverse.
+   Le **texte normatif** du prompt, lui, était juste. Arbitrage : le texte fait foi, la prose non.
+2. **Le compteur de suites ne pouvait pas varier**, contrairement à ce qu'anticipait le §6.2 : une
+   suite est délimitée par des **balises**, jamais par de la ponctuation. Zéro était donc le seul
+   résultat acceptable, et non « une variation tolérable ».
+3. **La page ne porte aucun badge TWAIM** — une seule occurrence, dans un commentaire JavaScript. Les
+   marqueurs visibles sont des étiquettes « Claude Code ». **C'est la prémisse du §1**, et je l'ai
+   manquée : mon rapport se donnait pour méthode de confronter le prompt à la mesure et ne l'a pas
+   fait sur sa première phrase. Relevée par la revue. La correction reste bonne, sa justification
+   écrite est plus étroite qu'annoncée : la contradiction n'était pas visible **pour un visiteur**.
+
+### Quatre divergences de contenu déterrées, aucune corrigée
+
+En mesurant le périmètre d'une candidate d'incrément que le prompt demandait d'évaluer **sans
+l'implémenter**, quatre clés se sont révélées porter **deux textes différents** — un en dur dans la
+page, un au dictionnaire. La page dit une chose au chargement, une autre après la première bascule.
+
+| Clé | Au chargement | Après bascule |
+|---|---|---|
+| `nav_exp` | `// PARCOURS` | `// EXPÉRIENCE` |
+| `nav_proj` | `// RÉALISATIONS` | `// PROJETS` |
+| `e5_desc` | `Start-up créée et détenue par le groupe…` | phrase **entièrement différente** |
+| `e6_desc` | `…sur IBM AS/400. Conception d'outils métiers web…` | phrase **entièrement différente** |
+
+**Mon premier inventaire était faux deux fois** : j'annonçais « quatre étiquettes de section » dont
+deux n'étaient que des différences de casse invisibles sous `text-transform:uppercase`, et j'avais
+**manqué les deux descriptions d'expérience**. J'avais trié une poignée de cas et présenté ce tri
+partiel comme un inventaire. La revue a attrapé `e6_desc` ; le triage complet a livré `e5_desc`.
+Triage refait, re-dérivable, règle d'extraction écrite : **161 concordances, 4 divergences réelles**.
+
+**Trois questions ouvertes, aucune technique** : `parcours`/`réalisations` sont-ils un défaut ou
+**deux clés manquantes** ? Pour `e5_desc` et `e6_desc`, **laquelle des deux versions est vraie** ? Et
+le couplage `nav_*` entre barre et étiquettes est **un piège pour E-2b** — changer un libellé de menu
+changera silencieusement deux étiquettes de section.
+
+### Revue
+
+`NEEDS WORK`, 8/8 en sécurité. Ses deux `FAIL` portaient sur l'enregistrement et le `STATUS`, que le
+pipeline place **après** la revue — mais **mon brief lui annonçait « deux commits » alors qu'il n'y en
+avait qu'un** : j'ai décrit un état non vérifié dans le message même qui demandait de tout vérifier.
+Cinq avertissements traités, dont l'inventaire incomplet et la prémisse du prompt.
+
+### Filet de tests
+
+Porte **verte** sur `main` après fusion. **Tous les compteurs identiques avant et après** : 163 clés
+utilisées, 170/170, 344 suites dont 190 couvertes, 104 termes, 4 avertissements. `scripts/`
+**rigoureusement intact** — miroir exact de la session 9, qui ne touchait pas `index.html`.
+
+### Validation humaine due
+
+**L'accroche à 320, 375 et 430 px, dans les deux langues** — et **prioritairement l'anglais à 320 px**,
+dont la phrase finale ne fait que 21 caractères et risque le plus de tomber comme un fragment
+orphelin. L'argument « on raccourcit » du prompt pèse **−2 caractères sur 199** : il ne règle rien.
+
+> **Et le piège du cache redevient d'actualité** : contrairement aux deux incréments précédents,
+> celui-ci change réellement ce qui est servi. Après publication, un appareil affichant encore « vite
+> et bien » sert son cache. Marqueur à chercher : **« Qualité avant vitesse »**.
