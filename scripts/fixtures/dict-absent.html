@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!-- TEMOIN SANS DICTIONNAIRE — preuve que le chemin « dictionnaire introuvable »
+     mord. Ce fichier ne fait PAS partie du site.
+
+     Il est volontairement depourvu de la declaration du dictionnaire. C'est le
+     seul defaut qu'il porte, et c'est voulu : le controle s'arrete la et rend
+     son rapport immediatement, si bien qu'aucun autre chemin ne parle. Un
+     temoin qui echouerait pour trois raisons ne prouverait pas laquelle est
+     vivante.
+
+     ⚠️ NE JAMAIS ECRIRE ICI LE JETON RECHERCHE, MEME EN COMMENTAIRE. Le
+     controle balaie le FICHIER ENTIER : un commentaire HTML n'est pas invisible
+     pour lui. La premiere redaction de ce temoin citait le jeton pour expliquer
+     son absence — le controle l'y a trouve, a conclu que le dictionnaire
+     existait, et ce temoin a echoue sur le chemin SUIVANT. Il prouvait alors
+     autre chose que ce qu'on lui demande. Mesure du 10 aout 2026, pas theorie.
+
+     Attendu : `node scripts/check-i18n.mjs scripts/fixtures/dict-absent.html`
+     doit echouer avec le message « Dictionnaire introuvable ». S'il retourne 0,
+     ce chemin est mort : une page dont le dictionnaire aurait disparu — ou dont
+     la declaration aurait ete renommee par un remaniement — passerait pour
+     saine, et TOUS les controles de dictionnaire deviendraient muets d'un coup.
+
+     Pourquoi ce temoin n'existait pas avant le 10 aout 2026 : ce chemin faisait
+     partie des douze qu'aucune assertion ne couvrait. Il n'avait jamais ete vu
+     mordre — ce qui ne veut pas dire qu'il etait sain, seulement qu'il n'etait
+     pas mesure. Il l'est desormais.
+
+     NE PAS lui ajouter de dictionnaire : c'est l'absence qui est utile,
+     exactement comme l'absence d'adresse dans blind.html et l'absence de budget
+     dans cadrage-sans-budget.md. -->
+
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Temoin sans dictionnaire</title></head>
+<body>
+<section id="present">
+  <h2 data-i18n="absent_h2">Titre</h2>
+</section>
+</body>
+</html>

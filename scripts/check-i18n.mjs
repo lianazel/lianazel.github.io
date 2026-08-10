@@ -7,13 +7,20 @@
 // Sortie : code 0 si tout passe, code 1 si au moins un controle bloquant echoue.
 //
 // Usage : node scripts/check-i18n.mjs [cible] [--min-runs=N] [--min-covered=N]
-//                                     [--cadrage=CHEMIN]
+//                                     [--cadrage=CHEMIN] [--allowlist=CHEMIN]
 //   --min-runs     seuil de non-vacuite : suites de texte visible attendues (defaut 200)
 //   --min-covered  seuil de non-vacuite : suites couvertes attendues        (defaut 100)
 //   --cadrage      fichier porteur du budget de largeur (defaut : ../CLAUDE.md,
 //                  resolu depuis le script ; la valeur fournie, elle, est
 //                  relative au REPERTOIRE COURANT). Sert au temoin de cadrage
 //                  muet, seule cible ou la garde du budget mord.
+//   --allowlist    fichier de liste blanche (defaut : ./i18n-allowlist.txt,
+//                  meme regle de resolution que --cadrage). Sert aux temoins de
+//                  la famille « liste blanche » : absente, illisible, ou portant
+//                  une entree sans motif. Ces trois chemins n'ont aucune autre
+//                  cible ou mordre — sans cette redirection ils naissent
+//                  invisibles, et ils l'ont ete : trois des six chemins vus
+//                  mourir la porte VERTE le 9 aout 2026 sont ceux-la.
 // Les seuils sont desarmables pour les temoins, qui sont trop petits par
 // nature ; ils gardent leur valeur de production sur le site et sur le temoin
 // de cecite. Entree legitime : scripts/gate.sh, jamais l'appel direct.
@@ -80,6 +87,17 @@ function pathFlag(name, fallback) {
   return raw;
 }
 const cadragePath = pathFlag('cadrage', new URL('../CLAUDE.md', import.meta.url));
+// Meme mecanique, meme raison, pour la liste blanche : elle etait a chemin fixe,
+// et ses trois chemins bloquants (illisible, vide, entree sans motif) n'avaient
+// donc aucune cible ou mordre. Les rediriger est la voie la plus courte ; la
+// seule autre serait de deplacer le vrai fichier pendant l'execution, geste
+// destructif sur le depot qu'on ecarte sans discussion.
+const allowlistPath = pathFlag('allowlist', new URL('./i18n-allowlist.txt', import.meta.url));
+// Le message d'erreur doit nommer le chemin REELLEMENT lu : code en dur, il
+// mentirait des qu'on le redirige, et enverrait le mainteneur ouvrir un fichier
+// sain. Le defaut est un objet URL, dont l'affichage brut (file:///...) n'aide
+// personne : on lui substitue son chemin canonique dans le depot.
+const allowlistLabel = typeof allowlistPath === 'string' ? allowlistPath : 'scripts/i18n-allowlist.txt';
 
 const target = argv.slice(2).find((a) => !a.startsWith('--')) ?? 'index.html';
 let html;
@@ -181,12 +199,13 @@ for (const anchor of [...anchors].sort()) {
 
 // --- 7. Liste blanche des termes non traduisibles ---------------------------
 // Resolue depuis l'emplacement du script, jamais depuis le repertoire courant :
-// la porte doit se comporter pareil d'ou qu'on l'appelle.
+// la porte doit se comporter pareil d'ou qu'on l'appelle. Redirigeable par
+// --allowlist pour les temoins de cette famille.
 const allow = new Set();
 const allowUsed = new Set();
 let allowLoaded = false;
 try {
-  const raw = readFileSync(new URL('./i18n-allowlist.txt', import.meta.url), 'utf8');
+  const raw = readFileSync(allowlistPath, 'utf8');
   allowLoaded = true;
   raw.split(/\r?\n/).forEach((line, i) => {
     if (!line.trim() || /^\s*#/.test(line)) return;
@@ -200,7 +219,7 @@ try {
     allow.add(entry[1]);
   });
 } catch (cause) {
-  errors.push(`Liste blanche illisible : scripts/i18n-allowlist.txt (${cause.code ?? cause.message})`);
+  errors.push(`Liste blanche illisible : ${allowlistLabel} (${cause.code ?? cause.message})`);
 }
 allowSize = allow.size;
 
@@ -474,10 +493,18 @@ try {
     budgetCause = 'le jeton d\'ancrage a disparu du cadrage';
   } else {
     const values = [...cadrage.slice(anchor).matchAll(/`(\d+)px`/g)].map((m) => Number(m[1]));
-    if (values.length < 2) {
-      budgetCause = `${values.length} valeur(s) en pixels apres le jeton, deux attendues`;
+    // TROIS valeurs, pas deux : largeur d'ecran minimale, place utile dans la
+    // carte de contact, place utile dans le panneau du menu. La garde en exigeait
+    // deux depuis que le §9 en porte trois (dette D-9, soldee le 10 aout 2026).
+    // Ce n'etait pas un trou de couverture mais un MAUVAIS DIAGNOSTIC : un §9
+    // ampute de sa troisieme valeur laissait le controle 9 muet, et la porte
+    // rougissait sur « controle mort ? » — envoyant chercher un controle mort la
+    // ou la cause etait un cadrage ampute. C'est exactement ce que la garde du
+    // bloc 3/9 avait ete ecrite pour eviter sur le controle 8.
+    if (values.length < 3) {
+      budgetCause = `${values.length} valeur(s) en pixels apres le jeton, trois attendues`;
     } else {
-      budget = { screen: values[0], usable: values[1], panel: values[2] ?? null };
+      budget = { screen: values[0], usable: values[1], panel: values[2] };
     }
   }
 } catch (cause) {

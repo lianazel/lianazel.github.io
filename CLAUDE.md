@@ -134,9 +134,9 @@ l'interpréteur déjà présent sur la machine.
 
 **Commande** : `bash scripts/gate.sh`
 
-Cet enrobage est la seule entrée légitime : il éprouve d'abord les trois témoins, puis le site.
-L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au diagnostic
-ponctuel, jamais de filet.
+Cet enrobage est la seule entrée légitime : **huit blocs éprouvent la porte, le neuvième éprouve le
+site**. L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au
+diagnostic ponctuel, jamais de filet.
 
 **Neuf contrôles bloquants** — chacun fait échouer la porte :
 
@@ -168,8 +168,10 @@ ponctuel, jamais de filet.
    sera instancié (dette D-1), ce contrôle arithmétique deviendra redondant. Il **ne garantit pas** que le
    socle de la barre tienne : voir le commentaire au-dessus du contrôle, qui dit pourquoi.
 
-**Quatre gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
-reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites ; chacune des
+**Sept gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
+reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites **et** de
+suites couvertes ; la liste blanche doit être chargée et non vide ; le balisage doit être équilibré,
+sans quoi une balise ouverte gonfle la couverture et vide le contrôle 6 par **excès** ; chacune des
 trois extractions de l'adresse doit trouver **exactement une** occurrence ; le budget du §9 doit être
 lisible, faute de quoi le contrôle 8 se tairait sur un cadrage amputé ; et les libellés de navigation
 doivent être trouvés, sans quoi le contrôle 9 se tairait sur un balisage remanié. Ces gardes parlent de **voix
@@ -180,10 +182,42 @@ et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrô
 par une garde en porte deux, et c'est la garde qui meurt en silence — chacune a donc son assertion et
 son témoin.
 
-> ⚠️ **Cette règle est la cible, pas l'état.** Mesuré le 9 août 2026 : `check-i18n.mjs` porte
-> **21 sites d'erreur** pour **13 assertions**. Les neuf contrôles et les quatre gardes sont assertés ;
-> les chemins restants ne le sont pas, et **six ont été vus mourir porte verte**. C'est la dette
-> **D-10**. Ne pas lire « 13 assertions » comme « 13 chemins couverts ».
+### Les 24 chemins bloquants — l'inventaire, et il est mesuré
+
+**Mesuré le 10 août 2026**, en comptant dans le fichier : `check-i18n.mjs` porte **21 sites d'erreur**
+et **3 refus de travailler** (options invalides, cible illisible), soit **24 chemins bloquants** pour
+**24 assertions** dans `gate.sh`. Chacune est posée sur le **message propre** de son chemin, et
+**chacune a été prouvée vivante isolément** — jamais relue.
+
+| Famille | Chemins | Détail |
+|---|---|---|
+| Les neuf contrôles | **10** | la **symétrie en compte deux** : FR→EN et EN→FR sont deux branches distinctes |
+| Gardes de non-vacuité | **7** | quatre sur l'extraction, une par contrôle 7, 8 et 9 |
+| Structure du dictionnaire | **2** | déclaration introuvable · blocs de langue introuvables |
+| Tenue de la liste blanche | **2** | fichier illisible · entrée sans motif |
+| Refus de travailler | **3** | option numérique invalide · option de chemin vide · cible illisible |
+
+> **Un compte équivalent est surveillé — mais il est déclaré dans `gate.sh`, pas ici.** Le bloc 8/9
+> **compte** les chemins dans la source et les compare à **ses propres constantes**
+> (`CHEMINS_ERREUR` / `CHEMINS_SORTIE`) : divergence = erreur bloquante, avec le geste à faire dans le
+> message. Cette garde a son propre témoin, `compte-divergent.mjs`, sans quoi elle naîtrait invisible
+> comme les autres.
+>
+> ⚠️ **Deux précisions, sans quoi ce paragraphe surcréditerait la porte** — et ce serait la maladie
+> D-7 réintroduite dans la section même qui solde D-10 :
+>
+> 1. **`gate.sh` ne lit jamais ce document pour ce compte.** Le nombre du tableau ci-dessus reste un
+>    nombre écrit, tenu à la main. Si les deux divergent, **rien ne rougit** : c'est le lecteur qui
+>    doit le voir. La discipline du budget de largeur — un seul endroit, lu par le contrôle — n'a pas
+>    été transposée ici, et ce n'est pas un oubli : le §9 est lu parce qu'il est un **contrat**, alors
+>    que ce compte-ci est un **fait de la source**, dont la source est l'autorité.
+> 2. **Les unités diffèrent, à dessein.** Ici : **24 chemins** = 21 sites d'erreur + **3** refus de
+>    travailler. Dans `gate.sh` : 21 et **4**, parce qu'il compte les `exit(1)` du fichier, dont la
+>    sortie finale de `report()` — qui n'est pas un chemin. Deux comptes justes de deux choses
+>    différentes ; ne pas « corriger » l'un pour qu'il ressemble à l'autre.
+>
+> ⛔ **Ce que la garde ne fait pas** : elle ne prouve **pas** que le nouveau chemin soit asserté. Elle
+> force un regard ; seule la campagne de neutralisation prouve, et elle est manuelle.
 
 **Deux avertissements informatifs**, qui ne bloquent pas : clé traduite jamais utilisée (dette D-4,
 quatre attendues) et entrée de liste blanche jamais utilisée.
@@ -194,24 +228,46 @@ D-1 ci-dessous. **La validation visuelle reste entièrement humaine.** Il ne voi
 traduction *fausse*, ni le contenu porté par un attribut (`href`, `title`, `aria-label`) : l'en-tête de
 `check-i18n.mjs` énumère ces limites, et il fait autorité sur elles.
 
-**Preuve de morsure — trois témoins**, et le filet les éprouve avant le site :
+**Preuve de morsure — huit témoins** (en sept puces : la structure du dictionnaire en compte deux),
+et le filet les éprouve avant le site :
 
-- `scripts/fixtures/broken.html`, **témoin défectueux** : neuf défauts semés, un par contrôle bloquant.
-  Il doit échouer **en nommant** chacun d'eux — `gate.sh` porte une assertion par chemin bloquant, posée sur
-  le **message propre** du contrôle et jamais sur un identifiant nu.
+- `scripts/fixtures/broken.html`, **témoin défectueux** : dix défauts semés, un par chemin qu'il
+  couvre. Il doit échouer **en nommant** chacun d'eux. La **symétrie y est semée dans les deux sens** —
+  `only_fr` et `only_en` : deux branches de code, deux défauts, deux assertions.
 - `scripts/fixtures/blind.html`, **témoin de cécité** : page saine sur les contrôles 1 à 6 mais presque
-  vide de texte, soit l'état exact que produirait une extraction cassée. Il doit échouer **pour cécité**.
-  Ne portant **ni adresse de contact ni entrée de navigation prioritaire**, il fait aussi mordre les
-  gardes des contrôles **7 et 9** — et c'est ce qui les rend prouvables : `gate.sh` 2/4 assied dessus
-  ses deux autres assertions. **Ne rien lui ajouter de tout cela** : c'est l'absence qui est utile.
+  vide de texte, soit l'état exact que produirait une extraction cassée. Ne portant **ni adresse de
+  contact ni entrée de navigation prioritaire**, il fait aussi mordre les gardes des contrôles **7 et
+  9**. **Ne rien lui ajouter de tout cela** : c'est l'absence qui est utile.
 - `scripts/fixtures/cadrage-sans-budget.md`, **témoin de cadrage muet** : tient lieu de `CLAUDE.md` le
-  temps d'une exécution, sans le jeton d'ancrage du budget. Il doit échouer **en nommant le budget
-  manquant**. C'est l'unique cible où la garde du contrôle 8 mord — les trois autres lisent le vrai
-  cadrage. **Ne rien y ajouter** : c'est l'absence qui est utile.
+  temps d'une exécution, sans le jeton d'ancrage du budget. **Ne rien y ajouter.**
+- `scripts/fixtures/allowlist-sans-motif.txt`, **liste blanche mal tenue** : une entrée valide — pour
+  que la liste ne soit pas vide et que le témoin prouve le bon chemin — et une entrée sans motif.
+- `scripts/fixtures/dict-absent.html` et `scripts/fixtures/dict-malforme.html`, **structure du
+  dictionnaire** : le premier n'a pas de déclaration, le second en a une sans blocs de langue. Deux
+  chemins distincts, donc deux témoins — celui qui n'a rien ne peut pas prouver celui qui a du cassé.
+- `scripts/fixtures/balisage-desequilibre.html`, **extraction non fiable** : une balise ouverte
+  qu'un ancêtre emporte. Il est **séparé de `broken.html` à dessein** — une balise ouverte y rendrait
+  « couvert » tout le texte suivant et éteindrait le défaut de couverture, donc l'assertion voisine.
+  Un témoin qui casse la preuve d'un autre contrôle n'est pas un témoin.
+- `scripts/fixtures/compte-divergent.mjs`, **compte divergent** : jamais exécuté, seulement compté.
+  Il porte volontairement un nombre de chemins différent du déclaré, ce qui rend la garde du bloc 8/9
+  prouvable. **Ne pas l'aligner sur le compte réel.**
+
+Les trois **refus de travailler** n'ont besoin d'aucun fichier : trois invocations invalides suffisent.
+
+> ⚠️ **Un témoin est lu en entier, commentaires compris.** Écrire dans un commentaire le jeton que le
+> contrôle recherche le fait trouver **là**. Mesuré trois fois le 10 août 2026, dont deux témoins qui
+> échouaient sur le chemin *suivant* parce que leur commentaire citait ce dont ils prouvaient
+> l'absence. Les en-têtes concernés portent l'avertissement.
 
 Un filet qui passe sur un témoin est en panne, pas en bonne santé — il doit être réparé avant toute
 livraison. Et une assertion ne se relit pas : **elle se prouve**, en neutralisant son contrôle sur une
-copie hors dépôt et en vérifiant que la porte rougit.
+copie hors dépôt et en vérifiant que la porte rougit **en nommant ce chemin-là**.
+
+> **Une neutralisation peut faire *passer* le témoin entier plutôt que le faire échouer autrement** —
+> c'est le cas quand le chemin mort était la seule erreur de sa cible. La porte rougit alors par son
+> assertion de **morsure** (« la cible est PASSEE ») et non par celle de **message**. Les deux sont
+> spécifiques à leur bloc : le chemin reste prouvé. Constaté sur trois des vingt-quatre.
 
 ---
 
@@ -246,8 +302,8 @@ comme règles produirait des alertes sur du code parfaitement sain.
 | **D-6** | **Repli sur une commande dépréciée** (`document.execCommand('copy')`) dans la copie de l'adresse. | Nul — c'est un repli, le chemin moderne est prioritaire. | Retirer le jour où les navigateurs ciblés le rendent inutile. |
 | **D-7** | **Le budget de largeur du §9 est déclaré, jamais mesuré.** Le contrôle 8 compare l'adresse à un nombre écrit dans ce document ; rien ne relie ce nombre aux rembourrages réels de la feuille de style. **Mesuré le 9 août 2026** : le correctif du budget de largeur annulé à 100 %, la porte reste **verte** et continue d'annoncer « 254 px disponibles » alors que la place réelle est retombée à 158. | La porte ferme la cause **aggravante** (un contenu qui s'allonge) et **pas** la cause dominante C1 du diagnostic (un rembourrage qui régresse). Un futur toucher de `section` ou `.contact-card` peut rouvrir le débordement sans qu'aucun contrôle ne rougisse. | Faire **dériver** le budget de la feuille : le contrôle lit les rembourrages réels, recalcule la place utile, et la compare au nombre du §9 — divergence = erreur bloquante. Le §9 reste la source du **contrat**, la feuille devient la source du **fait**. Piste chiffrée au §5-2 du rapport de diagnostic ; relève d'un `/ship`, pas d'un correctif (§2 « durcissement ≠ correctif »). |
 | **D-8** | **Le contrôle 9 ne voit que les `<li>` porteurs de `data-nav-priority`.** Une entrée ajoutée **sans** l'attribut sort de la mesure **et** met un `NaN` dans le tri de priorité. **Mesuré le 9 août 2026** : entrée de 44 caractères ajoutée sans attribut → **380 px exigés pour 288 déclarés**, la porte annonce toujours « 4 libellé(s) » et sort en **code 0**. Et `Number(undefined)` valant `NaN`, le comparateur rend `NaN` — traité comme « égal » — d'où l'ordre de retrait `skills > exp > proj > contact` au lieu de `contact > skills > exp > proj` : **Projets quitterait la barre avant Contact**, l'inverse exact du tableau du §9. | **Bloquant pour E-2a bis / E-2b**, dont l'objet est précisément d'ajouter des entrées de navigation. Un seul attribut oublié éteint la garde et inverse la priorité, en silence. | Un **dixième contrôle** de conformité : comparer le nombre de `<li>` de `#nav-links` au nombre d'entrées porteuses d'un rang **numérique et unique**, et confronter ces rangs au tableau du §9. Divergence = erreur bloquante à voix propre, avec son défaut semé et son assertion. Et `layoutNav` doit refuser de trier sur un rang non numérique plutôt que de produire un ordre arbitraire. **À faire avant E-2b, pas après.** |
-| **D-9** | **La garde du budget exige deux valeurs et en consomme trois.** Depuis l'ajout de la largeur du panneau au §9, `check-i18n.mjs` lit trois nombres mais ne garde que les deux premiers. | **Mauvais diagnostic**, pas trou de couverture : le §9 amputé de sa troisième valeur laisse le contrôle 9 **muet** en appel direct, et fait rougir la porte sur *« contrôle mort ? »* — le mainteneur cherche un contrôle mort là où la cause est un cadrage amputé. C'est exactement ce que la garde du bloc 1/4 avait été écrite pour éviter sur le contrôle 8. | Porter la garde à `values.length < 3` et son message à « trois attendues ». Une ligne. |
-| **D-10** | **Le filet compte 21 sites d'erreur pour 13 assertions.** Les neuf contrôles et les quatre gardes sont assertés ; les autres chemins ne le sont pas. **Six ont été vus mourir porte verte** le 9 août 2026 : anomalie de balisage, liste blanche absente, entrée de liste blanche sans motif, liste blanche illisible, seuil de suites couvertes, et **la symétrie EN→FR** — clé retirée du bloc français, porte restée verte. État **antérieur** aux incréments du 9 août, qui ne l'ont pas aggravé. | Une partie du filet ne prouve pas sa vivacité. La famille `AVEUGLE` est assertée sur un **marqueur partagé**, satisfait par n'importe lequel de ses quatre membres — le défaut que le projet documente par ailleurs, jamais appliqué à cette famille. | Asseoir chaque chemin sur son **message propre**, et semer l'asymétrie dans **les deux sens** dans le témoin défectueux. Incrément dédié : le correctif est mécanique mais touche la porte entière. |
+| **D-9** | ~~La garde du budget exige deux valeurs et en consomme trois.~~ | — | **Soldée le 10 août 2026.** Garde portée à `values.length < 3`, message à « trois attendues », et le repli `?? null` sur la troisième valeur retiré — il laissait croire que le panneau était facultatif. Un §9 amputé de sa troisième valeur nomme désormais le budget manquant au lieu de faire accuser un contrôle mort. |
+| **D-10** | ~~Le filet compte 21 sites d'erreur pour 13 assertions.~~ | — | **Soldée le 10 août 2026**, incrément dédié. **24 chemins bloquants pour 24 assertions**, chacune sur son message propre, **chacune prouvée vivante isolément** par neutralisation sur copie hors dépôt. Le marqueur partagé `AVEUGLE` reste affiché mais **plus aucune assertion de vivacité ne s'y appuie** — il n'en subsiste qu'une mention, en garde **négative** au bloc 1/9, où un marqueur partagé est légitime parce qu'on y vérifie une **absence**. **Cinq témoins ajoutés**, une option `--allowlist=` ouverte pour donner une prise aux trois chemins qui n'en avaient aucune, et le compte des chemins est désormais **mesuré** par le bloc 8/9. Le décompte de la dette était d'ailleurs **faux par défaut** : il annonçait 21 en oubliant les trois refus de travailler. |
 | **D-11** | **Deux points mineurs relevés en revue le 9 août 2026.** (a) `ResizeObserver` observe `nav`, l'élément que son propre rappel redimensionne : pas de divergence — `layoutNav` est idempotente et sa sortie ne dépend que de la largeur — mais une notification supplémentaire par franchissement de seuil, et vraisemblablement un `ResizeObserver loop completed with undelivered notifications` en console. (b) **Sans JavaScript à 320 px, les liens sont ROGNÉS, pas débordés** : `#nav-links{overflow:hidden}` est inconditionnel. | (a) bruit de console, aucun effet fonctionnel. (b) l'état sans JavaScript n'est pas pire qu'avant l'incrément — c'est exactement l'état d'avant — mais il n'est pas « propre » : le menu est le seul remède, et il exige le programme. | (a) **La cause est éteinte depuis le 10 août 2026** : le panneau étant sorti du flux (`position:absolute`), la barre ne change plus de hauteur à l'ouverture — **mesuré, elle reste à 65 px** là où elle passait à 200. L'observateur ne reçoit donc plus la notification qu'il se déclenchait à lui-même. Reste le cas du franchissement de seuil, où la hauteur change réellement : ne réagir qu'au changement de **largeur**, deux lignes. (b) rien à corriger : à énoncer justement, ce que fait la présente ligne. |
 | **D-12** | **La barre occupe deux rangées de 602 px à 900 px au moins.** **Mesuré deux fois** le 10 août 2026, indépendamment, dans les deux langues : **114 px de haut contre 65**. Au-dessus du seuil, l'identité riche revient (449 px) et le droit de passer à la ligne avec elle ; une rangée complète exigerait **983 px** de fenêtre. | **C'est le défaut visible qui reste après le correctif du 10 août**, et il touche tablettes, fenêtres de bureau réduites et écrans partagés. **Préexistant** — il ne vient pas de ce correctif, qui n'a fait que le rendre net en soldant le régime téléphone. **E-2b l'aggravera** : la section « À propos » ajoutera des entrées, donc de la largeur. | Trois voies, à instruire : dégraisser l'identité riche (le détail de localisation coûte à lui seul ~293 px) · étendre le régime compact au-delà de 601 px · ou assumer les deux rangées et l'écrire comme un choix. **Hors mandat du correctif du 10 août** ; à trancher **avant E-2b**, pas après. |
 

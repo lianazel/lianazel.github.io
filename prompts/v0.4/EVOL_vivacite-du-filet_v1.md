@@ -2,7 +2,7 @@
 
 **Projet** : `lianazel.github.io` · **Type** : EVOL (`/ship`) · **Version du prompt** : v1 · **Date** : 10 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
-**Statut** : DÉPOSÉ — en attente de transmission par le chef de projet
+**Statut** : DÉPOSÉ — en attente de transmission par le chef de projet · *précondition n° 1 réactualisée le 10 août 2026 (0.4.0 → 0.4.2), avant toute transmission*
 **Solde** : dette **D-10** (principal) et dette **D-9** (accessoire, une ligne, même fichier)
 **Périme** : `prompts/v0.3/EVOL_assertion-vivacite_v1.md`, jamais transmis — il ne traitait qu'une
 facette (le marqueur `AVEUGLE` partagé) d'un défaut dont on connaît désormais l'étendue mesurée.
@@ -66,7 +66,10 @@ nécessité démontrée au §5.3 · la liste blanche de production · **D-8** (c
 
 Vérifie-les ; ne les suppose pas. Si l'une manque, arrête-toi et dis laquelle.
 
-1. `main` porte au moins `3bd8ad2`, arbre propre, `VERSION` = `0.4.0`.
+1. `main` porte au moins `82e9b16`, arbre propre, `VERSION` = `0.4.2`.
+   *(Précondition réactualisée le 10 août 2026, avant transmission : deux incréments — le
+   correctif de la barre mobile et la leçon du cache — ont atterri depuis la rédaction. Aucun
+   ne touche `scripts/`, le périmètre du présent prompt est inchangé.)*
 2. `bash scripts/gate.sh` sort en **code 0** avec **4 avertissements** avant toute modification.
 3. `prompts/v0.3/EVOL_assertion-vivacite_v1.md` existe — il devient PÉRIMÉ, voir §5.6.
 

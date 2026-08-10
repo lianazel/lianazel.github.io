@@ -192,3 +192,68 @@ l'empreinte `90a84f4` de la présente jumelle locale. Registre global porté de 
 les 403 lignes préexistantes vérifiées **intactes à l'identique** contre une copie prise avant
 écriture. Geste validé dans le fil de la session — pas de prompt CHORE dédié, la promotion figurant à
 l'inventaire fermé des gestes hors dépôt autorisés (entrée A-1).
+
+---
+
+## 10 août 2026 — Un témoin est lu en entier : son commentaire fait partie de la mesure
+
+**Type** : Erreur
+
+**Contexte** : incrément « vivacité du filet ». Trois témoins neufs devaient prouver qu'un contrôle
+mord quand un jeton est **absent** de la page : la déclaration du dictionnaire (`const t = {`), les
+blocs de langue (`fr: {`, `en: {`), et le compte des sites d'erreur de `check-i18n.mjs`.
+
+**Erreur** : j'ai expliqué dans l'en-tête de chaque témoin ce qu'il ne devait pas contenir — **en
+citant le jeton**. Le contrôle balaie le fichier entier : il a trouvé les jetons dans le commentaire.
+
+Trois occurrences en une heure, toutes mesurées :
+
+1. `dict-absent.html` — son commentaire citait la déclaration ; le contrôle a conclu que le
+   dictionnaire existait, et le témoin a échoué sur le chemin **suivant** ;
+2. `dict-malforme.html` — même cause, cité les deux repères de bloc de langue ;
+3. `compte-divergent.mjs` — annonçait « DEUX sites » et en portait **trois**, le troisième étant dans
+   la phrase qui les annonçait.
+
+**Correction/Pattern** : **un fichier de test est de la donnée en entier — commentaires compris.**
+Quand un témoin prouve une **absence**, il ne nomme jamais ce qui est absent : il le paraphrase.
+Corollaire plus large, et c'est lui qui vaut : dès qu'un outil mesure par motif, tout ce qui est
+lisible par lui est mesuré, y compris ce qu'on croyait n'écrire que pour un humain.
+
+Le cas n° 3 mérite d'être retenu à part : un nombre déclaré dans un commentaire, faux **à cause du
+commentaire lui-même**. C'est la maladie D-7 en miniature, apparue dans la minute où j'écrivais le
+remède contre elle.
+
+**Applicable globalement ?** : **Oui** — vaut pour toute assertion par motif sur un fichier :
+`grep` en CI, règle de lint sur du source, détecteur de secret, test d'absence de chaîne, gabarit
+vérifié par substitution.
+
+---
+
+## 10 août 2026 — Un chemin qui lit une ressource à chemin fixe est improuvable tant qu'on ne lui donne pas de couture
+
+**Type** : Erreur (de conception, héritée)
+
+**Contexte** : sur les sept chemins de `check-i18n.mjs` dont on a démontré qu'ils pouvaient mourir la
+porte verte, **trois** venaient de la même famille — la liste blanche : fichier illisible, liste vide,
+entrée sans motif. Réveiller les quatre autres a coûté une ligne à un témoin, ou rien du tout. Ces
+trois-là ont coûté une **modification du code de production** : ouvrir une option `--allowlist=`.
+
+**Erreur/Approche** : la liste blanche était lue à un chemin **fixe**, résolu depuis l'emplacement du
+script. Rien ne permettait de la faire échouer sans déplacer le vrai fichier pendant l'exécution —
+geste destructif, à écarter. Les trois chemins étaient donc **structurellement improuvables**, et pas
+seulement « non assertés » : aucun témoin n'était constructible.
+
+**Correction/Pattern** : **si un chemin bloquant lit une ressource, la source de cette ressource doit
+être injectable.** Le précédent maison existait déjà et n'avait pas été généralisé : le budget de
+largeur avait reçu son `--cadrage=` pour exactement cette raison, un mois plus tôt.
+
+La règle de détection est simple et se pose **à l'écriture**, pas à la revue : *si je voulais faire
+rougir ce chemin, quel fichier devrais-je casser ?* Si la réponse est « un fichier du dépôt », le
+chemin n'est pas prouvable — il faut une couture avant de l'écrire.
+
+Corollaire de méthode : **le coût de réveil d'un chemin mort est un signal de conception.** Un chemin
+qui coûte cher à prouver est un chemin trop couplé à son environnement, jamais un chemin « difficile ».
+
+**Applicable globalement ?** : **Oui** — injection de dépendance appliquée aux tests négatifs.
+Fichier de configuration, variable d'environnement, chemin de schéma, point de terminaison distant :
+tout ce qu'un contrôle lit sans pouvoir en changer la source rend ce contrôle improuvable.

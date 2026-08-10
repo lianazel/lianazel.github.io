@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- TEMOIN AU BALISAGE DESEQUILIBRE — preuve que la garde d'extraction mord.
+     Ce fichier ne fait PAS partie du site.
+
+     CE QU'IL PROUVE, et c'est le mode de panne le plus vicieux de la porte :
+     une balise laissee ouverte garde son data-i18n ouvert, tout le texte qui
+     suit est compte COUVERT, et le controle de couverture du texte visible se
+     vide sans que rien ne bronche. Les deux seuils de non-vacuite ne le voient
+     pas : ils surveillent le MANQUE, jamais l'EXCES. La porte reste verte en
+     ne lisant plus rien.
+
+     Le defaut seme : un <div> ouvert que </section> emporte. Le desequilibre ne
+     se voit qu'a cet instant precis — au depilement multiple — et nulle part
+     ailleurs : a la fin du parcours la pile est vide, </body> et </html> ayant
+     tout referme. C'est pourquoi la seule verification « pile vide en fin de
+     parcours » ne suffisait pas, et c'est mesure, pas theorique (voir le
+     commentaire de visibleRuns dans check-i18n.mjs).
+
+     Attendu : `node scripts/check-i18n.mjs scripts/fixtures/balisage-desequilibre.html
+     --min-runs=0 --min-covered=0` doit echouer en nommant « extraction non
+     fiable ». S'il retourne 0, la garde est morte.
+
+     POURQUOI UN FICHIER SEPARE plutot qu'un defaut de plus dans broken.html :
+     une balise ouverte y rendrait « couvert » tout le texte qui suit, ce qui
+     eteindrait le defaut n 6 de ce temoin-la (couverture du texte visible) et
+     ferait echouer son assertion. Un temoin qui casse la preuve d'un autre
+     controle n'est pas un temoin.
+
+     Les seuils sont DESARMES a l'appel : ce temoin fait quelques suites de
+     texte, pas deux cents. On ne deforme pas un temoin pour lui faire franchir
+     une garde qui n'est pas la sienne ; les seuils sont prouves ailleurs, sur
+     blind.html, avec leurs valeurs de production. -->
+
+<html lang="fr">
+<head><meta charset="UTF-8"><title data-i18n="des_title">Temoin desequilibre</title></head>
+<body>
+<nav>
+  <a href="#present" data-i18n="des_nav">Section presente</a>
+</nav>
+
+<section id="present">
+  <h2 data-i18n="des_h2">Titre correct</h2>
+  <div>
+</section>
+
+<script>
+const t = {
+  fr: {
+    des_title:"Temoin desequilibre", des_nav:"Section presente",
+    des_h2:"Titre correct"
+  },
+  en: {
+    des_title:"Unbalanced fixture", des_nav:"Existing section",
+    des_h2:"Correct title"
+  }
+};
+</script>
+</body>
+</html>

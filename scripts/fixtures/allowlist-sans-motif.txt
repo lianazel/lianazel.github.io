@@ -1,0 +1,20 @@
+# TEMOIN DE LISTE BLANCHE MAL TENUE — preuve que le chemin « entree sans motif »
+# mord. Ce fichier ne fait PAS partie de la porte : il tient lieu de liste
+# blanche le temps d'une execution, via --allowlist=.
+#
+# La regle de tenue de la vraie liste est qu'une entree porte son MOTIF, pour
+# rester relisible par quelqu'un qui ne l'a pas ecrite. Sans ce temoin, le
+# chemin qui refuse une entree sans motif n'avait AUCUNE cible ou mordre : il a
+# ete vu mourir la porte VERTE le 9 aout 2026, et la liste blanche pouvait alors
+# accueillir n'importe quel mot sans justification — c'est-a-dire desarmer le
+# controle de couverture du texte visible par la petite porte.
+#
+# La PREMIERE entree est volontairement VALIDE : elle garde la liste non vide,
+# pour que ce temoin echoue sur l'entree sans motif et NON sur « liste blanche
+# absente ou vide ». Ce sont deux chemins distincts, chacun a son temoin ; les
+# confondre reviendrait a prouver l'un en croyant prouver l'autre.
+#
+# NE PAS ajouter de motif a la seconde entree : c'est son absence qui est utile.
+
+Node  # Plateforme d'execution — entree valide, la pour que la liste ne soit pas vide
+CeTermeNaPasDeMotif
