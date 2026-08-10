@@ -539,3 +539,66 @@ parce qu'elle dit ce qui **n'a pas** été couvert.
 
 L'aspect de la barre réduite — sans logo ni localisation · la rupture 601 → 602 · le **clavier**,
 jamais validé depuis E-2a · **Safari iOS**, toutes mes mesures venant d'un moteur Chromium.
+
+---
+
+## 10 août 2026 — La leçon du cache, inscrite au §10 (session 8)
+
+| | |
+|---|---|
+| **Type** | CHORE (documentation) |
+| **Branche** | `chore/lecon-cache` — 1 enregistrement |
+| **Fusion** | **`c2dc555`** (`--no-ff`) — 1 fichier |
+| **Version** | **0.4.1 → 0.4.2** (patch : `chore/*`, aucun code touché) |
+
+### L'incident
+
+Le correctif de la barre mobile venait d'être publié et vérifié. Sur un iPhone réel, la barre affichait
+toujours l'ancien comportement — logo présent, localisation présente, trois rangées. Un quart d'heure
+de doute, et l'hypothèse naturelle était la pire : *le correctif n'a rien changé*.
+
+**Le site publié était à jour. C'était Safari qui servait sa copie en cache.**
+
+### Ce qui a permis de trancher
+
+Deux signaux, et il en fallait deux :
+
+1. **Une récupération directe** de la page servie, où les règles de la version publiée étaient bien
+   présentes — le logo masqué, le panneau hors flux, le seuil à 602.
+2. **Un signal indépendant dans la capture elle-même** : la localisation s'affichait **sans son
+   détail**. Cette combinaison n'existe que dans la version précédente. Elle a écarté l'autre
+   hypothèse plausible — un iPhone rapportant une largeur au-dessus du seuil, ce qui aurait produit
+   une image très semblable.
+
+### La règle inscrite
+
+**§10, règle de lecture (4)** : *ce qu'affiche un navigateur est un artefact ; ce que sert le serveur
+est la référence.* C'est la règle (3) un cran plus loin — là, l'artefact trompeur était un fichier de
+`.pipeline/` ; ici, l'écran d'un téléphone. Dans les deux cas, **quelque chose s'interpose entre le
+fait et ce qu'on en voit**.
+
+La règle porte aussi **le geste**, parce qu'une règle sans geste ne sert à rien : récupérer la page
+servie et y chercher un **marqueur de la version attendue**, et lever le doute sur un appareil par une
+chaîne de requête. Et ce qui rend le piège vicieux est noté : **une capture montrant l'ancien
+comportement est indiscernable d'une régression**.
+
+### Écart de procédure, signalé
+
+**L'agent `reviewer` n'a pas été sollicité.** Un paragraphe de documentation, aucun code, aucun effet
+sur la porte — la cérémonie complète a paru disproportionnée. Décision prise seul et nommée ici plutôt
+que passée sous silence ; le chef de projet en a été informé et ne l'a pas contestée. C'est la famille
+de `RD-018` du carnet de recherche — *cérémonie proportionnée au risque*.
+
+### Filet de tests
+
+Porte **verte** sur `main` après fusion, **4 avertissements** attendus (dette D-4), aucun code touché.
+
+### Confirmation du correctif de la session 7, sur appareil réel
+
+Le même jour, après vidage du cache : barre **sur une seule rangée**, sans logo ni localisation, avec
+le bouton à trois barres et le bouton de langue rétréci — **dans les deux langues**, sur un iPhone 14
+Pro Max, en production. Et **« Projets » est le seul lien resté dans la barre** : le rang 1 du tableau
+du §9, tenu sur un vrai téléphone avec la vraie police du système.
+
+C'est la première fois de la journée qu'une mesure a **prédit** un comportement et qu'un appareil réel
+l'a **confirmé**. La béquille de D-1 a fait son travail.
