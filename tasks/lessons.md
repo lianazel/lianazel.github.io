@@ -227,6 +227,12 @@ remède contre elle.
 `grep` en CI, règle de lint sur du source, détecteur de secret, test d'absence de chaîne, gabarit
 vérifié par substitution.
 
+**Promue en global le 10 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un fichier de test est de la donnée en entier : son commentaire fait partie de
+la mesure », avec l'empreinte `1c9e192` de la présente jumelle locale. Geste validé dans le fil de la
+session — pas de prompt CHORE dédié, la promotion figurant à l'inventaire fermé des gestes hors dépôt
+autorisés (entrée A-1).
+
 ---
 
 ## 10 août 2026 — Un chemin qui lit une ressource à chemin fixe est improuvable tant qu'on ne lui donne pas de couture
@@ -257,3 +263,14 @@ qui coûte cher à prouver est un chemin trop couplé à son environnement, jama
 **Applicable globalement ?** : **Oui** — injection de dépendance appliquée aux tests négatifs.
 Fichier de configuration, variable d'environnement, chemin de schéma, point de terminaison distant :
 tout ce qu'un contrôle lit sans pouvoir en changer la source rend ce contrôle improuvable.
+
+**Promue en global le 10 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un chemin qui lit une ressource à chemin fixe est improuvable, et le coût de
+réveil est un signal de conception », avec l'empreinte `1c9e192` de la présente jumelle locale. Geste
+validé dans le fil de la session — pas de prompt CHORE dédié, la promotion figurant à l'inventaire
+fermé des gestes hors dépôt autorisés (entrée A-1).
+
+> **Les deux promotions du 10 août ont été faites en un seul geste**, contre une copie de référence du
+> registre global prise **avant** écriture : les **409 lignes préexistantes** vérifiées identiques à
+> l'octet (même empreinte de tête), **0 ligne supprimée ou modifiée**, 12 ajoutées. Registre porté de
+> **68 à 70 entrées**.
