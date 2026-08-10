@@ -440,3 +440,102 @@ route, et `VISION_METHOD` n'est toujours pas instancié (**D-1**) :
 **Signalé plutôt que tu** : la transition du panneau ne joue pas à l'apparition, le passage par
 `display` ne s'animant pas. L'ouverture est sèche. Aucune propriété de mise en page n'est animée, comme
 le §3.6 l'exige, mais l'effet est plus abrupt que ce que « animation » laisse attendre.
+
+---
+
+## 10 août 2026 — La barre tient sur une rangée sur téléphone (session 7)
+
+| | |
+|---|---|
+| **Type** | CORRECTIF (`/fix`), fondé sur un relevé de rendu |
+| **Branche** | `fix/barre-mobile` — 2 enregistrements |
+| **Fusion** | **`16dd3fb`** (`--no-ff`) |
+| **Prompt pilote** | `prompts/v0.4/CORRECTIF_barre-mobile_v1.md` |
+| **Version** | **0.4.0 → 0.4.1** (patch : `fix/*`) |
+
+### Le défaut, et pourquoi la porte ne pouvait pas le voir
+
+E-2a avait livré un menu de débordement qui **ne s'armait à aucune largeur de téléphone réel**. Deux
+causes, toutes deux mesurées par le Tech Lead dans un navigateur, corroborées sur un iPhone 14 Pro Max.
+
+**Le signal ne pouvait pas voir un retour à la ligne.** `nav` avait le droit de passer à la ligne : la
+liste des liens y descendait et retrouvait sa largeur naturelle. `scrollWidth` **égalait** `clientWidth`
+de 360 à 601 px. `layoutNav()` ne voyait donc structurellement **aucun** débordement. *Une barre qui
+passe à la ligne n'est plus une barre — c'était ça, le défaut.*
+
+**Le socle ne rétrécissait jamais** : 404 px pour 288 disponibles à 320, soit **116 px de trop** avant
+le moindre lien. Le menu agissait sur les 327 px des liens pendant que le terme dominant était ailleurs.
+
+> **Le prompt reconnaît que la proposition écartée était la bonne.** À la session 6, j'avais proposé de
+> garder aussi « le socle irréductible de la barre » ; le Tech Lead l'avait refusé au motif que la barre
+> a le droit de passer à la ligne. La prémisse était juste, la conclusion inverse de ce qu'elle aurait
+> dû être. C'est écrit dans son §1, et ça mérite d'être noté.
+
+### Ce que l'incrément pose
+
+`flex-wrap:nowrap` en base · **variante V1** : logo, séparateur et localisation masqués sous le seuil,
+le nom reste — l'identité tombe de 240 à 156 px · identité **non compressible**, liste des liens seule
+compressible · **seuil porté à 602 px**, imposé par la mesure : à 601 en régime riche la barre passe à
+deux rangées · rembourrage et espacement resserrés, **32 px libérés** pour 25 manquants.
+
+### La mesure du rendu — une première, et ce qu'elle est
+
+Le chef de projet a **autorisé la mesure**, à quatre conditions : mesurer sans juger, sur le fichier
+local de la branche, sans rien installer ni versionner, aux largeurs prescrites et dans les deux
+langues. Toutes tenues — serveur éphémère arrêté, instrumentation supprimée, arbre vérifié.
+
+**C'est une béquille, pas une barrière** : rien ne s'exécute au `/ship`, rien ne rougira demain. Elle
+porte un nom, **D-1**, qui gagne ici son **incident daté**.
+
+### Revue — `BLOCK`, et la réserve était fondée
+
+L'agent a exercé son veto sur une régression **que j'avais introduite** : `flex-wrap:nowrap` retirait au
+panneau du menu sa rangée sans lui en donner d'autre. Reproduit avant acceptation — à 320 px, menu
+ouvert, panneau à `x=312`, **8 px visibles sur 98**, barre passant de 65 à 200 px.
+
+**Je ne l'avais pas vue parce que je n'avais mesuré qu'un seul des deux états du composant.** J'avais
+écrit « l'ouverture et la fermeture — inchangées par ce correctif » : une affirmation présentée comme
+une mesure, et fausse. C'est la faute même que ce correctif répare, commise dans une autre dimension.
+
+**Voie A** : le panneau sort du flux. Remesuré dans les deux états et les deux langues — pleine largeur
+sous la barre, barre stable à 65 px, le lien restant ne disparaît plus, et **la cause de D-11a s'éteint**.
+
+**R-2 ne s'est pas reproduite** (le bouton se comprime à 42 px, pas 46) mais a mis au jour un fait réel :
+la cible tactile est **réduite de 4 px**. **D-5 acquittée** : `Segoe UI` prouvée résolue par mesure
+différentielle. **Budget du panneau re-dérivé**, 281 → **289 px** — un nombre déclaré doit être vrai,
+pas seulement prudent.
+
+### Le relevé indépendant du Tech Lead, et les trois écritures qu'il a demandées
+
+Relevé sur `e25a304` — deux états, dix largeurs, deux langues : **conforme**. Panneau pleine largeur
+partout, barre stable, hero non recouvert.
+
+**Les 320 px portent désormais leurs deux bornes.** Sous Windows avec `Segoe UI` résolue : 7 px de
+marge — ma mesure. En police de repli, donc **sur tout téléphone réel** : **5 px de débordement** du
+bouton de langue, dans les deux langues — la sienne. Je ne détenais qu'une borne ; le §9 aurait dit vrai
+sur mon poste et faux partout ailleurs.
+
+**L'énumération des six états** entre au §9 : menu fermé/ouvert, langue fr/en, pointeur fin/grossier —
+trois axes, huit combinaisons — plus deux conditions à part, avec/sans JavaScript et le régime. Avec ce
+que la campagne a couvert **et ce qu'elle n'a pas couvert** : sans JavaScript, le clavier, Safari iOS.
+C'est cette liste qui rendra la prochaine campagne **falsifiable**.
+
+**D-12**, mesurée deux fois indépendamment : de 602 à 900 px au moins, la barre occupe **deux rangées**
+(114 px contre 65), dans les deux langues. Préexistante, hors mandat — mais c'est **le défaut visible
+qui reste**, et **E-2b l'aggravera**. À trancher avant lui.
+
+**R-3 entériné** : la colonne « liens restants » du §3.3 était descriptive, pas normative. Seuls « une
+rangée » et « zéro débordement » descendent au §9.
+
+### Leçon
+
+**Écrite des deux côtés, indépendamment, avant lecture croisée** — et c'est ce qui la valide :
+*déclarer un comportement « inchangé » est une affirmation, pas une mesure ; un composant à états ne se
+mesure jamais dans un seul de ses états.* Le Tech Lead l'a portée au carnet du référentiel sous
+**RD-043**. La part qui m'en revient est l'énumération : c'est elle qui rend une campagne falsifiable,
+parce qu'elle dit ce qui **n'a pas** été couvert.
+
+### Validation humaine due
+
+L'aspect de la barre réduite — sans logo ni localisation · la rupture 601 → 602 · le **clavier**,
+jamais validé depuis E-2a · **Safari iOS**, toutes mes mesures venant d'un moteur Chromium.
