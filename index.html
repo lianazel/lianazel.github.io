@@ -11,33 +11,64 @@
   body { background:var(--dark); color:var(--text); font-family:'Segoe UI',sans-serif; overflow-x:hidden; }
 
   /* NAV */
-  nav { position:fixed; top:0; width:100%; background:rgba(15,14,23,.92); backdrop-filter:blur(10px); z-index:100; display:flex; justify-content:space-between; align-items:center; padding:1rem 2.5rem; border-bottom:1px solid rgba(108,99,255,.2); gap:1rem; flex-wrap:wrap; }
+  /* Petit ecran d'abord : les valeurs de base sont celles du TELEPHONE, et l'on
+     ELARGIT au-dessus du seuil (bloc en min-width plus bas). Tranche de la dette
+     D-2 qui concerne la navigation ; la grille de projets garde sa max-width. */
+  nav { position:fixed; top:0; width:100%; background:rgba(15,14,23,.92); backdrop-filter:blur(10px); z-index:100; display:flex; justify-content:space-between; align-items:center; padding:.8rem 1rem; border-bottom:1px solid rgba(108,99,255,.2); gap:1rem; flex-wrap:wrap; }
 
   /* IDENTITY (haut à gauche — recruteurs) */
-  .identity { display:flex; align-items:center; gap:.85rem; min-width:0; }
-  .logo-icon { font-size:1.25rem; font-weight:800; background:linear-gradient(135deg,var(--c1),var(--c2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap; }
-  .identity-divider { width:1px; height:32px; background:linear-gradient(180deg,transparent,rgba(108,99,255,.5),transparent); }
+  .identity { display:flex; align-items:center; gap:.55rem; min-width:0; }
+  .logo-icon { font-size:1.05rem; font-weight:800; background:linear-gradient(135deg,var(--c1),var(--c2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; white-space:nowrap; }
+  .identity-divider { width:1px; height:26px; background:linear-gradient(180deg,transparent,rgba(108,99,255,.5),transparent); }
   .identity-info { display:flex; flex-direction:column; gap:.1rem; line-height:1.2; min-width:0; }
-  .identity-name { font-size:.95rem; font-weight:800; background:linear-gradient(135deg,#38bdf8,#3b82f6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:.4px; white-space:nowrap; }
-  .identity-location { font-size:.75rem; color:var(--sub); display:flex; align-items:center; gap:.3rem; }
+  .identity-name { font-size:.82rem; font-weight:800; background:linear-gradient(135deg,#38bdf8,#3b82f6); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; letter-spacing:.2px; white-space:nowrap; }
+  .identity-location { font-size:.68rem; color:var(--sub); display:flex; align-items:center; gap:.3rem; }
   .identity-location::before { content:"📍"; font-size:.8rem; }
-  .identity-location .loc-detail { color:var(--sub); opacity:.75; margin-left:.15rem; }
+  .identity-location .loc-detail { color:var(--sub); opacity:.75; margin-left:.15rem; display:none; }
 
+  /* overflow:hidden est ce qui rend scrollWidth > clientWidth mesurable : c'est
+     le signal sur lequel le debordement par priorite se decide (UX_METHOD §2.2). */
   nav ul { list-style:none; display:flex; gap:1.5rem; align-items:center; }
+  #nav-links { overflow:hidden; flex:0 1 auto; }
   nav a { color:var(--sub); text-decoration:none; font-size:.9rem; transition:.3s; }
   nav a:hover { color:var(--text); }
   .lang-btn { background:none; border:1px solid rgba(255,255,255,.15); border-radius:50px; padding:.3rem .9rem; cursor:pointer; font-size:.95rem; display:flex; align-items:center; gap:.4rem; color:var(--sub); transition:.3s; white-space:nowrap; }
   .lang-btn:hover { border-color:var(--c1); color:var(--text); }
+  /* Le bouton de langue ne DISPARAIT jamais, il RETRECIT : sous le seuil il ne
+     garde que le drapeau et deux lettres. Raison au CLAUDE.md §9. */
+  .lang-word { display:none; }
 
-  /* Mobile : compact identity */
-  @media (max-width:600px) {
-    nav { padding:.8rem 1rem; }
-    .identity { gap:.55rem; }
-    .logo-icon { font-size:1.05rem; }
-    .identity-divider { height:26px; }
-    .identity-name { font-size:.82rem; letter-spacing:.2px; }
-    .identity-location { font-size:.68rem; }
-    .identity-location .loc-detail { display:none; }
+  /* MENU DE DEBORDEMENT */
+  .nav-toggle { display:none; background:none; border:1px solid rgba(255,255,255,.15); border-radius:12px; color:var(--sub); cursor:pointer; padding:.45rem; align-items:center; justify-content:center; transition:.3s; }
+  .nav-toggle:hover { border-color:var(--c1); color:var(--text); }
+  .nav-toggle svg { width:22px; height:22px; display:block; }
+  .nav-toggle .hidden { display:none; }
+  /* Cible tactile : un doigt fait environ 45px (UX_METHOD §4). Detection par
+     requete de media sur l'absence de survol, JAMAIS par reniflage d'agent. */
+  @media (hover:none) and (pointer:coarse) { .nav-toggle { padding:.7rem; } }
+  .nav-panel { width:100%; }
+  .nav-panel ul { flex-direction:column; align-items:stretch; gap:0; }
+  .nav-panel a { display:block; padding:.7rem .2rem; font-size:.95rem; border-top:1px solid rgba(255,255,255,.06); }
+  /* Sans JavaScript, aucune de ces regles ne s'applique : le panneau reste EN
+     FLUX et les liens demeurent dans la barre. Le mode replie n'existe que
+     lorsque le programme a pose sa classe. */
+  nav.nav-js .nav-panel { display:none; opacity:0; transform:translateY(-6px); transition:opacity .2s ease, transform .2s ease; }
+  nav.nav-js.nav-open .nav-panel { display:block; opacity:1; transform:none; }
+  nav.nav-js.nav-has-overflow .nav-toggle { display:flex; }
+
+  /* PETIT ECRAN D'ABORD — ELARGISSEMENTS DE LA BARRE
+     Ecrites en largeur MINIMALE : les valeurs ci-dessus sont celles du telephone.
+     601 et non 600 — voir la note du bloc de fin de feuille. */
+  @media (min-width:601px) {
+    nav { padding:1rem 2.5rem; }
+    .identity { gap:.85rem; }
+    .logo-icon { font-size:1.25rem; }
+    .identity-divider { height:32px; }
+    .identity-name { font-size:.95rem; letter-spacing:.4px; }
+    .identity-location { font-size:.75rem; }
+    .identity-location .loc-detail { display:inline; }
+    .lang-word { display:inline; }
+    .lang-abbr { display:none; }
   }
 
   /* HERO */
@@ -164,13 +195,31 @@
       <div class="identity-location" data-i18n="loc">Région Parisienne <span class="loc-detail">(RER Ligne E — 45 min gare Saint-Lazare)</span></div>
     </div>
   </div>
-  <ul>
-    <li><a href="#skills" data-i18n="nav_skills">Compétences</a></li>
-    <li><a href="#experience" data-i18n="nav_exp">Expérience</a></li>
-    <li><a href="#projets" data-i18n="nav_proj">Projets</a></li>
-    <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
+  <!-- data-nav-priority : rang 1 = DERNIERE a quitter la barre. Le rang fait foi
+       au CLAUDE.md §9 ; le balisage le porte, le programme ne le redeclare pas. -->
+  <ul id="nav-links">
+    <li data-nav-priority="3"><a href="#skills" data-i18n="nav_skills">Compétences</a></li>
+    <li data-nav-priority="2"><a href="#experience" data-i18n="nav_exp">Expérience</a></li>
+    <li data-nav-priority="1"><a href="#projets" data-i18n="nav_proj">Projets</a></li>
+    <li data-nav-priority="4"><a href="#contact" data-i18n="nav_contact">Contact</a></li>
   </ul>
-  <button class="lang-btn" onclick="toggleLang()" id="langBtn" data-i18n="langBtn">🇬🇧 English</button>
+  <!-- Icone : deux traces SVG INCORPORES, bascules par classe. Aucune police
+       d'icones, aucune requete externe. Masque tant que le programme n'a pas
+       pose sa classe : sans lui, ce bouton ne commanderait rien. -->
+  <button id="nav-toggle" class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-panel">
+    <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+      <path class="icon-burger" d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round"/>
+      <path class="icon-close hidden" d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <!-- Le libelle vit en TROIS morceaux dans le dictionnaire : le raccourcissement
+       est de la PRESENTATION, pas une seconde chaine dans le programme. -->
+  <button class="lang-btn" onclick="toggleLang()" id="langBtn">
+    <span data-i18n="lang_flag">🇬🇧</span><span class="lang-abbr" data-i18n="lang_abbr">EN</span><span class="lang-word" data-i18n="lang_word">English</span>
+  </button>
+  <!-- Panneau de debordement : EN FLUX par defaut. Sans JavaScript il reste
+       vide et inoffensif, et les quatre liens demeurent dans la barre. -->
+  <div id="nav-panel" class="nav-panel"><ul id="nav-overflow"></ul></div>
 </nav>
 
 <!-- HERO -->
@@ -763,7 +812,8 @@ const t = {
     y326:"— Solution développée en partie sur une partition AS/400 partagée aux USA via ",
     y327:". Conversion des spools au format PDF, chargement dynamique de la <em>library list</em> selon le projet et l'environnement (DEV / PROD), etc.",
     y328:"— Développement et déploiement sur l'entrepôt de ",
-    langBtn:"🇬🇧 English"
+    lang_flag:"🇬🇧", lang_abbr:"EN", lang_word:"English",
+    menu_open:"Ouvrir le menu", menu_close:"Fermer le menu"
   },
   en: {
     loc:"Paris Region <span class='loc-detail'>(RER Line E — 45 min from Gare Saint-Lazare)</span>",
@@ -891,7 +941,8 @@ const t = {
     y326:"— Solution partly developed on a shared AS/400 partition in the USA via ",
     y327:". Spool conversion to PDF, dynamic loading of the <em>library list</em> depending on the project and environment (DEV / PROD), etc.",
     y328:"— Development and rollout at the warehouse in ",
-    langBtn:"🇫🇷 Français"
+    lang_flag:"🇫🇷", lang_abbr:"FR", lang_word:"Français",
+    menu_open:"Open menu", menu_close:"Close menu"
   }
 };
 
@@ -905,8 +956,12 @@ function toggleLang() {
     const k = el.getAttribute('data-i18n');
     if (d[k] !== undefined) el.innerHTML = d[k];
   });
-  const btn = document.getElementById('langBtn');
-  if (btn && d.langBtn) btn.textContent = d.langBtn;
+  // Le libelle du bouton de langue etait ici pilote une SECONDE fois, en plus de
+  // la boucle ci-dessus. Idempotent tant que les deux disaient la meme chose —
+  // et faux des que ce libelle varie, ce que cet increment fait justement. Le
+  // dictionnaire est desormais seule source ; cette ecriture directe a disparu.
+  renderMenu();   // les libelles d'accessibilite du menu changent de langue
+  layoutNav();    // ... et leur longueur change : le debordement se recalcule
 }
 
 function copyEmail(btn) {
@@ -943,6 +998,87 @@ const obs = new IntersectionObserver(entries => {
   entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
 }, { threshold:0.1 });
 document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+/* ---- MENU DE DEBORDEMENT (UX_METHOD §2 et §3.7) --------------------------
+   Patron de reference applique tel quel : UN SEUL booleen d'etat, dont
+   renderMenu() derive l'icone ET l'etat d'accessibilite. Deux chemins separes
+   finissent par diverger — c'est le defaut que ce patron corrige (RETEX
+   TwaimWeb, juin 2026).
+   Aucune chaine de langue n'est ecrite ici : les libelles viennent du
+   dictionnaire, comme tout texte traduisible de la page.                    */
+const nav = document.querySelector('nav');
+const navLinks = document.getElementById('nav-links');
+const navOverflow = document.getElementById('nav-overflow');
+const navToggle = document.getElementById('nav-toggle');
+const navPanel = document.getElementById('nav-panel');
+
+// Ordre du document, fige au chargement : c'est celui de la barre.
+const NAV_ITEMS = [...navLinks.children];
+// Ordre de RETRAIT : rang 4 en tete, donc premiere a quitter la barre. Le rang
+// est porte par le balisage et fait foi au CLAUDE.md §9 ; on ne le redeclare pas.
+const NAV_BY_PRIORITY = [...NAV_ITEMS].sort(
+  (a, b) => Number(b.dataset.navPriority) - Number(a.dataset.navPriority)
+);
+
+let menuOpen = false;
+
+// Fonction PURE, sans effet de bord : la derivation se teste hors DOM
+// (UX_METHOD §3.7, note de testabilite). Le DOM ne bouge que dans renderMenu().
+function menuAria(isOpen, labels) {
+  return { expanded: isOpen ? 'true' : 'false', label: isOpen ? labels.close : labels.open };
+}
+
+function renderMenu() {
+  const d = t[lang];
+  const a = menuAria(menuOpen, { open: d.menu_open, close: d.menu_close });
+  navToggle.setAttribute('aria-expanded', a.expanded);
+  navToggle.setAttribute('aria-label', a.label);
+  nav.classList.toggle('nav-open', menuOpen);
+  navToggle.querySelector('.icon-burger').classList.toggle('hidden', menuOpen);
+  navToggle.querySelector('.icon-close').classList.toggle('hidden', !menuOpen);
+}
+
+/* Debordement par PLACE REELLE, jamais par nombre fixe d'entrees : un seuil du
+   type « sous 600px on masque trois entrees » devient faux au premier libelle
+   ajoute ou traduit (UX_METHOD §2.1). Les entrees sont DEPLACEES, pas clonees :
+   un clone dupliquerait ancres et attributs de traduction. */
+function layoutNav() {
+  NAV_ITEMS.forEach(li => navLinks.appendChild(li));   // tout revient dans l'ordre du document
+  let i = 0;
+  while (navLinks.scrollWidth > navLinks.clientWidth && i < NAV_BY_PRIORITY.length) {
+    navOverflow.appendChild(NAV_BY_PRIORITY[i]);
+    i++;
+  }
+  // Le panneau se relit dans l'ordre du document, pas dans l'ordre de retrait.
+  NAV_ITEMS.filter(li => li.parentElement === navOverflow).forEach(li => navOverflow.appendChild(li));
+  nav.classList.toggle('nav-has-overflow', navOverflow.children.length > 0);
+  if (navOverflow.children.length === 0 && menuOpen) { menuOpen = false; renderMenu(); }
+}
+
+navToggle.addEventListener('click', () => { menuOpen = !menuOpen; renderMenu(); });
+// Une ancre interne referme : sinon le panneau masque la cible qu'on vient d'atteindre.
+navPanel.addEventListener('click', (e) => {
+  const a = e.target.closest('a');
+  if (a && a.getAttribute('href') && a.getAttribute('href').startsWith('#') && menuOpen) {
+    menuOpen = false; renderMenu();
+  }
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && menuOpen) { menuOpen = false; renderMenu(); navToggle.focus(); }
+});
+
+// Enrichissement progressif : la classe n'est posee que si le programme tourne.
+nav.classList.add('nav-js');
+// NOTE (dette D-11a) : l'observateur surveille l'element que son propre rappel
+// redimensionne — layoutNav change la hauteur de nav au franchissement de seuil.
+// Pas de divergence : layoutNav est idempotente et sa sortie ne depend que de la
+// LARGEUR, que le rappel ne modifie pas. Mais cela vaut une notification de plus
+// par franchissement, et vraisemblablement un avertissement de boucle en console.
+// Correction prevue : ne reagir qu'au changement de largeur.
+if (typeof ResizeObserver === 'function') new ResizeObserver(layoutNav).observe(nav);
+else window.addEventListener('resize', layoutNav);
+layoutNav();
+renderMenu();
 </script>
 </body>
 </html>

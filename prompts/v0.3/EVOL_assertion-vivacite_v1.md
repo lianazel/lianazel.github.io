@@ -2,6 +2,7 @@
 
 **Projet** : `lianazel.github.io` · **Type** : EVOL (`/ship`) · **Version du prompt** : v1 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
+**Statut** : DÉPOSÉ — en attente de transmission par le chef de projet
 
 > Ce n'est **pas** un correctif. La garde fonctionne aujourd'hui, l'assertion est vivante, aucune
 > anomalie n'est constatée. On ferme un danger **futur** : c'est un durcissement, donc une évolution,

@@ -42,9 +42,9 @@ case "$out_broken" in
   *"Budget de largeur introuvable dans le cadrage"*)
     fail "le temoin defectueux echoue parce que le budget du CLAUDE.md §9 est illisible, pas sur ses defauts semes." ;;
 esac
-# Assertions POSITIVES : UNE PAR CHEMIN BLOQUANT, huit DANS CE BLOC — onze au
-# total sur la porte, les trois autres etant les gardes de non-vacuite assertees
-# en 2/4 (cecite, adresse) et en 3/4 (budget). Leur absence
+# Assertions POSITIVES : UNE PAR CHEMIN BLOQUANT, neuf DANS CE BLOC — treize au
+# total sur la porte, les quatre autres etant les gardes de non-vacuite assertees
+# en 2/4 (cecite, adresse, libelles nav) et en 3/4 (budget). Leur absence
 # signale un controle mort, la ou l'absence de "AVEUGLE" ne signalerait rien.
 #
 # Le compte est ce qui fait la valeur de ce bloc : avec deux assertions sur six
@@ -75,7 +75,8 @@ assert_names 'Texte visible non traduit : "Cette"'         "de couverture du tex
 # la liste blanche, dans la ligne de rapport et dans les messages voisins.
 assert_names 'Adresse de contact incoherente entre les trois occurrences' "de coherence de l'adresse de contact"
 assert_names 'Adresse trop large pour le budget de la carte de contact' "de budget de largeur"
-echo "OK - le temoin echoue en nommant ses huit defauts semes."
+assert_names 'Libelle de navigation trop large pour le panneau du menu' "de largeur des libelles de navigation"
+echo "OK - le temoin echoue en nommant ses neuf defauts semes."
 echo ""
 
 echo "--- 2/4 · Garde de non-vacuite (le temoin de cecite doit echouer) ---"
@@ -100,7 +101,15 @@ case "$out_blind" in
   *"Adresse de contact introuvable ou multiple"*) : ;;
   *) fail "le temoin de cecite ne nomme plus la garde de non-vacuite du controle 7 : garde morte ?" ;;
 esac
-echo "OK - la garde nomme la cecite, et celle du controle 7 est vivante."
+# Meme mecanique pour le controle 9 : sa garde de non-vacuite n'a pas d'autre
+# cible ou mordre — blind.html ne porte aucune entree de navigation prioritaire,
+# la garde y tire son erreur a chaque execution. Sans cette assertion, elle
+# naitrait invisible, comme celle du controle 7 avant la revue du 9 aout.
+case "$out_blind" in
+  *"Libelles de navigation introuvables"*) : ;;
+  *) fail "le temoin de cecite ne nomme plus la garde des libelles de navigation : garde morte ?" ;;
+esac
+echo "OK - la garde nomme la cecite, et celles des controles 7 et 9 sont vivantes."
 echo ""
 
 echo "--- 3/4 · Garde de cadrage (le budget de largeur doit etre lisible) ---"

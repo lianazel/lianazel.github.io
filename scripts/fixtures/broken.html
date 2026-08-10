@@ -19,7 +19,11 @@
        8. l'adresse affichee est TROP LARGE pour le budget ecrit au CLAUDE.md
           (40 caracteres) : elle deborderait de sa carte sur telephone. Une
           seule chaine porte les deux defauts 7 et 8, a dessein — elle diverge
-          du lien ET depasse le budget.
+          du lien ET depasse le budget ;
+       9. un libelle de navigation TROP LONG pour le panneau du menu (40 et 42
+          caracteres, pour 33 admissibles) : il en deborderait. Seme dans les
+          DEUX langues, l'anglais etant ici le pire — le controle doit retenir
+          le pire des deux, et non calculer une seule fois.
 
      ATTENTION — le defaut n° 8 est calibre sur la valeur VIVANTE du CLAUDE.md
      §9 : 40 caracteres exigent 358,4 px. Il cesse de mordre si le budget y est
@@ -47,6 +51,9 @@
 <nav>
   <a href="#present">Section presente</a>
   <a href="#nowhere">Ancre cassee</a>
+  <ul>
+    <li data-nav-priority="1"><a href="#present" data-i18n="nav_trop_long">Libelle de navigation beaucoup trop long</a></li>
+  </ul>
 </nav>
 
 <section id="present">
@@ -69,11 +76,13 @@ const t = {
     only_fr:"Presente uniquement en francais",
     dup_key:"Seconde declaration — ecrase la premiere",
     email_txt:"adresse-beaucoup-trop-longue@temoin.test",
+    nav_trop_long:"Libelle de navigation beaucoup trop long",
     langBtn:"🇬🇧 English"
   },
   en: {
     ok_key:"Correct title", dup_key:"Duplicated key",
     email_txt:"adresse-beaucoup-trop-longue@temoin.test",
+    nav_trop_long:"Navigation label far too long for the panel",
     langBtn:"🇫🇷 Francais"
   }
 };
