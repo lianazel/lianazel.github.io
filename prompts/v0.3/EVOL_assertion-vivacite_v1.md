@@ -2,7 +2,21 @@
 
 **Projet** : `lianazel.github.io` · **Type** : EVOL (`/ship`) · **Version du prompt** : v1 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
-**Statut** : DÉPOSÉ — en attente de transmission par le chef de projet
+**Statut** : PÉRIMÉ — remplacé avant exécution par `prompts/v0.4/EVOL_vivacite-du-filet_v1.md`
+(ne traitait qu'une facette d'un défaut dont l'étendue mesurée est bien plus large)
+
+> ⛔ **PÉRIMÉ — ne pas exécuter.** Ce prompt visait **une** facette du défaut : le marqueur `AVEUGLE`
+> partagé par la famille de gardes. La mesure du 10 août 2026 a montré que le filet comptait
+> **24 chemins bloquants pour 13 assertions**, et que **sept** d'entre eux pouvaient mourir la porte
+> verte — le marqueur partagé n'en expliquant que trois. Le prompt remplaçant traite la porte
+> **entière** et solde la dette **D-10**, ainsi que **D-9** au passage.
+>
+> Sa prémisse était par ailleurs trop optimiste : « la garde fonctionne aujourd'hui, l'assertion est
+> vivante, aucune anomalie n'est constatée » — ce durcissement était en réalité un **trou de
+> couverture déjà ouvert**, pas un danger futur.
+>
+> Fichier **conservé, jamais supprimé** : c'est la trace du moment où l'on n'avait vu qu'un tiers du
+> problème, et cette trace vaut d'être gardée.
 
 > Ce n'est **pas** un correctif. La garde fonctionne aujourd'hui, l'assertion est vivante, aucune
 > anomalie n'est constatée. On ferme un danger **futur** : c'est un durcissement, donc une évolution,

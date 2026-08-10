@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!-- TEMOIN A DICTIONNAIRE MALFORME — preuve que le chemin « dictionnaire
+     malforme » mord. Ce fichier ne fait PAS partie du site.
+
+     La declaration du dictionnaire est bien presente, en bas de ce fichier :
+     ce temoin passe donc le chemin precedent (dictionnaire introuvable) et va
+     mourir un cran plus loin. Ce sont DEUX chemins bloquants distincts dans la
+     source, et ils exigent donc deux temoins : celui qui n'a pas de
+     dictionnaire du tout ne peut pas prouver celui qui en a un de casse.
+
+     Le defaut seme : aucun bloc de langue. C'est l'etat que produirait un
+     remaniement du dictionnaire vers une autre forme — une table indexee par
+     cle plutot que par langue, par exemple — et le controle doit refuser de
+     travailler plutot que de lire des blocs vides et declarer que tout va bien.
+
+     ⚠️ NE JAMAIS ECRIRE ICI LES JETONS DE BLOC DE LANGUE, MEME EN COMMENTAIRE.
+     Le controle balaie le FICHIER ENTIER. La premiere redaction de ce temoin
+     citait les deux reperes pour expliquer leur absence : le controle les y a
+     trouves, a cru les blocs presents, et ce temoin a echoue sur des chemins
+     tout autres. Meme piege que dans dict-absent.html, rencontre le meme jour
+     — un commentaire n'est pas hors de portee de la mesure.
+
+     Attendu : `node scripts/check-i18n.mjs scripts/fixtures/dict-malforme.html`
+     doit echouer avec le message « Dictionnaire malforme ». S'il retourne 0, ce
+     chemin est mort et une page au dictionnaire illisible passerait pour saine.
+
+     NE PAS lui ajouter de blocs fr/en : c'est leur absence qui est utile. -->
+
+<html lang="fr">
+<head><meta charset="UTF-8"><title>Temoin a dictionnaire malforme</title></head>
+<body>
+<section id="present">
+  <h2 data-i18n="malforme_h2">Titre</h2>
+</section>
+
+<script>
+// La declaration existe, mais elle ne porte aucun bloc de langue : les deux
+// reperes `fr: {` et `en: {` sont introuvables, et la fin de declaration ne
+// peut donc pas etre situee non plus.
+const t = {
+  titre:"Une table indexee par cle, pas par langue"
+};
+</script>
+</body>
+</html>

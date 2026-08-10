@@ -4,9 +4,17 @@
      scripts/check-i18n.mjs echoue quand il doit echouer.
      Si "node scripts/check-i18n.mjs scripts/fixtures/broken.html" retourne 0,
      la porte est en panne : la reparer AVANT toute livraison.
-     Defauts semes ici, un par controle bloquant :
+     Defauts semes ici, un par CHEMIN bloquant que ce temoin couvre — et la
+     nuance compte : le controle de symetrie en a DEUX, pas un.
        1. cle "orphan_key" utilisee dans la page, absente des deux blocs ;
-       2. cle "only_fr" declaree en fr, absente en en (asymetrie) ;
+       2. asymetrie du dictionnaire, semee dans les DEUX SENS :
+            - "only_fr" declaree en fr, absente en en  (chemin FR -> EN) ;
+            - "only_en" declaree en en, absente en fr  (chemin EN -> FR).
+          Le sens EN -> FR n'etait pas seme avant le 10 aout 2026, et son chemin
+          a ete vu MOURIR la porte VERTE le 9 aout : une cle retiree du bloc
+          FRANCAIS ne faisait rougir personne, alors que son miroir etait
+          asserte depuis la revue R1. Deux branches de code, deux defauts semes,
+          deux assertions — un seul defaut n'aurait prouve que la moitie ;
        3. cle "dup_key" declaree deux fois dans le bloc fr (doublon) ;
        4. ancre #nowhere sans element correspondant (ancre cassee) ;
        5. un attribut data-i18n vide ;
@@ -81,6 +89,7 @@ const t = {
   },
   en: {
     ok_key:"Correct title", dup_key:"Duplicated key",
+    only_en:"Present only in English",
     email_txt:"adresse-beaucoup-trop-longue@temoin.test",
     nav_trop_long:"Navigation label far too long for the panel",
     langBtn:"🇫🇷 Francais"
