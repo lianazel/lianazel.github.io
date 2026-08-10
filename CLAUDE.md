@@ -444,7 +444,33 @@ et la pastille en réclamait 290 au minimum.*
 - **Règles de lecture côté Tech Lead** : (1) lire seulement après clôture, jamais pendant ;
   (2) vérifier l'incrément **par le contenu** du fichier, jamais par sa date de modification ;
   (3) l'état de publication vers le dépôt distant ne se déduit **jamais** d'un artefact — seule une
-  comparaison de références en direct fait foi.
+  comparaison de références en direct fait foi ;
+  (4) **ce qu'affiche un navigateur est un artefact ; ce que sert le serveur est la référence.**
+
+### La règle (4), et l'incident qui l'a produite
+
+**10 août 2026.** Le correctif de la barre mobile venait d'être publié. Sur un iPhone réel, la barre
+affichait toujours l'ancien comportement — logo présent, localisation présente, trois rangées. Un
+quart d'heure de doute avant de comprendre : **le site publié était à jour, c'était Safari qui servait
+sa copie en cache.**
+
+Ce qui a tranché n'est pas une intuition, c'est une **récupération directe** de
+`https://lianazel.github.io/index.html`, où les règles de la version publiée étaient bien présentes.
+Et un second signal, indépendant : la localisation s'affichait **sans son détail** — combinaison qui
+n'existe que dans la version précédente, jamais dans la nouvelle.
+
+**C'est exactement la règle (3), un cran plus loin.** Là, l'artefact trompeur était un fichier de
+`.pipeline/` ; ici, c'est l'écran d'un téléphone. Dans les deux cas, **quelque chose s'interpose entre
+le fait et ce qu'on en voit** — un rapport écrit hier, ou un cache.
+
+**En pratique** : avant de conclure qu'une publication n'a pas pris, récupérer la page servie et y
+chercher un **marqueur de la version attendue** — une règle, une classe, une valeur qui n'existait pas
+avant. Et pour lever un doute sur un appareil, ouvrir l'adresse avec une chaîne de requête
+(`…/?v=2`) : c'est non destructif, et ça force une récupération neuve.
+
+> **Le piège est d'autant plus vicieux qu'il ressemble à un défaut réel.** Une capture d'écran qui
+> montre l'ancien comportement est indiscernable d'une régression — sauf si l'on va lire ce que le
+> serveur envoie vraiment.
 
 ---
 
