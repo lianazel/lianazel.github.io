@@ -2,6 +2,7 @@
 
 **Projet** : `lianazel.github.io` · **Type** : AUDIT (`/diagnose`) · **Version du prompt** : v1 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
+**Statut** : EXÉCUTÉ — 9 août 2026 · lecture seule, aucune branche · livrable `.pipeline/RAPPORT_DIAGNOSTIC_pastille-contact_v1.md`
 
 > 🔒 **LECTURE SEULE.** Ce prompt ne modifie **aucun fichier** du site, ni style, ni page, ni script,
 > ni cadrage. Il produit **un seul livrable** : un rapport. Si tu te surprends à vouloir corriger,

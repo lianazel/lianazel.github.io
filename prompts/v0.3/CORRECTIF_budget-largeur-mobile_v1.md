@@ -2,6 +2,29 @@
 
 **Projet** : `lianazel.github.io` · **Type** : CORRECTIF (`/fix`) · **Version du prompt** : v1 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
+**Statut** : PÉRIMÉ — remplacé avant exécution par `CORRECTIF_budget-largeur-mobile_v2.md` (motif au bandeau ci-dessous)
+
+> # ⛔ PROMPT PÉRIMÉ — NE PAS EXÉCUTER
+>
+> **Cette révision v1 a été remplacée le 9 août 2026 par
+> `CORRECTIF_budget-largeur-mobile_v2.md`, avant toute exécution.**
+>
+> Motif : son §2.5 demandait de mesurer « la largeur exigée par **la pastille** », alors que son §2.2
+> autorise justement la pastille à **se replier**. Une fois le repli permis, cette grandeur n'a plus
+> de sens — le prompt demandait de mesurer une chose que sa propre consigne rendait variable.
+> Le défaut a été relevé par Claude Code à la lecture, avant lancement, et le rédacteur l'a reconnu.
+>
+> La v2 corrige deux points : l'invariant du huitième contrôle devient **« l'adresse seule tient dans
+> la largeur disponible »** — l'adresse est le seul atome insécable du bloc —, et le sens de
+> dérivation du budget est rendu explicite : il **découle de la mise en page corrigée**, jamais de ce
+> que l'adresse du jour exige.
+>
+> **Ce fichier est conservé, et non supprimé, à dessein.** Il est la trace de ce qui a été demandé et
+> de pourquoi cela a changé. Une révision effacée laisse croire que le contrat a toujours été le bon.
+> *(Réserve R8 de la revue du 9 août 2026 : « le prompt v1 périmé part au dépôt sans le dire ».
+> Portée au Tech Lead, dont ce fichier relève, et soldée ici.)*
+
+---
 
 > **Basé sur `.pipeline/RAPPORT_DIAGNOSTIC_pastille-contact_v1.md`.** Aucune correction n'est fondée
 > sur une hypothèse : chaque geste ci-dessous renvoie à une cause racine numérotée de ce rapport.

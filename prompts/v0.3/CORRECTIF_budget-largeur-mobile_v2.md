@@ -2,6 +2,7 @@
 
 **Projet** : `lianazel.github.io` · **Type** : CORRECTIF (`/fix`) · **Version du prompt** : v2 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
+**Statut** : EXÉCUTÉ — 9 août 2026 · branche `fix/budget-largeur-mobile` · fusion `8687284` · version 0.3.0 → 0.3.1
 
 > **Basé sur `.pipeline/RAPPORT_DIAGNOSTIC_pastille-contact_v1.md`.** Aucune correction n'est fondée
 > sur une hypothèse : chaque geste ci-dessous renvoie à une cause racine numérotée de ce rapport.

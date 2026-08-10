@@ -2,6 +2,7 @@
 
 **Projet d'origine** : `lianazel.github.io` · **Type** : CHORE · **Version du prompt** : v1 · **Date** : 9 août 2026
 **Rédacteur** : Cowork (Tech Lead) · **Destinataire** : Claude Code
+**Statut** : EXÉCUTÉ — 9 août 2026 · geste hors dépôt, aucune branche ici · a écrit `TWAIM_R&D/RETEX_HARNAIS_20260809_session4-portfolio.md` et `RD-032` à `RD-034` au référentiel
 
 > ⚠️ **Geste HORS DÉPÔT DE PROJET.** Ce prompt n'écrit **rien** dans le dépôt du portfolio. Il touche
 > **le référentiel central**, sur la machine. Il fait l'objet d'un prompt dédié précisément pour ça :
