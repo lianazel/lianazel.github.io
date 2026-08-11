@@ -358,3 +358,11 @@ Deux compléments, et le second est le plus opératoire :
 plutôt que mesuré : taille de bundle, couverture de tests, temps de réponse, nombre de requêtes,
 volume de données. Le geste : **re-dériver avec une méthode différente de celle qui a produit le
 nombre**, et si la méthode d'origine n'est pas écrite, la faire écrire avant d'accepter le critère.
+
+**Promue en global le 11 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un nombre reçu n'est pas plus mesuré qu'un nombre écrit : la source ne change
+pas son statut », avec l'empreinte `c1a1424` de la présente jumelle locale. Registre global porté de
+**70 à 71 entrées** ; les **421 lignes préexistantes vérifiées intactes à l'octet** contre une copie
+prise avant écriture (même empreinte de tête, 0 ligne supprimée ou modifiée, 6 ajoutées). Geste validé
+dans le fil de la session — la promotion figure à l'inventaire fermé des gestes hors dépôt autorisés
+(entrée A-1).
