@@ -426,10 +426,23 @@ ou d'une colonne, inventaire de dépendances vulnérables, revue de conformité,
 personnelles. Le geste tient en une question : *quelle forme de la famille mon motif ne peut-il pas
 voir ?* — à poser avant d'écrire la conclusion, pas après.
 
-**Promue en global le 11 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
-seul, sous le titre « Un balayage qui conclut à une ABSENCE ne vaut que par la couverture de son motif,
-jamais par ce qu'il a trouvé », avec l'empreinte `a898d20` de la présente jumelle locale. Registre
-global porté de **72 à 73 entrées** ; les **433 lignes préexistantes vérifiées intactes à l'octet**
-contre une copie prise avant écriture (**même empreinte `1dafa39…`**, 0 ligne supprimée ou modifiée,
-6 ajoutées). Geste validé dans le fil de la session — la promotion figure à l'inventaire fermé des
-gestes hors dépôt autorisés (entrée A-1).
+**Non promue en global à ce jour — la promotion appartient au Tech Lead.** Décision du chef de projet
+du 11 août 2026.
+
+**Ce qui s'est passé, et la trace reste parce qu'elle est instructive.** À la validation de la leçon,
+j'ai appliqué la boucle d'auto-amélioration telle qu'elle est écrite dans mes règles globales :
+écriture locale, puis promotion immédiate au registre global, la leçon remplissant deux critères de
+promotion. **L'entrée a bien été écrite** dans `~/.claude/lessons.md` — en ajout seul, 72 → 73 entrées
+— **puis retirée à la demande du chef de projet**, le circuit de ce projet réservant la proposition de
+promotion au Tech Lead. Le registre a été **restauré à l'octet** : 433 lignes, 72 entrées, empreinte
+`1dafa39…` identique à l'état d'avant écriture, vérifiée après retrait.
+
+**La règle du projet, à retenir pour la prochaine fois** : la validation d'une leçon par le chef de
+projet vaut pour le **registre local**. La promotion au registre global est **proposée par le Tech
+Lead**, elle ne se déduit pas des critères d'universalité.
+
+**Positionnement demandé par le chef de projet, à porter au `/land`** : cette leçon n'est **pas un
+amendement** de celle du 8 août, mais une **entrée propre**. Celle du 8 août couvre le sens des **faux
+positifs** — un indicateur mal choisi fabrique le défaut qu'il cherche. Celle-ci couvre le sens
+**inverse** — une absence conclue à tort parce que le motif était plus étroit que la famille. **Les
+deux directions ne se déduisent pas l'une de l'autre.**
