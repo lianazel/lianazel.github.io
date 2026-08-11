@@ -886,3 +886,82 @@ abîmer la mise en page.
 
 Porte **verte** sur `main` après fusion, **4 avertissements** attendus (D-4). `scripts/`
 **rigoureusement intact** — troisième incrément d'affilée où l'un des deux domaines reste indemne.
+
+---
+
+## 11 août 2026 — La carte IBM i dit ce que je sais faire, et se traduit (session 12)
+
+| | |
+|---|---|
+| **Type** | EVOL (contenu) |
+| **Branche** | `feat/carte-ibmi` — 2 enregistrements |
+| **Fusion** | **`af426a0`** (`--no-ff`) — 5 fichiers, +321 / −7 |
+| **Prompt pilote** | `prompts/v0.6/EVOL_carte-ibmi_v2.md` (la v1, jamais transmise, entre avec son bandeau PÉRIMÉ) |
+| **Version** | **0.6.1 → 0.7.0** (minor : `feat/*`, le contenu public change) |
+| **Dette** | aucune soldée — comble un **trou de contenu constaté sur le terrain** |
+
+### L'origine, et elle n'est pas technique
+
+**Le 10 août, un recruteur a demandé au chef de projet s'il avait pratiqué le RPG en format libre. Il
+n'a pas su répondre.** La réponse est oui — douze programmes sur quatorze. **Rien de cela n'était sur
+la page**, et la carte s'intitulait « IBM / Legacy », ce qui dit l'inverse de ce que le site vend. Son
+titre était de surcroît **le seul de la grille sans clé de traduction** : il serait resté français en
+anglais.
+
+### Ce que l'incrément pose
+
+Titre `sk3_title` = `IBM i · RPG & modernisation` / `IBM i · RPG & modernization`. Cinq étiquettes
+deviennent huit : le RPG format libre, le SQL incorporé, le CLLE, le DDS et les API système OS/400
+entrent ; `AS/400 — IBMi` et `OS/400` seule sortent. **L'orthographe anglaise du titre diffère d'une
+lettre** — c'est exactement pourquoi la clé était nécessaire, et pourquoi les libellés ont été
+**extraits du prompt par programme** plutôt que retapés.
+
+### Deux arbitrages du chef de projet, l'un et l'autre demandés après mesure
+
+**Le prompt, appliqué à la lettre, faisait ROUGIR la porte.** `DDS` n'existait pas dans la liste
+blanche, et les retraits laissaient trois entrées orphelines : sept avertissements au lieu de quatre.
+**Ses critères 4 et 8 s'excluaient.** Mesuré sur copie **avant d'écrire une ligne dans le dépôt**,
+puis arrêt. **Critère 8 levé pour la seule liste blanche** — la mécanique du filet reste intacte à
+l'octet. Ce qui fonde la distinction : *la liste blanche est un registre de **contenu**, pas de la
+logique de porte.*
+
+**Le critère 6 échouait aussi.** Le prompt annonce que la carte « retire deux cadratins et n'en ajoute
+qu'un » : elle en retire **un** et en ajoute **trois** — car **un titre traduisible vit en trois
+exemplaires**, la page et les deux dictionnaires. Le raisonnement portait sur ce qu'on *voit*, le
+compteur compte ce qui est *écrit*. Titre au **point médian**, convention déjà en usage dans le hero.
+
+### Revue `NEEDS WORK` — et la réserve qui m'apprend le plus
+
+**Mon compte de cadratins était faux** : `150 → 149`, pas `151 → 150`. Mon motif d'exclusion, ancré en
+début de ligne, ratait les **lignes de continuation d'un commentaire de bloc**.
+
+Mais le nombre n'est pas l'erreur. **J'avais présenté ce 151 comme une vérification du chiffre du
+prompt**, alors que j'avais reproduit son omission exacte. C'est la leçon globale du 8 août — *deux
+sources qui se confirment ne prouvent rien si elles partagent l'hypothèse fausse* — commise **au
+moment précis où je me félicitais de mesurer plutôt que de croire**. Leçon écrite.
+
+**Et une régression documentaire est bien la mienne** : le `CLAUDE.md` §6 annonçait « 104 entrées » de
+liste blanche, exact **avant** moi, rendu faux en en retirant trois. Corrigé à 102.
+
+### Trois points laissés au Tech Lead
+
+1. **Le bandeau PÉRIMÉ de la v1 n'était pas prescrit** par ce prompt-ci. Posé par analogie avec
+   l'usage de la maison — mais c'est **un artefact du Tech Lead modifié sans mandat écrit**.
+2. **Le critère 6 pénalise structurellement l'i18n** : un titre traduisible coûte trois exemplaires,
+   un titre non traduit un seul. Un compteur de ponctuation a piloté une décision de contenu visible.
+   Et **sa convention n'est pas écrite** : trois lectures défendables donnent 153, 150 et 139.
+3. **Le `CLAUDE.md` §3 annonce 132 clés pour 126 utilisées** ; la mesure donne **178 et 171**. Dérive
+   **antérieure**, non corrigée — mais elle montre que ma régression n'était pas un accident : les
+   nombres du cadrage se périment en silence, faute d'être lus par quoi que ce soit.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4). Clés `174/174 → 178/178`, symétriques.
+Liste blanche `104 → 102`. **Mécanique du filet rigoureusement intacte** — `gate.sh`, `check-i18n.mjs`
+et les huit témoins n'ont pas bougé d'un octet.
+
+### Validation humaine due — et la cible n'est pas celle qu'on croyait
+
+**C'est LE TITRE qu'il faut regarder à 320 px**, pas les étiquettes : il passe de **12 à 27
+caractères** et passera vraisemblablement sur deux lignes. `API système OS/400`, que mon premier
+rapport désignait comme le risque, a en réalité **77 px de marge** — mesure de la revue.

@@ -320,3 +320,41 @@ Trois compléments du même incident :
 outil de qualité signalant un « code smell ». Constante partagée, table de correspondance réutilisée,
 composant employé à deux endroits, colonne dénormalisée : la structure dit qu'ils *peuvent* diverger,
 seul le domaine dit s'ils le *doivent*.
+
+---
+
+## 11 août 2026 — Un nombre reçu n'est pas plus mesuré qu'un nombre écrit : la source ne change pas son statut
+
+**Type** : Erreur (relevée en revue)
+
+**Contexte** : incrément « carte IBM i ». Son critère 6 exigeait que le compte de tirets cadratins de
+la page **baisse**, et le prompt déclarait un point de départ : **151 hors commentaires**.
+
+**Erreur** : j'ai voulu bien faire. J'ai mesuré, trouvé **153**, cherché l'écart, compris qu'il fallait
+exclure aussi les commentaires JavaScript, retrouvé **151** — et écrit au chef de projet : *« le
+chiffre du prompt est juste, c'est ma première lecture qui était trop étroite »*.
+
+**J'avais reproduit son omission exacte.** Mon motif d'exclusion était ancré en **début de ligne**
+(`^\s*//`) et ratait les **lignes de continuation d'un commentaire de bloc** ; l'une d'elles porte un
+cadratin. Le compte juste est **150**. Les deux mesures concordaient parce qu'elles partageaient le
+même angle mort — et j'ai appelé cette concordance une **vérification**.
+
+**Correction/Pattern** : **la provenance d'un nombre ne dit rien de sa fiabilité.** Je mesure
+scrupuleusement mes propres nombres et j'accorde un crédit gratuit à ceux qui arrivent dans un
+document — prompt, cadrage, rapport de revue. Or un nombre reçu est exactement dans l'état d'un nombre
+écrit : **déclaré**. C'est ce que D-7 nomme, appliqué à l'entrant plutôt qu'au sortant.
+
+Deux compléments, et le second est le plus opératoire :
+
+1. **Retrouver le nombre annoncé n'est une vérification que si l'on a changé de méthode.** Reproduire
+   la mesure d'origine, même de bonne foi, ne teste rien — c'est la leçon du 8 août sur les deux
+   sources qui partagent l'hypothèse fausse, rencontrée ici **en croyant faire l'inverse**.
+2. **Un critère chiffré sans convention écrite n'est pas falsifiable.** Sur ce fichier, trois lectures
+   également défendables donnent **153**, **150** et **139**. Tant que la règle de comptage n'est pas
+   écrite, « le compte doit baisser » ne désigne aucun fait vérifiable — et c'est précisément ce flou
+   qui a laissé mon erreur passer pour une confirmation.
+
+**Applicable globalement ?** : **Oui** — tout seuil, budget, quota ou métrique reçu d'un document
+plutôt que mesuré : taille de bundle, couverture de tests, temps de réponse, nombre de requêtes,
+volume de données. Le geste : **re-dériver avec une méthode différente de celle qui a produit le
+nombre**, et si la méthode d'origine n'est pas écrite, la faire écrire avant d'accepter le critère.
