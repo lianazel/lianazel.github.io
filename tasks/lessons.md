@@ -321,6 +321,18 @@ outil de qualité signalant un « code smell ». Constante partagée, table de c
 composant employé à deux endroits, colonne dénormalisée : la structure dit qu'ils *peuvent* diverger,
 seul le domaine dit s'ils le *doivent*.
 
+**Promue en global le 11 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un motif structurel ne qualifie pas un défaut : le fait métier tranche, et il
+n'est pas dans le code », avec l'empreinte `2ed140b` de la présente jumelle locale. Registre global
+porté de **71 à 72 entrées** ; les **427 lignes préexistantes vérifiées intactes à l'octet** contre une
+copie prise avant écriture (même empreinte de tête, 0 ligne supprimée ou modifiée, 6 ajoutées).
+
+> **Note de rédaction.** L'entrée globale porte l'accent sur ce que la jumelle locale ne disait qu'en
+> passant : **le signal d'alerte est l'accord**, pas le désaccord. Deux analyses indépendantes qui
+> concordent ne mesurent que leur lecture commune de l'artefact — et quand la prémisse manquante lui
+> est extérieure, leur concordance donne à l'erreur une force qu'elle n'aurait pas eue seule. C'est la
+> part réutilisable ailleurs ; le cas de la clé partagée n'en est que l'occasion.
+
 ---
 
 ## 11 août 2026 — Un nombre reçu n'est pas plus mesuré qu'un nombre écrit : la source ne change pas son statut
