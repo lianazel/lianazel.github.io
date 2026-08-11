@@ -274,3 +274,49 @@ fermé des gestes hors dépôt autorisés (entrée A-1).
 > registre global prise **avant** écriture : les **409 lignes préexistantes** vérifiées identiques à
 > l'octet (même empreinte de tête), **0 ligne supprimée ou modifiée**, 12 ajoutées. Registre porté de
 > **68 à 70 entrées**.
+
+---
+
+## 11 août 2026 — Un motif structurel ne qualifie pas un défaut : le fait métier tranche, et il n'est pas dans le code
+
+**Type** : Erreur (correction du chef de projet)
+
+**Contexte** : correctif D-14, qui supprimait un couplage réel — quatre étiquettes de section
+empruntaient les clés de la barre de navigation, deux vocabulaires différents forcés dans une seule
+clé. En inventoriant les couplages restants, `e4_title` est apparue **employée par deux blocs** de la
+frise d'expérience : Groupe Prenant et Toyota France.
+
+**Erreur** : j'ai qualifié ce partage de défaut, et l'ai inscrit au cadrage comme *« exactement le
+couplage que D-14 vient de supprimer, encore vivant à trois lignes du code corrigé »*. L'agent de
+revue avait conclu de même, **indépendamment**, à partir du même indice — ce qui m'a conforté.
+
+Le chef de projet a répondu en une phrase : *« j'ai occupé le même poste »*. Les deux blocs portent le
+même intitulé parce qu'il **est** le même. C'est une réutilisation légitime de libellé, de la famille
+de `x64` ou `see_site`.
+
+**Correction/Pattern** : **un motif structurel — une clé employée deux fois, une valeur dupliquée, une
+constante partagée — établit une *possibilité* de divergence, jamais un défaut.** Ce qui fait le
+défaut est que les deux emplacements doivent dire des choses **différentes**, et cela ne se lit ni
+dans le code, ni dans le dictionnaire : c'est un fait du domaine.
+
+Le discriminant, à poser avant de qualifier : *ces deux emplacements devraient-ils pouvoir diverger
+un jour ?* Si oui, le partage est un couplage. Si non, c'est de la factorisation, et la supprimer
+introduirait le vrai défaut — deux copies qui dérivent.
+
+Trois compléments du même incident :
+
+1. **Deux analyses indépendantes qui concordent ne valent pas preuve** quand elles partagent la
+   **prémisse** manquante. La revue et moi n'avions ni l'une ni l'autre accès au fait métier ; notre
+   accord ne mesurait que notre lecture commune du code. C'est la leçon du 8 août 2026 sur les deux
+   sources fausses qui se confirment, rencontrée sur un autre objet.
+2. **Un défaut voisin réel augmente le risque de faux positif.** Je venais de passer la journée sur un
+   couplage authentique ; j'ai reconnu sa forme là où seul le motif se répétait. Le contexte récent
+   rend le gabarit plus facile à appliquer, pas plus juste.
+3. **Deux mesures de moi se contredisaient**, et j'allais arbitrer entre deux scripts. La lecture des
+   **lignes brutes** a tranché en trois secondes : mon script de tableau était faux. Quand deux
+   instruments divergent, aller à la source plutôt que départager les instruments.
+
+**Applicable globalement ?** : **Oui** — toute revue de code, toute détection de duplication, tout
+outil de qualité signalant un « code smell ». Constante partagée, table de correspondance réutilisée,
+composant employé à deux endroits, colonne dénormalisée : la structure dit qu'ils *peuvent* diverger,
+seul le domaine dit s'ils le *doivent*.
