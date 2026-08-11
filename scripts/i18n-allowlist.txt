@@ -75,19 +75,17 @@ Tuning             # element de « Performance Tuning », intitule de cursus Ora
 
 # --- Ecosysteme IBM / AS-400 ------------------------------------------------
 IBM                # constructeur
-IBMi               # nom de systeme IBM
 AS/400             # nom de plateforme IBM
-OS/400             # systeme d'exploitation IBM
 RPG                # langage IBM
 RPG-ILE            # variante ILE du langage RPG
 III/IV/ILE         # generations du langage RPG
 CLLE               # Control Language ILE, langage IBM
+DDS                # Data Description Specifications, langage de description IBM
 IFS                # Integrated File System, composant IBM
 Adelia             # atelier de genie logiciel Hardis
 Visual-Adelia      # variante graphique de l'atelier Adelia
 UNIBOL             # emulateur AS/400 sous UNIX
 UNIX               # famille de systemes d'exploitation
-Legacy             # employe ici dans « IBM / Legacy », deja en anglais
 
 # --- Ecosysteme PC Soft ------------------------------------------------------
 Windev             # atelier PC Soft
