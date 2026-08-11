@@ -378,3 +378,50 @@ pas son statut », avec l'empreinte `c1a1424` de la présente jumelle locale. Re
 prise avant écriture (même empreinte de tête, 0 ligne supprimée ou modifiée, 6 ajoutées). Geste validé
 dans le fil de la session — la promotion figure à l'inventaire fermé des gestes hors dépôt autorisés
 (entrée A-1).
+
+---
+
+## 11 août 2026 — Un filtre qui trouve un cas ne mesure pas la famille : un balayage qui conclut à une absence porte son motif
+
+**Type** : Erreur (relevée en revue)
+
+**Contexte** : incrément « preuve IBM i ». Le critère P8 du prompt exigeait qu'aucun nom d'objet client
+n'entre dans le texte **ajouté** — le dépôt est public, et le chef de projet venait de trancher cet
+arbitrage de confidentialité. J'ai écrit le filet correspondant, puis je l'ai étendu à **toute la page**
+pour vérifier qu'il ne ratait rien. Il a trouvé `VN_3EN1_DEMAT`, nom de code d'un projet Toyota,
+affiché en clair — et, plus net encore, l'entrée de liste blanche qui le motive en toutes lettres :
+`# nom de code d'un projet Toyota`. Trouvaille réelle, hors périmètre, remontée au Tech Lead sans y
+toucher : c'était le bon geste.
+
+**Erreur** : j'ai clos le paragraphe par **« rien d'autre de la même famille sur la page »**. Le motif
+qui fondait cette phrase était `\b[A-Z][A-Z0-9]{3,}\b` — quatre majuscules ou plus, **sans
+séparateur**. Il ne pouvait structurellement voir ni `HOME-SERVICE` (trait d'union), ni
+`PICARD SURGELÉS` (deux mots), ni `MNM` (trois lettres). La revue en a trouvé **trois de plus**, dont
+un de la famille stricte. Une dette ouverte sur la foi de ce paragraphe aurait été budgétée à **un**
+repère pour au moins trois — et sur une propriété de **confidentialité**, pas de confort.
+
+**Correction/Pattern** : **un balayage qui sert à établir une présence vaut par ce qu'il trouve ; un
+balayage qui sert à établir une absence ne vaut que par la couverture de son motif.** Les deux usages
+se ressemblent et n'ont pas la même exigence : le premier est confirmé par sa trouvaille, le second
+n'est confirmé par rien — il faut démontrer que le motif couvre la famille, ce que le résultat ne dira
+jamais.
+
+Trois compléments :
+
+1. **Le geste concret** : quand une phrase de livrable dit « rien d'autre », **écrire le motif à
+   côté**. Le lecteur peut alors la réfuter en exhibant une forme que le motif ne pouvait pas voir —
+   c'est-à-dire qu'elle devient falsifiable. Sans motif, « rien d'autre » n'est pas une mesure, c'est
+   une impression.
+2. **Le piège est amplifié par la trouvaille**, et c'est le plus contre-intuitif : c'est **parce que**
+   le filtre a trouvé quelque chose de vrai que je lui ai accordé l'exhaustivité. Un filtre muet
+   inspire la méfiance ; un filtre qui trouve inspire la confiance — exactement à l'envers de ce que
+   sa couverture justifie.
+3. **Même famille que D-15 dans ce projet** : un défaut systématique budgété au cas particulier. Là,
+   « deux repères » pour sept commentaires faux ; ici, « un repère » pour deux familles. Deux fois la
+   même mécanique, à trois jours d'intervalle.
+
+**Applicable globalement ?** : **Oui** — tout balayage qui fonde une affirmation d'absence : audit de
+secrets (`grep` de clés d'API avant publication), recherche d'usages avant suppression d'une fonction
+ou d'une colonne, inventaire de dépendances vulnérables, revue de conformité, détection de données
+personnelles. Le geste tient en une question : *quelle forme de la famille mon motif ne peut-il pas
+voir ?* — à poser avant d'écrire la conclusion, pas après.
