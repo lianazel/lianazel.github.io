@@ -425,3 +425,11 @@ secrets (`grep` de clés d'API avant publication), recherche d'usages avant supp
 ou d'une colonne, inventaire de dépendances vulnérables, revue de conformité, détection de données
 personnelles. Le geste tient en une question : *quelle forme de la famille mon motif ne peut-il pas
 voir ?* — à poser avant d'écrire la conclusion, pas après.
+
+**Promue en global le 11 août 2026 (validation du chef de projet)** — `~/.claude/lessons.md`, en ajout
+seul, sous le titre « Un balayage qui conclut à une ABSENCE ne vaut que par la couverture de son motif,
+jamais par ce qu'il a trouvé », avec l'empreinte `a898d20` de la présente jumelle locale. Registre
+global porté de **72 à 73 entrées** ; les **433 lignes préexistantes vérifiées intactes à l'octet**
+contre une copie prise avant écriture (**même empreinte `1dafa39…`**, 0 ligne supprimée ou modifiée,
+6 ajoutées). Geste validé dans le fil de la session — la promotion figure à l'inventaire fermé des
+gestes hors dépôt autorisés (entrée A-1).
