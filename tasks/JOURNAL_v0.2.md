@@ -786,3 +786,103 @@ orphelin. L'argument « on raccourcit » du prompt pèse **−2 caractères sur 
 > **Et le piège du cache redevient d'actualité** : contrairement aux deux incréments précédents,
 > celui-ci change réellement ce qui est servi. Après publication, un appareil affichant encore « vite
 > et bien » sert son cache. Marqueur à chercher : **« Qualité avant vitesse »**.
+
+---
+
+## 11 août 2026 — La page dit la même chose avant et après une bascule (session 11)
+
+| | |
+|---|---|
+| **Type** | CORRECTIF (`/fix`), **sans rapport de diagnostic** — écart déclaré, voir plus bas |
+| **Branche** | `fix/etiquettes-et-descriptions` — 3 enregistrements |
+| **Fusion** | **`06ea7ed`** (`--no-ff`) — 5 fichiers, +500 / −10 |
+| **Prompt pilote** | `prompts/v0.5/CORRECTIF_etiquettes-et-descriptions_v2.md` (la v1, jamais transmise, entre avec son bandeau PÉRIMÉ) |
+| **Version** | **0.6.0 → 0.6.1** (patch : `fix/*`) |
+| **Dettes** | **D-14 soldée** · **D-13** et **D-15** créées et ouvertes · un des deux verrous d'**E-2b** levé |
+
+### Le défaut
+
+`el.innerHTML = d[k]`. Tant que le visiteur ne touche pas au bouton de langue, il lit le texte **écrit
+dans la page** ; dès la première bascule — **y compris pour revenir au français** — il lit celui du
+**dictionnaire**. Six clés portaient deux textes différents : la page changeait de contenu sans que
+rien ne le signale, et **un visiteur qui ne bascule jamais ne le voyait jamais**.
+
+**Deux causes, pas une.** Quatre étiquettes de section **empruntaient les clés de la barre de
+navigation** — *une barre oriente, un titre raconte*, deux vocabulaires forcés dans une clé, donc
+divergence garantie à terme. Et deux descriptions d'expérience avaient été écrites dans la page puis
+réécrites dans un autre registre au dictionnaire, **aucune n'étant complète** : l'une portait le
+contexte, l'autre la pile technique.
+
+**Aucune porte ne pouvait le voir** : les clés étaient présentes, symétriques, complètes. Trouvé à la
+session 10 **en mesurant le périmètre d'un contrôle candidat**, pas par une alerte.
+
+### Ce que l'incrément pose
+
+Quatre clés neuves `tag_*` découplent les étiquettes ; les `nav_*` **conservent exactement leur
+valeur**. Les deux descriptions sont **fusionnées, pas arbitrées**. Le gras de BALAS entre dans le
+dictionnaire — sa disparition à la bascule faisait partie du défaut.
+
+### La preuve, par programme et jamais par relecture
+
+Cinq clés **identiques à l'octet**, empreintes confrontées. `e5_desc`, qui porte du gras :
+**exactement deux écarts**, positions 54 et 73, tous deux `"` → `'` en position d'attribut —
+**énumérés plutôt qu'affirmés**, le prompt exigeant qu'on prouve que la normalisation ne couvre rien
+d'autre. Triage complet rejoué : **zéro divergence de contenu réel**, contre quatre. Clés
+`170/170 → 174/174`, symétrique.
+
+### L'écart de procédure, et pourquoi je ne l'ai pas contourné
+
+Le pipeline `/fix` exige un `RAPPORT_DIAGNOSTIC` et **impose l'arrêt sinon**. Le prompt déclarait
+l'écart, le chef de projet l'avait arbitré, et il m'était soumis avec droit de veto. **J'ai nommé le
+conflit plutôt que de passer outre en silence**, examiné le diagnostic — cause mesurée, reproduite par
+deux parties indépendantes, défaut re-vérifié vivant — et je n'ai pas exercé le veto.
+
+**Je n'ai pas fabriqué de rapport après coup** : ce serait faire croire qu'une phase de diagnostic a
+eu lieu. Les livrables citent le §1 du prompt, jamais un fichier qui n'existe pas.
+
+### Revue `SHIP` — et deux fois où elle a mieux mesuré que moi
+
+**D-15 était fausse d'un facteur quatre.** J'y avais repris la formulation du prompt — « deux repères
+faux » — **sans la mesurer**. La revue a contesté, la mesure lui a donné raison : **7 commentaires
+faux sur 10**, en **miroir** d'un ordre antérieur, les commentaires suivant la chronologie croissante
+quand les blocs s'affichent en décroissant. Le plan de remboursement en change de nature : un
+réalignement en bloc, pas des retouches. **J'avais réintroduit dans la source de vérité la maladie que
+D-7 nomme.**
+
+**Elle a refait le triage avec un meilleur instrument** — `innerHTML` complet jamais tronqué, plus
+déséchappement des chaînes JavaScript — et obtenu **176/176 concordants** là où le mien laissait neuf
+« faux positifs » que je demandais qu'on excuse. *Un faux positif qui disparaît et un faux positif
+qu'on excuse ne se valent pas.* Conséquence pour l'incrément suivant : **le contrôle de concordance
+naîtrait vert**, le risque de « naître rouge » que redoute le prompt est **mesuré nul**.
+
+### La correction du chef de projet — et la leçon qui en sort
+
+Après validation visuelle, une phrase : *« j'ai occupé le même poste »*. Le partage de `e4_title`
+entre Groupe Prenant et Toyota France, que la revue **et moi** avions qualifié de couplage dangereux
+**indépendamment**, n'en était pas un : les deux blocs portent le même intitulé **parce qu'il est le
+même**.
+
+La distinction manquante : D-14 fermait un cas où deux emplacements affichaient des choses
+**différentes** ; ici ils affichent la même chose parce qu'elle *est* la même. **Le motif structurel
+est identique, le fait métier est opposé — et le fait métier n'est ni dans le code ni dans le
+dictionnaire.**
+
+Deux circonstances instructives : notre accord ne mesurait que notre **lecture commune du code**, la
+prémisse nous manquant à tous deux ; et je venais de passer la journée sur un couplage authentique,
+donc j'ai reconnu sa forme là où seul le motif se répétait. D-15 **porte la correction** plutôt que de
+l'effacer.
+
+### Validation humaine — ce qui est prouvé, ce qui reste
+
+Deux captures, fichier local, dans les deux langues. **Le point le plus risqué est levé par
+l'observation** : « BALAS » est en gras **en anglais**, où le texte ne peut venir que du dictionnaire —
+le balisage à guillemets simples est donc bien injecté et rendu.
+
+**Restent dus** : les quatre étiquettes de section, hors champ sur les captures, et le rendu à **320 et
+375 px** — les deux paragraphes rallongent d'une à deux lignes, seul endroit où cet incrément peut
+abîmer la mise en page.
+
+### Filet de tests
+
+Porte **verte** sur `main` après fusion, **4 avertissements** attendus (D-4). `scripts/`
+**rigoureusement intact** — troisième incrément d'affilée où l'un des deux domaines reste indemne.
