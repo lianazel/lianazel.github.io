@@ -446,3 +446,58 @@ amendement** de celle du 8 août, mais une **entrée propre**. Celle du 8 août 
 positifs** — un indicateur mal choisi fabrique le défaut qu'il cherche. Celle-ci couvre le sens
 **inverse** — une absence conclue à tort parce que le motif était plus étroit que la famille. **Les
 deux directions ne se déduisent pas l'une de l'autre.**
+
+---
+
+## 12 août 2026 — Un vérificateur à qui l'on souffle la réponse ne vérifie pas ce qu'il croit vérifier
+
+**Type** : Erreur
+
+> **Où cette leçon a été apprise, et pourquoi elle est consignée ici.** Sur le chantier **hors dépôt**
+> de la compétence `tunnel-apercu` (`~/.claude/skills/`), conduit dans la même session que
+> l'incrément « preuve IBM i ». Ce chantier n'a **pas de registre à lui** ; la leçon est donc portée au
+> registre local du projet sous lequel la session s'est déroulée, faute de meilleur endroit. **Sa
+> promotion au registre global appartient au Tech Lead** — décision du chef de projet du 11 août 2026.
+
+**Contexte** : la compétence devait afficher un QR code, et sa consigne l'exigeait **relu** avant
+affichage : *« une image qu'on n'a pas décodée n'est pas un QR, c'est un carré »*. J'ai donc écrit un
+encodeur QR en Python pur **et son relecteur**, qui reprend la matrice par l'autre bout — relit les
+modules, retire le masque, désentrelace les blocs, vérifie les syndromes de Reed-Solomon, reconstitue
+la chaîne. J'avais même écrit dans l'en-tête du fichier que ce relecteur prouvait la *cohérence
+interne* et non la *conformité*, et qu'une erreur symétrique lui échapperait.
+
+**Erreur** : mon relecteur recevait **le masque et la version en paramètres**. Il repassait au vert des
+dizaines de fois — aller-retours exacts, accents compris, corruption détectée — sur un code que
+**aucun téléphone ne pouvait lire**. Le défaut était le placement de l'information de format : les
+quinze bits qui disent au lecteur quel masque a été appliqué. J'avais écrit le **miroir** de la
+disposition normalisée — les neuf premiers bits le long de la ligne 8 au lieu de descendre la
+colonne 8. Le code était parfaitement formé, parfaitement contrasté, et parfaitement illisible.
+
+**Le relecteur ne pouvait pas voir ce défaut : on lui donnait précisément le renseignement que ce
+défaut rendait introuvable.** Il vérifiait tout, sauf la seule chose qui était fausse. Et j'avais
+annoncé le risque en toutes lettres sans voir que j'étais en train de le commettre.
+
+**Correction/Pattern** : **un vérificateur ne reçoit que l'artefact.** Tout paramètre qu'on lui
+transmet est une partie de l'artefact qu'il **cesse de tester** — et l'expérience dit que c'est
+justement celle-là qui casse, parce qu'on la transmet quand elle est difficile à retrouver, donc
+difficile à écrire, donc probablement mal écrite.
+
+Trois compléments :
+
+1. **Le geste** : le relecteur lit désormais **version et masque dans la matrice**. L'aller-retour
+   teste alors le placement du format, et un format abîmé le fait rougir — éprouvé en retournant trois
+   bits de chaque copie.
+2. **Le symptôme à reconnaître** : *un contrôle vert et un résultat qui ne marche pas.* La question
+   n'est pas « le contrôle est-il juste ? » mais **« qu'est-ce que le contrôle n'a pas eu à lire ? »**.
+   La réponse est presque toujours dans ses paramètres.
+3. **Ce qui a réellement tranché est extérieur au dispositif** : un scan par un téléphone réel. La
+   consigne en faisait un critère d'acceptation, et elle avait raison de ne pas s'en remettre aux
+   preuves internes.
+
+**Applicable globalement ?** : **Oui** — tout vérificateur paramétré : un test qui reçoit la valeur
+attendue calculée par le code testé, un comparateur de rendu à qui l'on passe la configuration ayant
+servi au rendu, un validateur de schéma qui reçoit le schéma produit par le sérialiseur, un décodeur à
+qui l'on donne l'encodage. Même famille que la leçon du 11 août sur les balayages qui concluent à une
+absence : dans les deux cas le dispositif est vert **parce qu'il ne regarde pas là où ça casse**.
+
+**Non promue en global à ce jour — la promotion appartient au Tech Lead.**
