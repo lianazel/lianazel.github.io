@@ -581,3 +581,48 @@ Deux compléments :
 « non couvert », « risques résiduels ». Ce sont les paragraphes les moins relus d'un livrable et les
 plus cités ensuite. Même famille que *une affirmation écrite n'est pas une mesure*, appliquée au seul
 endroit où l'on croyait ne rien affirmer.
+
+---
+
+## 12 août 2026 — Une phrase qui décrit une garantie s'écrit en regardant le contrôle, pas en se souvenant de son intention
+
+**Type** : Erreur (relevée en revue, après une première correction du Tech Lead sur la même phrase)
+
+**Contexte** : le `README.md` du dépôt, document public dont l'argument entier est *« la méthode se
+vérifie sur pièces »*. Une phrase y énumère quatre garanties de la porte de tests.
+
+**Erreur** : j'ai écrit que la porte vérifie **« que chaque texte affiché existe dans les deux
+langues »**. C'est **le but** du contrôle 1. Ce qu'il **fait** est plus étroit : il vérifie les textes
+**déclarés traduisibles**. La porte annonce elle-même `384 suites de texte visible, dont 219
+couvertes` — les **165 autres**, 43 %, passent par une liste blanche **qui ne vérifie rien en matière
+de bilinguisme**, et dont l'en-tête documente sa propre brèche : *toute suite composée à cent pour
+cent de mots listés passe*.
+
+**L'écart entre l'intention et l'effet tenait dans un mot** : *affiché* au lieu de *déclaré
+traduisible*.
+
+**Et c'est la troisième correction de la même phrase.** Le Tech Lead avait déjà rectifié « orpheline »
+avant transmission — mot lisible comme « jamais employée », faux puisqu'il en existe quatre. La revue
+a trouvé la clause voisine. **Le filet avait été tendu sur la seconde proposition et pas sur la
+première.**
+
+**Correction/Pattern** : **une description de garantie se rédige en lisant le code du contrôle, pas en
+se rappelant pourquoi on l'a écrit.** Trois compléments :
+
+1. **Le signal à reconnaître** : une phrase qui **énumère plusieurs garanties**. Chaque item est une
+   affirmation indépendante, et l'attention se porte sur celui qu'on vient de corriger. Une
+   énumération de quatre garanties en surcrédite au moins une — vérifier **chaque proposition
+   séparément**, comme si elle était seule.
+2. **Le remède est plus fort que la correction** : ne pas rétrécir la promesse, mais **décrire les
+   régimes réels et nommer la limite**. Ici, deux régimes — le texte déclaré traduisible est vérifié,
+   le texte non déclaré relève d'une liste tenue à la main qui *« déclare ce qui est réputé identique,
+   sans le démontrer »*. Un lecteur qui ouvre le fichier y retrouve exactement cela, brèche comprise.
+   **Le document et le code disent la même chose**, ce qui est précisément l'argument défendu.
+3. **Le contexte aggravant** : ce document n'a **aucun instrument**. Aucune porte ne dira jamais qu'une
+   de ses phrases a vieilli. Une affirmation trop généreuse y survit indéfiniment, et elle coûte la
+   crédibilité de toutes les autres.
+
+**Applicable globalement ?** : **Oui** — tout `README`, toute documentation d'API, tout message de
+version, toute page « comment c'est testé », tout commentaire qui résume ce qu'un garde-fou protège.
+Le geste : **ouvrir le contrôle** avant d'écrire la phrase qui le décrit, et préférer *« vérifie X, ne
+vérifie pas Y »* à *« vérifie tout »*.

@@ -1206,3 +1206,104 @@ rien ne le lit** — c'est le constat, pas le remède.
 
 **D-16 et D-17 restent ouvertes et intactes.** Le prompt `CHORE_dettes-au-cadrage_v1.md`, déposé
 pendant cette session, les vise vraisemblablement.
+
+---
+
+## 12 août 2026 — Le dépôt accueille enfin celui qui suit le lien (session 15)
+
+| | |
+|---|---|
+| **Type** | CHORE (documentation) |
+| **Branche** | `chore/readme-bilingue` — 4 enregistrements |
+| **Fusion** | **`025d71a`** (`--no-ff`) — 3 fichiers, +492 |
+| **Prompts pilotes** | `CHORE_readme-bilingue_v1.md`, puis **`v2`** en cours d'incrément |
+| **Version** | **0.9.0 → 0.9.1** (patch : `chore/*`, la page ne change pas) |
+| **Dette** | aucune touchée — **D-17 révélée trop étroite**, le Tech Lead corrige son énoncé |
+
+### Ce que l'incrément pose
+
+**Le dépôt ne contenait aucun `README.md`.** Or l'incrément précédent avait mis en ligne un lien vers
+lui, avec pour argument que **la méthode se vérifie sur pièces** : le lecteur arrivait sur une liste de
+fichiers sans une phrase pour lui dire ce qu'il regarde. Le manque était **actif depuis le matin même**.
+
+Un fichier, **les deux langues dedans** — deux fichiers séparés seraient deux copies que rien ne
+compare, la mécanique exacte de D-14. **Aucun nombre dans le contenu** : on pointe vers ce qui fait
+autorité, on ne le recopie pas, sans quoi il se périmerait comme ceux que D-18 nomme.
+
+### La branche est `chore/`, et c'est mesuré
+
+Le gabarit du pipeline prescrit `feat/<slug>`. L'historique dit autre chose : `chore/lecon-cache`
+(session 8) a produit `0.4.1 → 0.4.2` et `chore/tracabilite-promotion` `0.2.0 → 0.2.1` — **deux
+patchs**. Le `/land` bumpe `chore/*` en patch, et c'est juste : **la page ne change pas d'un octet**.
+
+*Friction résiduelle relevée en revue, hors incrément* : `land.md:8` énonce `feat/<slug>` en
+précondition alors que son étape 4 prévoit `chore/*`.
+
+### Trois corrections sur la même phrase, et c'est le fait marquant
+
+Une seule phrase du `README` énumérait quatre garanties de la porte. **Trois passes ont été
+nécessaires pour qu'elle soit vraie.**
+
+1. **Avant transmission**, le Tech Lead corrige « orpheline » — mot lisible comme « jamais employée »,
+   ce qui aurait été faux : il en existe quatre, ce sont les avertissements de D-4 qu'un lecteur voit
+   en lançant la porte.
+2. **En revue**, la clause voisine tombe : « chaque texte affiché existe dans les deux langues ». La
+   porte annonce `384 suites, dont 219 couvertes` — les **165 autres** passent par la liste blanche,
+   **qui ne vérifie rien en matière de bilinguisme**. Son propre en-tête prévient que *toute suite
+   composée à cent pour cent de mots listés passe*.
+3. **Révision v2**, sur la même branche, sans rien recommencer : deux paragraphes remplacés. Le
+   `README` décrit désormais **deux régimes** et nomme la limite du second — la liste blanche
+   *« déclare ce qui est réputé identique dans les deux langues, elle ne le démontre pas »*.
+
+**Le filet avait été tendu sur la seconde clause et pas sur la première.** Une phrase qui énumère
+quatre garanties en surcrédite au moins une.
+
+> **La leçon, écrite** : *une phrase de documentation qui décrit une garantie doit être écrite en
+> regardant le contrôle, pas en se souvenant de son intention.* J'avais écrit **le but** du contrôle 1
+> en croyant écrire **son effet** ; l'écart tient dans un mot — *affiché* au lieu de *déclaré
+> traduisible*.
+
+### Revue — `SHIP`, et deux constats que je n'avais pas
+
+**Les 9 critères passaient, tous mes nombres étaient justes** — sha256 identique au bloc source,
+108 lignes, 0 cadratin, FR 0 / EN 1. La revue les a durcis : *zéro chiffre* dans tout le fichier, pas
+seulement zéro entier isolé.
+
+**Deux affirmations de mes artefacts étaient fausses, et la mesure les a tuées.**
+
+- **Le site sert tout le dépôt.** `CLAUDE.md` → `200`, 48 091 o · `tasks/lessons.md` → `200`,
+  39 395 o · `tasks/JOURNAL_v0.2.md` → `200`, 75 571 o · `scripts/gate.sh` → `200`. Ni `.nojekyll` ni
+  `_config.yml`. J'avais écrit *« le site ne change pas d'un octet »* en pensant **la page** — dans un
+  dépôt qui a consacré la règle (4) du §10 au fait que ce que sert le serveur est la référence. **La
+  page est inchangée ; la surface servie gagne un fichier.**
+- **Mon §5 s'intitulait « chaque affirmation confrontée au dépôt » et n'en confrontait pas la moitié.**
+  Manquaient l'absence de dépendance et d'appel réseau, les ancres, les leçons datées, les deux règles
+  d'histoire. Et **P8 était un non-séquitur** : *« tout tient dans `index.html` »* prouvé par
+  *« `index.html` existe »*. Re-mesuré par moi : les six affirmations manquantes sont **vraies**.
+  *Faute d'annonce, pas de mesure — un titre plus large que son contenu.*
+
+### D-17 est trop étroite, et c'est le point qui portera
+
+**`tasks/JOURNAL_v0.2.md` est servi publiquement — 75 571 octets — et porte dix des noms relevés en
+D-17.** Le `README` **dirige explicitement le lecteur vers ce fichier**.
+
+Rien de neuf n'est exposé par cet incrément : ces noms étaient déjà servis. Mais **la dette est
+formulée « sur la page » alors que la surface réelle est le dépôt entier** — c'est la leçon globale du
+6 août, *ce qui est servi est lisible, la confidentialité couvre tout le livré*. **Le Tech Lead corrige
+l'énoncé de D-17 dans le prompt qui l'inscrit au cadrage.**
+
+### Deux points écartés par le Tech Lead, tracés ici
+
+- **Collision d'étiquettes `R-1`** : dans le même incrément, `spec.md` l'emploie pour un *risque* et
+  la revue pour une *réserve*. Convention de projet, donc ligne de cadrage, donc geste du Tech Lead.
+- **Colonne héritage / instrument au §8**, demandée par le chef de projet pendant cette session.
+  Différée au prompt des dettes, dont le périmètre est déjà ce tableau.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4, inchangés). **Le filet ne lit pas
+`README.md`** — sa cible est `index.html` ; il est relancé pour prouver que la création n'a rien
+dérangé. Mécanique **intacte**, onze empreintes. Contenu **extrait du prompt par programme**, `sha256`
+identique au bloc source à la v1, et deux paragraphes remplacés sur ancre prouvée unique à la v2.
+**Aucun nom de tiers** dans le contenu, balayage motivé sur les identités de D-17 : **D-17 respectée
+par construction**, seul document du dépôt dont on puisse le dire sans réserve.
