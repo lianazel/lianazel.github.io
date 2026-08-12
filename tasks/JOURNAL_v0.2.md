@@ -1083,3 +1083,126 @@ blanche `102 → 103` (`DDS` sort ; `Dapper` et `IIS` entrent avec leur motif), 
 recalé **dans le même enregistrement** — la régression documentaire R-2 de la session 12 ne s'est pas
 reproduite. Cadratins **152 → 152** sous une convention écrite. **Mécanique du filet rigoureusement
 intacte** : `sha256` des 10 fichiers identiques à l'octet.
+
+---
+
+## 12 août 2026 — La frise nomme enfin ce qui fait la différence (session 14)
+
+| | |
+|---|---|
+| **Type** | EVOL (contenu) |
+| **Branche** | `feat/experience-twaim` — 3 enregistrements |
+| **Fusion** | **`eba6ebf`** (`--no-ff`) — 4 fichiers, +348 / −1 |
+| **Prompt pilote** | `prompts/v0.8/EVOL_experience-twaim_v1.md`, déposé à 15:27, transmis le même jour |
+| **Version** | **0.8.0 → 0.9.0** (minor : `feat/*`, le contenu public change) |
+| **Dette** | aucune soldée — **D-18 aggravée**, deux mesures neuves consignées |
+
+### Ce que l'incrément pose
+
+**Le mot TWAIM n'était nulle part dans le texte visible.** Une seule occurrence dans tout le fichier,
+et elle était dans un commentaire de programme. La page vendait la modernisation IBM i depuis deux
+incréments et annonçait du développement assisté par l'IA, **sans jamais dire que tout cela est conduit
+par une méthode écrite**.
+
+Un bloc d'expérience entre en tête de frise : paragraphe, cinq étiquettes, et **trois sous-cartes** —
+le harnais, ce site construit sous ce harnais, et MetalWatch. Chacune porte son lien.
+
+**Onze clés neuves par langue**, `183 → 194`, chacune employée une fois.
+
+### Les trois ancres vivent dans les valeurs, et c'est une première
+
+**Aucune valeur du dictionnaire ne contenait d'ancre avant cet incrément** — balayage du bloc 731-1132,
+motif « ligne contenant `<a ` » : les balises présentes étaient `em`, `span`, `strong`. C'est le seul
+moyen qu'une adresse **suive la langue** : la bascule remplace le *contenu* et ne touche **aucun
+attribut**. Mesuré : `y331` passe de `/` à `/en`, `y332` et `y333` ne bougent pas.
+
+**Le prompt justifiait ce patron par `y326`/`y327`, et sa justification était fausse** : ces deux clés
+*encadrent* un lien dont le `<a href>` vit dans le corps de la page. La **consigne** était juste et
+nécessaire, sa **justification** non. Signalé, non corrigé — et la revue l'a confirmé par une mesure
+indépendante. *Le prochain prompt qui citera ce patron citera `y331` à `y333`.*
+
+### Méthode d'écriture — reconduite, et elle tient
+
+Les quatorze textes **extraits du prompt par programme**, jamais retapés ; l'extraction **refuse de
+rendre la main** si une valeur porte un cadratin, et l'implantation **refuse d'écrire** si le compte du
+fichier bouge. Vérifié par la revue : **14/14 identiques**, zéro écart de caractère.
+
+**Un piège d'ancrage évité** : les préfixes de clé (`e12_title:`, `y330:`…) existent **exactement deux
+fois**, une par langue. Le script assert ce compte et choisit **par rang**. Un `replace` naïf aurait
+écrit dans le bloc français en croyant toucher l'anglais.
+
+### Revue — `NEEDS WORK`, quatre réserves, aucune sur le code
+
+**Les 11 critères d'acceptation passaient, tous re-mesurés.** Ce qui bloquait, ce sont les artefacts.
+
+| Réserve | Objet | Résolution |
+|---|---|---|
+| **R-1** | `test-results.md` affirmait « sans JavaScript, le bloc s'affiche » — **faux** | `.reveal{opacity:0}`, la classe `visible` n'est posée que par l'`IntersectionObserver`. Corrigé et documenté. |
+| **R-2** | décomposition des 35 lignes fausse sur ses deux termes, sommant à **39** | mesuré par fragment : **21 + 14 = 35** |
+| **R-3** | le bloc de sortie de porte **ressemblait** à une capture sans en être une | remplacé par la capture brute, annotations sorties du bloc |
+| **R-4** | trois références chiffrées périmées | corrigées |
+
+**R-1 est la plus sérieuse.** J'avais écrit « déduit de la structure » : la déduction était fausse, et
+l'aveu de ne pas avoir mesuré ne rendait pas l'affirmation inoffensive — **d'autant qu'elle vivait dans
+la section dont l'objet est d'énoncer ce qui n'a pas été prouvé.** Ce n'est pas une régression : les
+30 éléments `.reveal` de la page ont toujours eu ce comportement.
+
+**R-3 est de la même famille que la règle (4) du §10** : un artefact interposé entre le fait et ce
+qu'on en voit. Les nombres étaient exacts, la forme mentait.
+
+### Arbitrage du chef de projet — le gras de `y332`
+
+**Ma décision renversée, et le motif était meilleur que le mien.** Je jugeais la phrase **lue** : sans
+ambiguïté, donc le gras décoratif. Le chef de projet juge la phrase **survolée** — et le lecteur qui
+survole attrape « le dépôt est public » juste après un paragraphe sur le harnais, **qui est privé**.
+
+*Mon raisonnement n'était pas faux sur ses prémisses : il portait sur le mauvais lecteur.*
+
+Posé en `<strong>` nu, comme la consigne l'écrivait. `e5_desc` porte en plus `style='color:var(--text)'`,
+qui éclaircit — **à ajouter d'un mot** si la graisse seule ne suffit pas à l'œil.
+
+### Deux mesures neuves, hors périmètre, à instruire
+
+- **M-1 — contraste.** Le §9 dit que le contraste n'a jamais été mesuré. Il l'est : le lien `--c1` donne
+  **3,60:1**, sous le seuil AA de 4,5 ; les deux autres passent (9,76 et 6,96). **Pas une régression** —
+  trois liens `--c1` existaient déjà au même contraste, et le critère 2 interdisait toute couleur neuve.
+  Remède sans couleur nouvelle : `--c1-soft`, **déjà dans `:root`, déjà employée 15 fois**, à **7,44:1**.
+  Concerne **quatre liens** : c'est une passe d'accessibilité, donc un incrément à part.
+  **Confirmé à l'œil** sur les captures téléphone : le lien bleu est nettement plus terne que le vert
+  et l'orange.
+- **M-2 — largeur.** `Fév 2026 – Aujourd'hui` (22 car.) devient **la plus large pastille de la frise** :
+  **199,4 px pour 206 utiles** à 320 px. Ça passe, avec 6,6 px. `.exp-date` étant en `nowrap`, une
+  pastille de **23 caractères déborderait**, et rien ne le surveille.
+
+### Validation humaine — faite sur téléphone réel, et elle a prouvé neuf choses
+
+Huit captures, deux langues, par tunnel éphémère. **Le bloc est bien en tête de frise · le gras rend ·
+`<em>` s'affiche en italique · la chute diffère entre les langues · les trois liens portent la couleur
+de leur liseré · les cinq étiquettes passent à la ligne sans déborder · la pastille de dates tient · le
+bouton de langue dégrade en drapeau + deux lettres.**
+
+Et surtout : **le menu de débordement s'arme et respecte l'ordre du §9** — seul « Projets », rang 1,
+reste dans la barre. *C'est la première fois que ce tableau de priorité est vérifié sur un appareil
+réel plutôt que déduit.*
+
+**Ce qui n'est PAS vérifié, et n'est pas compté comme fait** : le gras **en français**. Les captures
+montrent cette sous-carte en anglais seulement.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4, inchangés). Clés `183/183 → 194/194`,
+employées `176 → 187`. Liste blanche `103 → 105`, **mesurée par deux routes**, et les deux entrées
+**prouvées nécessaires** — privée d'elles, la porte rend deux erreurs qui les nomment. `CLAUDE.md` §6
+recalé dans le même enregistrement. **Cadratins inchangés sous les deux conventions du 12 août** :
+152 écrits, 49 vus par langue. **Mécanique du filet intacte à l'octet**, dix empreintes `sha256`.
+**Concordance page ↔ dictionnaire 11/11** : le défaut D-14 ne se réintroduit pas.
+
+### Dette
+
+**Aucune soldée. D-18 aggravée de onze clés par langue**, hors périmètre par décision du prompt. Le
+`CLAUDE.md` §3 annonce 132/126 ; la série se lit maintenant sur quatre points : **132/126 déclarés,
+178/171 en session 12, 183/176 en session 13, 194/187 aujourd'hui.** Le nombre se périme **parce que
+rien ne le lit** — c'est le constat, pas le remède.
+
+**D-16 et D-17 restent ouvertes et intactes.** Le prompt `CHORE_dettes-au-cadrage_v1.md`, déposé
+pendant cette session, les vise vraisemblablement.

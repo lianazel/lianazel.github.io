@@ -501,3 +501,83 @@ qui l'on donne l'encodage. Même famille que la leçon du 11 août sur les balay
 absence : dans les deux cas le dispositif est vert **parce qu'il ne regarde pas là où ça casse**.
 
 **Non promue en global à ce jour — la promotion appartient au Tech Lead.**
+
+---
+
+## 12 août 2026 — Un signal d'arrêt n'est pas un arrêt : seule une requête réelle mesure un service
+
+**Type** : Erreur
+
+**Contexte** : fermeture d'un tunnel d'aperçu, à la demande du chef de projet. Geste banal, fait deux
+fois déjà dans la même session.
+
+**Erreur** : j'ai visé le processus avec `pgrep -f 'tunnel_apercu.py' | head -1`. **Le motif s'est
+trouvé lui-même** — l'enveloppe `bash -c` de ma propre commande portait la chaîne recherchée dans sa
+ligne de commande, et `head -1` a retenu **celle-là**. J'ai donc tué mon propre shell.
+
+Trois indices ont alors convergé pour dire « c'est fermé », et **les trois étaient faux** :
+
+1. la notification de tâche de fond annonçait `failed with exit code 1` — l'enveloppe *avait* bien
+   été tuée, donc le signal était sincère et sans rapport avec le tunnel ;
+2. le journal de l'outil restait muet, sans ligne de fermeture — je l'ai lu comme un silence de fin ;
+3. `getent hosts` répondait avec deux adresses IPv6, ce que j'ai failli interpréter comme une trace
+   résiduelle alors que c'est l'inverse.
+
+**Le tunnel servait toujours. `HTTP 200`.**
+
+**Correction/Pattern** : **un service se mesure par une requête, jamais par le sort d'un processus ni
+par un signal d'infrastructure.** Trois conséquences distinctes, et la troisième est la moins évidente :
+
+1. **Un motif de recherche de processus contient son propre chercheur.** `pgrep -f`, `ps | grep`,
+   `pkill -f` voient la ligne de commande qui les invoque. Viser un **PID relevé au préalable**, ou
+   exclure explicitement l'enveloppe. C'est la leçon du 11 août — *un filtre qui trouve un cas ne
+   mesure pas la famille* — appliquée à un `pgrep` plutôt qu'à un balayage de code.
+2. **Un code de sortie mesure le processus qu'on a lancé, pas le travail qu'on visait.** Quand il y a
+   une enveloppe, un superviseur ou un `timeout` entre les deux, l'échec peut être **entièrement
+   réel et entièrement hors sujet**.
+3. **Le DNS n'est pas le service.** `trycloudflare.com` résout vers l'anycast Cloudflare que le tunnel
+   existe ou non ; l'inverse se produit aussi — un hôte peut avoir disparu du DNS alors qu'une entrée
+   est encore en cache. **La résolution n'a jamais prouvé qu'on sert, ni qu'on ne sert plus.**
+
+**Ce qui a réellement tranché est extérieur au dispositif** : un `curl` sur l'URL. Exactement la
+règle (4) du §10 du cadrage — *ce que sert le serveur est la référence, ce qu'affiche un artefact n'en
+est qu'une image* — rencontrée ici sur un arrêt plutôt que sur une publication.
+
+**Applicable globalement ?** : **Oui** — tout arrêt de service : conteneur, serveur de développement,
+tâche planifiée, tunnel, port en écoute. Le geste : **relever le PID avant d'agir**, puis **confirmer
+par l'effet observable** (requête, port fermé, absence de réponse), jamais par le code de retour du
+tueur ni par une absence de trace.
+
+---
+
+## 12 août 2026 — Annoncer qu'on n'a pas mesuré ne désamorce pas une affirmation fausse
+
+**Type** : Erreur (relevée en revue)
+
+**Contexte** : incrément « bloc TWAIM ». Le `test-results.md` porte un §8 dont **l'objet même** est
+d'énumérer ce que les tests ne prouvent pas — la section d'honnêteté du livrable.
+
+**Erreur** : j'y ai écrit *« Sans JavaScript, le bloc s'affiche en français, liens compris — mais cela
+n'a pas été mesuré, seulement déduit de la structure. »* **La déduction était fausse.** Deux lignes de
+feuille de style suffisaient à le voir : `.reveal{opacity:0}` et la classe `visible` n'est jamais posée
+que par l'`IntersectionObserver`. Sans programme, le bloc est **invisible** — comme les trente éléments
+`.reveal` de la page.
+
+**Correction/Pattern** : **la mention « non mesuré » qualifie la confiance, elle ne change pas la
+nature de l'énoncé.** J'ai traité l'aveu comme une immunité : puisque j'annonçais la limite, l'erreur
+me semblait sans conséquence. Or un lecteur retient **l'affirmation**, pas sa réserve — et il la
+retient d'autant mieux qu'elle vient d'un paragraphe qui se présente comme scrupuleux.
+
+Deux compléments :
+
+1. **La règle opératoire** : dans une section d'angles morts, on écrit **« non vérifié »** et on
+   s'arrête. Décrire *ce qu'on trouverait* si l'on regardait est déjà une affirmation, et elle exige
+   la même preuve que les autres. Si la description tient en deux `grep`, la faire.
+2. **Le paradoxe à retenir** : c'est la section la **plus honnête** du document qui a porté sa seule
+   erreur de fait. Le registre de la prudence anesthésie la vérification — on relit moins ce qu'on a
+   pris soin de nuancer.
+
+**Applicable globalement ?** : **Oui** — toute section « limites connues », « hors périmètre »,
+« non couvert », « risques résiduels ». Ce sont les paragraphes les moins relus d'un livrable et les
+plus cités ensuite. Même famille que *une affirmation écrite n'est pas une mesure*, appliquée au seul
+endroit où l'on croyait ne rien affirmer.
