@@ -30,10 +30,15 @@ bash scripts/gate.sh
 ```
 
 Des contrôles écrits en JavaScript natif, sans cadre de test tiers, parce que le projet n'a ni
-construction ni paquet. Ils vérifient notamment que chaque texte affiché existe dans les deux langues,
-qu'aucune clé de traduction n'est présente dans une seule langue ni déclarée deux fois, que les liens de
-navigation pointent vers des sections réelles, et que l'adresse de contact est identique partout où elle
-apparaît.
+construction ni paquet. Ils vérifient notamment que chaque texte **déclaré traduisible** existe dans
+les deux langues, qu'aucune clé de traduction n'est présente dans une seule langue ni déclarée deux
+fois, que les liens de navigation pointent vers des sections réelles, et que l'adresse de contact est
+identique partout où elle apparaît.
+
+Le texte visible **non déclaré traduisible** relève d'une autre règle : il doit être composé uniquement
+de termes inscrits dans une liste blanche fermée, chacun accompagné du motif écrit qui l'y a fait
+entrer. Cette liste est tenue à la main. **Elle déclare ce qui est réputé identique dans les deux
+langues, elle ne le démontre pas.**
 
 **La porte s'éprouve elle-même avant d'éprouver le site.** Des fichiers volontairement défectueux vivent
 dans `scripts/fixtures/`, et la porte doit échouer dessus **en nommant** chaque défaut semé. Un contrôle
@@ -82,10 +87,14 @@ bash scripts/gate.sh
 ```
 
 Checks written in plain JavaScript, with no third-party test framework, because the project has neither
-a build nor a package manager. They verify, among other things, that every displayed string exists in
-both languages, that no translation key exists in only one language or is declared twice, that
-navigation links point to sections that actually exist, and that the contact address is identical
-everywhere it appears.
+a build nor a package manager. They verify, among other things, that every string **declared
+translatable** exists in both languages, that no translation key exists in only one language or is
+declared twice, that navigation links point to sections that actually exist, and that the contact
+address is identical everywhere it appears.
+
+Visible text that is **not declared translatable** falls under a different rule: it must consist only
+of terms listed in a closed whitelist, each with the written reason that put it there. That list is
+maintained by hand. **It states what is assumed identical in both languages, it does not prove it.**
 
 **The gate is tested before the site is.** Deliberately broken files live in `scripts/fixtures/`, and
 the gate must fail on them **while naming** each planted defect. A check never seen to refuse is not a
