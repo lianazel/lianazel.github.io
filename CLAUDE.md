@@ -151,7 +151,7 @@ diagnostic ponctuel, jamais de filet.
 5. **Attribut de traduction vide** — un `data-i18n=""` ne désigne aucune clé et ne serait jamais traduit.
 6. **Couverture du texte visible** — tout texte visible de la page est **soit** couvert par un attribut
    `data-i18n`, **soit** composé uniquement de termes inscrits dans la liste blanche
-   `scripts/i18n-allowlist.txt` (102 entrées, chacune avec son motif écrit). Y ajouter un terme est un
+   `scripts/i18n-allowlist.txt` (103 entrées, chacune avec son motif écrit). Y ajouter un terme est un
    geste conscient et tracé, jamais un contournement silencieux.
 7. **Cohérence de l'adresse de contact** — les trois occurrences d'`index.html` (lien `mailto:`, texte
    affiché, constante de `copyEmail()`) portent la même adresse. Le contrôle **ne connaît aucune adresse

@@ -283,7 +283,7 @@
     <div class="skill-card reveal"><div class="skill-icon">⚙️</div><h3 data-i18n="sk1_title">Backend & Frameworks</h3><div class="tags"><span class="tag">.NET 5–9</span><span class="tag">C#</span><span class="tag">EF Core</span><span class="tag" data-i18n="x63">API REST</span><span class="tag">JWT</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🗄️</div><h3 data-i18n="sk2_title">Bases de données</h3><div class="tags"><span class="tag green">PostgreSQL</span><span class="tag green">SQL Server</span><span class="tag green">MySQL</span><span class="tag green">HFSQL</span><span class="tag green">Oracle</span><span class="tag green">DB2/400</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🖥️</div><h3>Windev / Webdev</h3><div class="tags"><span class="tag orange">Windev 20–2024</span><span class="tag orange">Webdev</span><span class="tag orange">Windev Mobile</span></div></div>
-    <div class="skill-card reveal"><div class="skill-icon">🏭</div><h3 data-i18n="sk3_title">IBM i · RPG & modernisation</h3><div class="tags"><span class="tag red">RPG III/IV/ILE</span><span class="tag red" data-i18n="ibm1">RPG format libre</span><span class="tag red">CLLE</span><span class="tag red" data-i18n="ibm2">SQL incorporé</span><span class="tag red">DB2/400</span><span class="tag red">DDS</span><span class="tag red" data-i18n="ibm3">API système OS/400</span><span class="tag red">Adelia</span></div></div>
+    <div class="skill-card reveal"><div class="skill-icon">🏭</div><h3 data-i18n="sk3_title">IBM i · RPG & modernisation</h3><div class="tags"><span class="tag red">RPG III/IV/ILE</span><span class="tag red" data-i18n="ibm1">RPG format libre</span><span class="tag red">CLLE</span><span class="tag red" data-i18n="ibm2">SQL incorporé</span><span class="tag red">DB2/400</span><span class="tag red" data-i18n="ibm3">API système OS/400</span><span class="tag red" data-i18n="ibm4">API REST sur DB2/400</span><span class="tag red">Adelia</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🛠️</div><h3 data-i18n="sk5_title">Outils</h3><div class="tags"><span class="tag">Git</span><span class="tag">Swagger</span><span class="tag">JIRA</span><span class="tag">Visual Studio</span><span class="tag">VS Code</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">🤖</div><h3 data-i18n="sk7_title">IA & Développement assisté</h3><div class="tags"><span class="tag" style="background:rgba(108,99,255,.25);border:1px solid var(--c1);">Claude Code</span><span class="tag" data-i18n="ia1">Architecture & specs</span><span class="tag" data-i18n="ia2">Cahier technique</span><span class="tag green" data-i18n="ia3">4 projets livrés</span></div></div>
     <div class="skill-card reveal"><div class="skill-icon">💬</div><h3 data-i18n="sk6_title">Soft Skills</h3><div class="tags"><span class="tag" data-i18n="soft1">Rédaction technique</span><span class="tag" data-i18n="soft2">Vulgarisation</span><span class="tag" data-i18n="soft3">Travail en équipe</span><span class="tag" data-i18n="soft4">Apprentissage continu</span></div></div>
@@ -336,8 +336,15 @@
     <!-- Rentokil-Initial (2001-2005) -->
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e3_title">Consultant API</div><div class="exp-company">Talentia Software</div></div><span class="exp-date" data-i18n="x51">Avr 2023 – Jun 2024</span></div>
-      <p class="exp-desc" data-i18n="e3_desc">Développement d'API REST en .NET 8 / C# et migration de données.</p>
+      <p class="exp-desc" data-i18n="e3_desc">Développement d'API REST en .NET 8 / C# et migration de données. Exposition de données métier vers des consommateurs web, y compris depuis une base DB2/400 sur IBM i.</p>
       <div class="exp-tags"><span class="exp-tag">.NET 8</span><span class="exp-tag">C#</span><span class="exp-tag">REST API</span></div>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div data-i18n="x72" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🔌 POC · API REST sur DB2/400</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y330">Démonstration qu'une base DB2/400 s'expose en API REST sans rien réécrire de l'existant. La difficulté n'est pas le protocole : une partie des tables est héritée des années 1980, où un nom de colonne tient en six caractères. Modèles de données annotés et résolus par réflexion pour restituer des noms métier lisibles dans le flux JSON, jusqu'à la construction de types à l'exécution. Filtres de recherche interprétés avec garde-fous, requêtes paramétrées, documentation Swagger, déploiement sur IIS.</span></div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">.NET 6</span><span class="exp-tag">C#</span><span class="exp-tag">Dapper</span><span class="exp-tag">DB2/400</span><span class="exp-tag">Swagger</span><span class="exp-tag">IIS</span></div>
+        </div>
+      </div>
     </div>
 
     <!-- Toyota France (2007-2015) -->
@@ -440,7 +447,7 @@
     <!-- Groupe Prenant (2020-2023) -->
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e4_title">Chef de Projet & Développeur</div><div class="exp-company">Toyota France</div></div><span class="exp-date" data-i18n="x54">Nov 2007 – Oct 2015</span></div>
-      <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique sur IBM AS/400 : outils métiers web, systèmes de livraison automatisés, intégration d'API Java sur OS/400. Adelia Studio, RPG IV, RPG ILE, CLLE, API système OS/400, SQL, Windev 20 et Webdev 20.</p>
+      <p class="exp-desc" data-i18n="e6_desc">Gestion et développement de projets ventes & logistique sur IBM AS/400 : outils métiers web, systèmes de livraison automatisés, intégration d'API Java sur OS/400. Adelia Studio, RPG IV, RPG ILE et format libre, CLLE, SQL incorporé, API système OS/400, Windev 20 et Webdev 20.</p>
       <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
         <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
           <div data-i18n="x6" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🌐 Gestion du Risque Financier</div>
@@ -461,6 +468,11 @@
           <div data-i18n="x8" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">☕ JVM OS/400 — Projet OrderFlex</div>
           <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y303">Gestion de la machine virtuelle Java sur OS/400 et consommation d'une API depuis un code Adelia via l'IFS.</span></div>
           <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">CLLE</span><span class="exp-tag">RPG-ILE</span><span class="exp-tag">IFS</span><span class="exp-tag">Adelia</span><span class="exp-tag">JVM</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div data-i18n="x71" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🔎 Analyse de l'historique système & surveillance des sous-systèmes</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y329">Outil d'exploitation lisant le journal système QHST : contrôle que les travaux de nuit se sont exécutés conformément à une matrice de référence, met en évidence ceux qui manquent, et surveille l'état des sous-systèmes. Toute anomalie est consignée et notifiée par mail à l'exploitation.</span></div>
+          <div class="exp-tags" style="margin-top:.5rem;"><span class="exp-tag">RPG-ILE</span><span class="exp-tag" data-i18n="ibm1">RPG format libre</span><span class="exp-tag">CLLE</span><span class="exp-tag" data-i18n="ibm2">SQL incorporé</span><span class="exp-tag" data-i18n="ibm3">API système OS/400</span><span class="exp-tag">Windev</span></div>
         </div>
       </div>
     </div>
@@ -727,7 +739,7 @@ const t = {
     hero_sub:"Un socle technique de 35 ans — IBM, Oracle, Windev, .NET — enrichi par une méthode de travail moderne : concevoir l'architecture, rédiger les spécifications, et piloter l'IA. Qualité avant vitesse.",
     btn_parcours:"Voir mon parcours", btn_contact:"Me contacter",
     stat1:"ans d'expérience", stat2:"secteurs d'activité", stat3:"Anglais professionnel",
-    h2_tech:"Stack <span>Technique</span>", sk3_title:"IBM i · RPG & modernisation", ibm1:"RPG format libre", ibm2:"SQL incorporé", ibm3:"API système OS/400", sk1_title:"Backend & Frameworks", sk2_title:"Bases de données", sk5_title:"Outils", sk6_title:"Soft Skills",
+    h2_tech:"Stack <span>Technique</span>", sk3_title:"IBM i · RPG & modernisation", ibm1:"RPG format libre", ibm2:"SQL incorporé", ibm3:"API système OS/400", ibm4:"API REST sur DB2/400", sk1_title:"Backend & Frameworks", sk2_title:"Bases de données", sk5_title:"Outils", sk6_title:"Soft Skills",
     sk7_title:"IA & Développement assisté", ia1:"Architecture & specs", ia2:"Cahier technique", ia3:"4 projets livrés",
     soft1:"Rédaction technique", soft2:"Vulgarisation", soft3:"Travail en équipe", soft4:"Apprentissage continu",
     h2_exp:"Expériences <span>Professionnelles</span>",
@@ -738,10 +750,10 @@ const t = {
     e12_title:"Développeur AS/400 — Équipe Système",
     e1_desc:"Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.",
     e2_desc:"Assistance technique et leadership d'équipe sur des projets Transact-SQL et Windev 28.",
-    e3_desc:"Développement d'API REST en .NET 8 / C# et migration de données.",
+    e3_desc:"Développement d'API REST en .NET 8 / C# et migration de données. Exposition de données métier vers des consommateurs web, y compris depuis une base DB2/400 sur IBM i.",
     e4_desc:"Gestion et développement de projets avec HFSQL, Windev 26, Windev Mobile et API REST .NET 5. Optimisation des processus métiers avec +20% d'efficacité.",
     e5_desc:"Start-up créée et détenue par le groupe <strong style='color:var(--text);'>BALAS</strong>, acteur majeur du secteur du bâtiment. Membre de l'équipe R&D pour la conception d'une solution innovante de gestion de projets — applications desktop et mobiles. Windev, C#, .NET et WPF.",
-    e6_desc:"Gestion et développement de projets ventes & logistique sur IBM AS/400 : outils métiers web, systèmes de livraison automatisés, intégration d'API Java sur OS/400. Adelia Studio, RPG IV, RPG ILE, CLLE, API système OS/400, SQL, Windev 20 et Webdev 20.",
+    e6_desc:"Gestion et développement de projets ventes & logistique sur IBM AS/400 : outils métiers web, systèmes de livraison automatisés, intégration d'API Java sur OS/400. Adelia Studio, RPG IV, RPG ILE et format libre, CLLE, SQL incorporé, API système OS/400, Windev 20 et Webdev 20.",
     e7_desc:"Analyse et développement multi-secteurs (logistique, santé). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
     h2_proj:"Projets <span>Notables</span>",
     p1_desc:"Article technique sur les modèles dynamiques en .NET avec EF Core, publié sur LinkedIn pour la communauté .NET.",
@@ -815,6 +827,7 @@ const t = {
     x61:"Base de données", x62:"Développeur AS/400", x63:"API REST", x64:"POO",
     x65:"DDL dynamique", x66:"Assurance / Mutuelle", x67:"Migration SQL",
     x68:"Transports / Gestion Entrepôts / Froid Négatif", x69:"Système", x70:"Santé / Médical",
+    x71:"🔎 Analyse de l'historique système & surveillance des sous-systèmes", x72:"🔌 POC · API REST sur DB2/400",
     y300:"Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.",
     y301:"Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.",
     y302:"Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.",
@@ -844,6 +857,8 @@ const t = {
     y326:"— Solution développée en partie sur une partition AS/400 partagée aux USA via ",
     y327:". Conversion des spools au format PDF, chargement dynamique de la <em>library list</em> selon le projet et l'environnement (DEV / PROD), etc.",
     y328:"— Développement et déploiement sur l'entrepôt de ",
+    y329:"Outil d'exploitation lisant le journal système QHST : contrôle que les travaux de nuit se sont exécutés conformément à une matrice de référence, met en évidence ceux qui manquent, et surveille l'état des sous-systèmes. Toute anomalie est consignée et notifiée par mail à l'exploitation.",
+    y330:"Démonstration qu'une base DB2/400 s'expose en API REST sans rien réécrire de l'existant. La difficulté n'est pas le protocole : une partie des tables est héritée des années 1980, où un nom de colonne tient en six caractères. Modèles de données annotés et résolus par réflexion pour restituer des noms métier lisibles dans le flux JSON, jusqu'à la construction de types à l'exécution. Filtres de recherche interprétés avec garde-fous, requêtes paramétrées, documentation Swagger, déploiement sur IIS.",
     lang_flag:"🇬🇧", lang_abbr:"EN", lang_word:"English",
     menu_open:"Ouvrir le menu", menu_close:"Fermer le menu"
   },
@@ -857,7 +872,7 @@ const t = {
     hero_sub:"A 35-year technical foundation — IBM, Oracle, Windev, .NET — enhanced by a modern workflow: designing the architecture, writing the specifications, and steering AI. Quality before speed.",
     btn_parcours:"View my career", btn_contact:"Contact me",
     stat1:"years of experience", stat2:"industry sectors", stat3:"Professional English",
-    h2_tech:"Technical <span>Stack</span>", sk3_title:"IBM i · RPG & modernization", ibm1:"RPG free-format", ibm2:"Embedded SQL", ibm3:"OS/400 system APIs", sk1_title:"Backend & Frameworks", sk2_title:"Databases", sk5_title:"Tools", sk6_title:"Soft Skills",
+    h2_tech:"Technical <span>Stack</span>", sk3_title:"IBM i · RPG & modernization", ibm1:"RPG free-format", ibm2:"Embedded SQL", ibm3:"OS/400 system APIs", ibm4:"REST API on DB2/400", sk1_title:"Backend & Frameworks", sk2_title:"Databases", sk5_title:"Tools", sk6_title:"Soft Skills",
     sk7_title:"AI-Assisted Development", ia1:"Architecture & specs", ia2:"Technical specifications", ia3:"4 projects shipped",
     soft1:"Technical writing", soft2:"Knowledge sharing", soft3:"Team work", soft4:"Continuous learning",
     h2_exp:"Professional <span>Experience</span>",
@@ -868,10 +883,10 @@ const t = {
     e12_title:"AS/400 Developer — System Team",
     e1_desc:"Development of a complete HFSQL database migration solution to PostgreSQL, MySQL and SQL Server. Multi-threading, resume on interruption, ID management and error logs.",
     e2_desc:"Technical assistance and team leadership on Transact-SQL and Windev 28 projects.",
-    e3_desc:"REST API development in .NET 8 / C# and data migration.",
+    e3_desc:"REST API development in .NET 8 / C# and data migration. Exposing business data to web consumers, including from a DB2/400 database on IBM i.",
     e4_desc:"Project management and development with HFSQL, Windev 26, Windev Mobile and REST API .NET 5. Business process optimization achieving +20% efficiency.",
     e5_desc:"A start-up founded and owned by the <strong style='color:var(--text);'>BALAS</strong> group, a major player in the construction industry. Member of the R&D team designing an innovative project-management solution — desktop and mobile applications. Windev, C#, .NET and WPF.",
-    e6_desc:"Management and development of sales & logistics projects on IBM AS/400: web business tools, automated delivery systems, Java API integration on OS/400. Adelia Studio, RPG IV, RPG ILE, CLLE, OS/400 system APIs, SQL, Windev 20 and Webdev 20.",
+    e6_desc:"Management and development of sales & logistics projects on IBM AS/400: web business tools, automated delivery systems, Java API integration on OS/400. Adelia Studio, RPG IV, RPG ILE and free-format, CLLE, embedded SQL, OS/400 system APIs, Windev 20 and Webdev 20.",
     e7_desc:"Multi-sector analysis and development (logistics, healthcare). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
     h2_proj:"Notable <span>Projects</span>",
     p1_desc:"Technical article on dynamic models in .NET with EF Core, published on LinkedIn for the .NET community.",
@@ -945,6 +960,7 @@ const t = {
     x61:"Database", x62:"AS/400 Developer", x63:"REST API", x64:"OOP",
     x65:"Dynamic DDL", x66:"Insurance / Mutual society", x67:"SQL Migration",
     x68:"Transport / Warehouse Management / Deep Freeze", x69:"System", x70:"Health / Medical",
+    x71:"🔎 System history analysis & subsystem monitoring", x72:"🔌 POC · REST API on DB2/400",
     y300:"Designed with Finance teams: a web platform for financial analysis and decision support.",
     y301:"Designed with field teams and regional managers — digital edition of the inspection report, accessible to all Toyota/Lexus dealers.",
     y302:"Automated delivery of *PGM / DSPF / PRTF objects to production with an email report sent via a Windev task.",
@@ -974,6 +990,8 @@ const t = {
     y326:"— Solution partly developed on a shared AS/400 partition in the USA via ",
     y327:". Spool conversion to PDF, dynamic loading of the <em>library list</em> depending on the project and environment (DEV / PROD), etc.",
     y328:"— Development and rollout at the warehouse in ",
+    y329:"Operations tool reading the QHST system log: checks that night jobs ran according to a reference matrix, flags those that did not, and monitors subsystem health. Any anomaly is logged and emailed to the operations team.",
+    y330:"Proof that a DB2/400 database can be exposed as a REST API without rewriting anything. The protocol was never the hard part: some tables date back to the 1980s, where a column name fits in six characters. Annotated data models resolved by reflection to restore readable business names in the JSON payload, going as far as building types at runtime. Interpreted search filters with guard rails, parameterized queries, Swagger documentation, IIS deployment.",
     lang_flag:"🇫🇷", lang_abbr:"FR", lang_word:"Français",
     menu_open:"Open menu", menu_close:"Close menu"
   }

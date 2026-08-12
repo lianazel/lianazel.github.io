@@ -41,6 +41,8 @@
 C#                 # langage Microsoft
 EF                 # Entity Framework, abreviation consacree
 Core               # Entity Framework Core / .NET Core, element de nom de produit
+Dapper             # micro-ORM .NET, nom de produit
+IIS                # Internet Information Services, serveur web Microsoft
 WPF                # Windows Presentation Foundation, Microsoft
 React              # bibliotheque Meta
 Three.js           # bibliotheque de rendu 3D
@@ -80,7 +82,6 @@ RPG                # langage IBM
 RPG-ILE            # variante ILE du langage RPG
 III/IV/ILE         # generations du langage RPG
 CLLE               # Control Language ILE, langage IBM
-DDS                # Data Description Specifications, langage de description IBM
 IFS                # Integrated File System, composant IBM
 Adelia             # atelier de genie logiciel Hardis
 Visual-Adelia      # variante graphique de l'atelier Adelia
