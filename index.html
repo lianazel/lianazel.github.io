@@ -297,6 +297,27 @@
     <h2 data-i18n="h2_exp">Expériences <span>Professionnelles</span></h2>
   </div>
   <div class="timeline">
+    <!-- Conception du harnais TWAIM (Fév 2026 - Aujourd'hui) -->
+    <div class="exp reveal">
+      <div class="exp-header"><div><div class="exp-title" data-i18n="e13_title">Conception du harnais de travail TWAIM</div><div class="exp-company" data-i18n="x77">🧭 Projet personnel · Auto-formation intensive à Claude Code</div></div><span class="exp-date" data-i18n="x73">Fév 2026 – Aujourd'hui</span></div>
+      <p class="exp-desc" data-i18n="e13_desc">Auto-formation intensive à Claude Code, et conception depuis zéro d'un harnais de travail avec l'IA. Deux agents aux rôles séparés, celui qui conçoit et celui qui exécute. Une méthode écrite avant le code, et des règles qui s'exécutent au lieu de se relire. Une pratique nommée <em>harness engineering</em> dans les pays anglophones, encore peu répandue en France.</p>
+      <div class="exp-tags"><span class="exp-tag">Claude Code</span><span class="exp-tag">Supabase</span><span class="exp-tag">PostgreSQL</span><span class="exp-tag">Vercel</span><span class="exp-tag" data-i18n="x78">Harness engineering</span></div>
+      <div style="margin-top:1rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c1);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div data-i18n="x74" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🧭 Le harnais TWAIM</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y331">Méthode centrale et documents satellites, deux rôles séparés entre celui qui conçoit et celui qui exécute, portes de tests exécutables avec témoin volontairement défectueux, registre de décisions et prompts versionnés. Les prompts circulent par un canal dédié : deux dossiers qui font office de boîte aux lettres entre l'architecte et l'agent d'exécution, où rien ne s'écrase jamais et où un refus se dit. <a href="https://twaim-web.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--c1);text-decoration:underline;text-underline-offset:2px;">Voir la présentation</a></span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c3);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div data-i18n="x75" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">🔍 Ce site est construit sous ce harnais</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y332">Le dépôt de ce site est public. Les prompts de chaque incrément, le journal de session, le registre des leçons et la porte de tests s'y lisent. La méthode se vérifie sur pièces plutôt que sur parole. <a href="https://github.com/lianazel/lianazel.github.io" target="_blank" rel="noopener noreferrer" style="color:var(--c3);text-decoration:underline;text-underline-offset:2px;">Voir le dépôt</a></span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.04);border-left:3px solid var(--c4);padding:.8rem 1rem;border-radius:0 8px 8px 0;">
+          <div data-i18n="x76" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.3rem;">📈 MetalWatch, suivi des cours mondiaux des métaux</div>
+          <div style="font-size:.82rem;color:var(--sub);line-height:1.6;"><span data-i18n="y333">Tâche planifiée hébergée sur Supabase alimentant une base PostgreSQL, depuis l'interface metals.dev. <a href="https://metalwatch-delta.vercel.app/" target="_blank" rel="noopener noreferrer" style="color:var(--c4);text-decoration:underline;text-underline-offset:2px;">Voir le site</a></span></div>
+        </div>
+      </div>
+    </div>
+
     <!-- Pyrénées Informatique / Siemens Healthcare (1989-1999) -->
     <div class="exp reveal">
       <div class="exp-header"><div><div class="exp-title" data-i18n="e1_title">Développeur</div><div class="exp-company">InfoSquad — Groupe InfoGones PCSoft</div></div><span class="exp-date" data-i18n="x49">Jan 2025 – Déc 2025</span></div>
@@ -748,6 +769,7 @@ const t = {
     e8_title:"Analyste ingénieur", e9_title:"Formation — Cursus DBA Oracle 9i",
     e10_title:"Développeur AS/400 — Migrations & Outils", e11_title:"Développeur / Chef de projet",
     e12_title:"Développeur AS/400 — Équipe Système",
+    e13_title:"Conception du harnais de travail TWAIM",
     e1_desc:"Développement d'une solution complète de migration de bases HFSQL vers PostgreSQL, MySQL et SQL Server. Multi-threading, reprise sur interruption, gestion des ID et logs d'erreurs.",
     e2_desc:"Assistance technique et leadership d'équipe sur des projets Transact-SQL et Windev 28.",
     e3_desc:"Développement d'API REST en .NET 8 / C# et migration de données. Exposition de données métier vers des consommateurs web, y compris depuis une base DB2/400 sur IBM i.",
@@ -755,6 +777,7 @@ const t = {
     e5_desc:"Start-up créée et détenue par le groupe <strong style='color:var(--text);'>BALAS</strong>, acteur majeur du secteur du bâtiment. Membre de l'équipe R&D pour la conception d'une solution innovante de gestion de projets — applications desktop et mobiles. Windev, C#, .NET et WPF.",
     e6_desc:"Gestion et développement de projets ventes & logistique sur IBM AS/400 : outils métiers web, systèmes de livraison automatisés, intégration d'API Java sur OS/400. Adelia Studio, RPG IV, RPG ILE et format libre, CLLE, SQL incorporé, API système OS/400, Windev 20 et Webdev 20.",
     e7_desc:"Analyse et développement multi-secteurs (logistique, santé). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
+    e13_desc:"Auto-formation intensive à Claude Code, et conception depuis zéro d'un harnais de travail avec l'IA. Deux agents aux rôles séparés, celui qui conçoit et celui qui exécute. Une méthode écrite avant le code, et des règles qui s'exécutent au lieu de se relire. Une pratique nommée <em>harness engineering</em> dans les pays anglophones, encore peu répandue en France.",
     h2_proj:"Projets <span>Notables</span>",
     p1_desc:"Article technique sur les modèles dynamiques en .NET avec EF Core, publié sur LinkedIn pour la communauté .NET.",
     p2_desc:"Application de cartographie des prix de carburant en temps réel. Architecture conçue entièrement par mes soins, développée avec Claude Code.",
@@ -828,6 +851,8 @@ const t = {
     x65:"DDL dynamique", x66:"Assurance / Mutuelle", x67:"Migration SQL",
     x68:"Transports / Gestion Entrepôts / Froid Négatif", x69:"Système", x70:"Santé / Médical",
     x71:"🔎 Analyse de l'historique système & surveillance des sous-systèmes", x72:"🔌 POC · API REST sur DB2/400",
+    x73:"Fév 2026 – Aujourd'hui", x74:"🧭 Le harnais TWAIM", x75:"🔍 Ce site est construit sous ce harnais",
+    x76:"📈 MetalWatch, suivi des cours mondiaux des métaux", x77:"🧭 Projet personnel · Auto-formation intensive à Claude Code", x78:"Harness engineering",
     y300:"Conception avec les équipes Finance d'un site web d'analyse et d'aide à la décision financière.",
     y301:"Conception avec les équipes terrain et responsables de région — édition dématérialisée du PV des mines, accessible par tous les concessionnaires Toyota/Lexus.",
     y302:"Livraison automatisée des objets *PGM / DSPF / PRTF en production avec rapport envoyé par mail via une tâche Windev.",
@@ -859,6 +884,9 @@ const t = {
     y328:"— Développement et déploiement sur l'entrepôt de ",
     y329:"Outil d'exploitation lisant le journal système QHST : contrôle que les travaux de nuit se sont exécutés conformément à une matrice de référence, met en évidence ceux qui manquent, et surveille l'état des sous-systèmes. Toute anomalie est consignée et notifiée par mail à l'exploitation.",
     y330:"Démonstration qu'une base DB2/400 s'expose en API REST sans rien réécrire de l'existant. La difficulté n'est pas le protocole : une partie des tables est héritée des années 1980, où un nom de colonne tient en six caractères. Modèles de données annotés et résolus par réflexion pour restituer des noms métier lisibles dans le flux JSON, jusqu'à la construction de types à l'exécution. Filtres de recherche interprétés avec garde-fous, requêtes paramétrées, documentation Swagger, déploiement sur IIS.",
+    y331:"Méthode centrale et documents satellites, deux rôles séparés entre celui qui conçoit et celui qui exécute, portes de tests exécutables avec témoin volontairement défectueux, registre de décisions et prompts versionnés. Les prompts circulent par un canal dédié : deux dossiers qui font office de boîte aux lettres entre l'architecte et l'agent d'exécution, où rien ne s'écrase jamais et où un refus se dit. <a href='https://twaim-web.vercel.app/' target='_blank' rel='noopener noreferrer' style='color:var(--c1);text-decoration:underline;text-underline-offset:2px;'>Voir la présentation</a>",
+    y332:"Le dépôt de ce site est public. Les prompts de chaque incrément, le journal de session, le registre des leçons et la porte de tests s'y lisent. La méthode se vérifie sur pièces plutôt que sur parole. <a href='https://github.com/lianazel/lianazel.github.io' target='_blank' rel='noopener noreferrer' style='color:var(--c3);text-decoration:underline;text-underline-offset:2px;'>Voir le dépôt</a>",
+    y333:"Tâche planifiée hébergée sur Supabase alimentant une base PostgreSQL, depuis l'interface metals.dev. <a href='https://metalwatch-delta.vercel.app/' target='_blank' rel='noopener noreferrer' style='color:var(--c4);text-decoration:underline;text-underline-offset:2px;'>Voir le site</a>",
     lang_flag:"🇬🇧", lang_abbr:"EN", lang_word:"English",
     menu_open:"Ouvrir le menu", menu_close:"Fermer le menu"
   },
@@ -881,6 +909,7 @@ const t = {
     e8_title:"Engineer Analyst", e9_title:"Training — Oracle 9i DBA Program",
     e10_title:"AS/400 Developer — Migrations & Tools", e11_title:"Developer / Project Manager",
     e12_title:"AS/400 Developer — System Team",
+    e13_title:"Building the TWAIM harness",
     e1_desc:"Development of a complete HFSQL database migration solution to PostgreSQL, MySQL and SQL Server. Multi-threading, resume on interruption, ID management and error logs.",
     e2_desc:"Technical assistance and team leadership on Transact-SQL and Windev 28 projects.",
     e3_desc:"REST API development in .NET 8 / C# and data migration. Exposing business data to web consumers, including from a DB2/400 database on IBM i.",
@@ -888,6 +917,7 @@ const t = {
     e5_desc:"A start-up founded and owned by the <strong style='color:var(--text);'>BALAS</strong> group, a major player in the construction industry. Member of the R&D team designing an innovative project-management solution — desktop and mobile applications. Windev, C#, .NET and WPF.",
     e6_desc:"Management and development of sales & logistics projects on IBM AS/400: web business tools, automated delivery systems, Java API integration on OS/400. Adelia Studio, RPG IV, RPG ILE and free-format, CLLE, embedded SQL, OS/400 system APIs, Windev 20 and Webdev 20.",
     e7_desc:"Multi-sector analysis and development (logistics, healthcare). SQL, RPG III/IV/ILE, Oracle, UNIX, OS/400.",
+    e13_desc:"Intensive self-directed learning of Claude Code, and the design from scratch of a working harness for AI. Two agents with separate roles, the one that designs and the one that executes. A method written before the code, and rules that run instead of being re-read. This is harness engineering.",
     h2_proj:"Notable <span>Projects</span>",
     p1_desc:"Technical article on dynamic models in .NET with EF Core, published on LinkedIn for the .NET community.",
     p2_desc:"Real-time fuel price mapping application. Architecture entirely designed by myself, developed with Claude Code.",
@@ -961,6 +991,8 @@ const t = {
     x65:"Dynamic DDL", x66:"Insurance / Mutual society", x67:"SQL Migration",
     x68:"Transport / Warehouse Management / Deep Freeze", x69:"System", x70:"Health / Medical",
     x71:"🔎 System history analysis & subsystem monitoring", x72:"🔌 POC · REST API on DB2/400",
+    x73:"Feb 2026 – Present", x74:"🧭 The TWAIM harness", x75:"🔍 This site is built under this harness",
+    x76:"📈 MetalWatch, world metal price tracking", x77:"🧭 Personal project · Self-taught on Claude Code", x78:"Harness engineering",
     y300:"Designed with Finance teams: a web platform for financial analysis and decision support.",
     y301:"Designed with field teams and regional managers — digital edition of the inspection report, accessible to all Toyota/Lexus dealers.",
     y302:"Automated delivery of *PGM / DSPF / PRTF objects to production with an email report sent via a Windev task.",
@@ -992,6 +1024,9 @@ const t = {
     y328:"— Development and rollout at the warehouse in ",
     y329:"Operations tool reading the QHST system log: checks that night jobs ran according to a reference matrix, flags those that did not, and monitors subsystem health. Any anomaly is logged and emailed to the operations team.",
     y330:"Proof that a DB2/400 database can be exposed as a REST API without rewriting anything. The protocol was never the hard part: some tables date back to the 1980s, where a column name fits in six characters. Annotated data models resolved by reflection to restore readable business names in the JSON payload, going as far as building types at runtime. Interpreted search filters with guard rails, parameterized queries, Swagger documentation, IIS deployment.",
+    y331:"A core method and its satellite documents, two separate roles between the one who designs and the one who executes, executable test gates with a deliberately broken fixture, a decision register and versioned prompts. Prompts travel through a dedicated channel: two folders acting as a mailbox between the architect and the execution agent, where nothing is ever overwritten and a refusal is stated. <a href='https://twaim-web.vercel.app/en' target='_blank' rel='noopener noreferrer' style='color:var(--c1);text-decoration:underline;text-underline-offset:2px;'>See the presentation</a>",
+    y332:"This site's repository is public. The prompts for every increment, the session journal, the lessons register and the test gate can all be read there. The method is verifiable on evidence rather than on claims. <a href='https://github.com/lianazel/lianazel.github.io' target='_blank' rel='noopener noreferrer' style='color:var(--c3);text-decoration:underline;text-underline-offset:2px;'>See the repository</a>",
+    y333:"A scheduled job hosted on Supabase feeding a PostgreSQL database, from the metals.dev interface. <a href='https://metalwatch-delta.vercel.app/' target='_blank' rel='noopener noreferrer' style='color:var(--c4);text-decoration:underline;text-underline-offset:2px;'>See the site</a>",
     lang_flag:"🇫🇷", lang_abbr:"FR", lang_word:"Français",
     menu_open:"Open menu", menu_close:"Close menu"
   }

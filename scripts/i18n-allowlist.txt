@@ -99,6 +99,8 @@ Android            # systeme d'exploitation Google
 # --- Outillage ---------------------------------------------------------------
 Git                # gestionnaire de versions
 GitHub             # plateforme d'hebergement
+Supabase           # plateforme d'hebergement, nom de produit
+Vercel             # plateforme d'hebergement, nom de produit
 LinkedIn           # reseau professionnel
 Swagger            # outil de documentation d'API
 JIRA               # outil de suivi Atlassian
