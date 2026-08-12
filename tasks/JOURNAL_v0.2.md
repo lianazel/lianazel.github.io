@@ -965,3 +965,121 @@ et les huit témoins n'ont pas bougé d'un octet.
 **C'est LE TITRE qu'il faut regarder à 320 px**, pas les étiquettes : il passe de **12 à 27
 caractères** et passera vraisemblablement sur deux lignes. `API système OS/400`, que mon premier
 rapport désignait comme le risque, a en réalité **77 px de marge** — mesure de la revue.
+
+---
+
+## 12 août 2026 — La frise prouve l'IBM i que la carte annonce (session 13)
+
+| | |
+|---|---|
+| **Type** | EVOL (contenu) |
+| **Branche** | `feat/preuve-ibmi` — 5 enregistrements |
+| **Fusion** | **`efd70bc`** (`--no-ff`) — 6 fichiers, +557 / −11 |
+| **Prompt pilote** | `prompts/v0.7/EVOL_ibmi-frise-et-carte_v2.md` (la v1, jamais transmise, entre avec son bandeau PÉRIMÉ posé cette fois par le Tech Lead) |
+| **Version** | **0.7.0 → 0.8.0** (minor : `feat/*`, le contenu public change) |
+| **Dette** | aucune soldée — **trois ouvertes**, voir plus bas |
+
+### Ce que l'incrément pose
+
+Trois faits n'étaient pas sur la page. Le **RPG en format libre** — la question qu'un recruteur a posée
+le 10 août et à laquelle le chef de projet n'a pas su répondre. Le **SQL incorporé**. Et un **POC .NET
+qui expose une base DB2/400 en API REST**, documenté sous Swagger et déployé sur IIS, dont le bloc
+Talentia ne disait pas un mot alors qu'il annonçait « API REST en .NET 8 / C# » sans nommer ni IBM i ni
+DB2/400 : la preuve la plus récente du positionnement de la page y était, invisible.
+
+`DDS` sort de la carte de compétences — même raison que « Legacy » à l'incrément précédent, un cran
+plus bas : un sigle que le lecteur visé ne décode pas ne le renseigne pas. `API REST sur DB2/400`
+entre. La frise gagne deux réalisations : l'outil d'exploitation qui lit le journal système `QHST`
+chez Toyota, et le POC chez Talentia.
+
+**Cinq clés neuves**, symétriques : `178 → 183` de chaque côté. `ibm1` à `ibm3` gagnent un second
+emploi, **valeurs inchangées** — les deux emplacements affichent la même chose parce qu'elle *est* la
+même, réemploi légitime de la famille `e4_title`.
+
+### La méthode d'écriture, et elle a payé
+
+**Les quatorze textes ont été extraits du prompt par programme**, jamais retapés, et le programme
+d'extraction **refusait de rendre la main** si une valeur portait un cadratin — P7 vérifié à la source,
+avant toute écriture dans le dépôt. Les libellés réemployés et la phrase conservée de `e3_desc` sont
+**lus dans le fichier** puis concaténés : la conservation « mot pour mot » est structurellement
+garantie, pas relue.
+
+Résultat mesuré par la revue : **aucun nombre du livrable n'a été trouvé faux.** C'est la première
+fois que la revue ne redresse aucun chiffre.
+
+### Revue — `NEEDS WORK`, quatre réserves, toutes soldées
+
+**Le verdict de l'agent était `NEEDS WORK` et il faut le lire pour ce qu'il disait : aucun défaut de
+code.** Les treize critères d'acceptation passaient, re-mesurés un par un contre le code. Le travail
+restant était une étape de procédure et trois corrections de livrables.
+
+| Réserve | Objet | Résolution |
+|---|---|---|
+| **R-1** | l'incrément n'était pas enregistré et `changes.md` annonçait un commit `feat:` **qui n'existait pas** | commit posé, en-tête réécrite pour n'annoncer que ce qui est fait — la règle de lecture (3) du §10 appliquée à soi-même |
+| **R-2** | « rien d'autre de la même famille sur la page » — **affirmation fausse** | inventaire refait **avec son motif de balayage écrit**, deux familles séparées → **D-17** |
+| **R-3** | le `CLAUDE.md` §3 devient plus faux et aucun livrable ne le dit | signalé → **D-18** |
+| **R-4** | l'ampleur visuelle déférée à l'humain était sous-décrite | trois rapports de longueur reportés, **avec leur ensemble de comparaison** |
+
+**Une divergence assumée avec la revue, sur R-4.** Elle annonçait `x71` à « 2× le plus long titre
+existant » en comparant à `x7` (34 car.), qui n'est le plus long **que du bloc Toyota**. Sur la page,
+c'est `x4` à 55 caractères : le rapport est **1,2×**. Les deux mesures sont justes, d'ensembles
+différents — celui de la revue n'était pas écrit. *Le rapport est le nombre fragile ; l'ensemble est
+ce qui le rend vérifiable.*
+
+### Trois dettes ouvertes, à instruire par le Tech Lead
+
+- **D-16 — `.NET 8` du bloc Talentia.** Le POC relu est en `.NET 6`, la mission a pu couvrir les deux,
+  le chef de projet ne s'en souvient pas. Prescrite par le prompt lui-même : un nombre qu'on ne peut
+  pas mesurer ne se réécrit pas au jugé.
+- **D-17 — noms d'objets et identités de clients sur la page.** **Deux familles, pas un repère**, et
+  c'est tout l'objet de la ligne. *Objets et programmes* — `VN_3EN1_DEMAT` (`index.html:458`, motivé en
+  toutes lettres dans la liste blanche comme « nom de code d'un projet Toyota »), `Solution
+  HOME-SERVICE` (clé `x37`), `FluxProd.exe` (clé `y307`) : cette famille relève d'une **règle déjà
+  posée** par le chef de projet le 11 août. *Identités de clients* — `PICARD SURGELÉS` (`x47`),
+  `MNM` / `Mutuelle Nationale Militaire` (`x27`/`x41`), `BALAS`, plus `Media Performance` et
+  `MasterPrint` que le code ne permet pas de qualifier : cette famille est un **arbitrage ouvert, non
+  tranché à ce jour** — l'arbitrage du 11 août parle d'objets, pas de clients.
+  **Aucune décision de contenu n'a été prise ici, et rien n'a été retiré de la page.**
+- **D-18 — le `CLAUDE.md` §3 se périme en silence.** Il annonce **132 clés déclarées pour 126
+  utilisées** ; la mesure donne **183 et 176**, et `langBtn` qu'il cite n'est plus une clé du
+  dictionnaire. **Le constat, pas le remède** : le nombre se périme à chaque incrément *parce que rien
+  ne le lit* — 132/126 déclarés, 178/171 mesurés en session 12, 183/176 aujourd'hui. Le Tech Lead
+  tranchera entre le retirer du cadrage et le faire lire par une porte, comme le budget de largeur du
+  §9. **Ne pas inscrire « corriger le nombre » comme plan de remboursement** : ce serait traiter le
+  symptôme.
+
+### Validation humaine — faite, et élargie
+
+**Le chef de projet a validé le rendu à 320 et 375 px, dans les deux langues.** Sur un téléphone réel,
+au travers d'un tunnel éphémère ouvert pour l'occasion — la compétence `tunnel-apercu` a été construite
+dans la même session, **hors dépôt** (`~/.claude/skills/`), sous sa consigne dédiée.
+
+**Puis un regard extérieur, celui de sa fille**, qui n'avait jamais vu le site. **Aucune de ses trois
+remarques n'est un défaut de mise en page** — elle n'a rien vu casser. Les trois sont du contenu, et
+elles sont consignées ici parce qu'un regard extérieur d'un jour donné ne se rejoue pas.
+
+1. **« Retirer les tirets, il y en a trop. »** Mesuré dans le texte visible français : **44 cadratins**
+   `—`, 10 demi-cadratins `–`, 16 traits d'union internes. **Mais 28 des 44 sont structurels** :
+   vingt-huit clés *commencent* par un cadratin, motif `<span>Libellé</span><span> — description</span>`.
+   Ce n'est donc **pas un chercher-remplacer** : retirer ces tirets oblige à décider ce qui les
+   remplace, et c'est une décision de mise en page. Les 16 traits d'union internes ne se touchent pas
+   (`RPG-ILE`, `STEF-TFE`, `Visual-Adelia`, `sous-systèmes`). **Ce chantier était déjà identifié par la
+   méthode** (`STYLE_METHOD`, contrat de ponctuation) : elle l'a trouvé seule, sans rien savoir du
+   harnais. C'est la meilleure confirmation qu'il est réel.
+2. **Cliquer une compétence, voir les projets liés.** La plus coûteuse des trois : elle exige une
+   correspondance compétence ↔ réalisation qui n'existe nulle part, plus une interaction à décider
+   *aussi* sans JavaScript. Elle rejoint pourtant une intention déjà écrite au §9 du cadrage — « c'est
+   là que vivra la carte du harnais, le différenciateur du portfolio ».
+3. **Quatre soft skills à ajouter** : très organisé, très créatif, tenace, management d'équipe par
+   inclusion. La moins chère — quatre clés dans les deux langues. **Mais les quatre ne se valent pas** :
+   les trois premières sont des auto-évaluations qu'un recruteur escompte ; **« management d'équipe par
+   inclusion » nomme une méthode**, pas une qualité, et c'est la seule qui informe. C'est aussi la plus
+   difficile à traduire.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4, inchangés). Clés `178/178 → 183/183`. Liste
+blanche `102 → 103` (`DDS` sort ; `Dapper` et `IIS` entrent avec leur motif), et le `CLAUDE.md` §6 est
+recalé **dans le même enregistrement** — la régression documentaire R-2 de la session 12 ne s'est pas
+reproduite. Cadratins **152 → 152** sous une convention écrite. **Mécanique du filet rigoureusement
+intacte** : `sha256` des 10 fichiers identiques à l'octet.
