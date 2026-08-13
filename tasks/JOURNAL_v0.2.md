@@ -1307,3 +1307,104 @@ dérangé. Mécanique **intacte**, onze empreintes. Contenu **extrait du prompt 
 identique au bloc source à la v1, et deux paragraphes remplacés sur ancre prouvée unique à la v2.
 **Aucun nom de tiers** dans le contenu, balayage motivé sur les identités de D-17 : **D-17 respectée
 par construction**, seul document du dépôt dont on puisse le dire sans réserve.
+
+---
+
+## 13 août 2026 — Sept dettes entrent au registre, et les repères cessent de se marcher dessus (session 16)
+
+| | |
+|---|---|
+| **Type** | CHORE (documentation) |
+| **Branche** | `chore/dettes-au-cadrage` — 4 enregistrements |
+| **Fusion** | **`1805e3d`** (`--no-ff`) — 7 fichiers, +1585 |
+| **Prompts pilotes** | **cinq révisions**, `v1` à `v5`, toutes enregistrées ; **v1 et v3 jamais exécutées** |
+| **Version** | **0.9.1 → 0.9.2** (patch : `chore/*`, la page ne change pas d'un octet) |
+| **Dette** | aucune soldée — **sept inscrites**, dont une née de l'incrément lui-même |
+
+### Ce que l'incrément pose
+
+**Le registre passe de quinze à vingt-deux lignes.** Trois dettes vivaient au journal et pas au
+cadrage, une quatrième nulle part, trois sont nées de cet incrément.
+
+Le §8 gagne aussi un **bloc de conventions de repères** — `D-n`, `M-n`, `RQ-n`, `RV-n` — né d'une
+collision où deux objets sans rapport portaient l'étiquette `R-1` dans le même incrément. Et la
+**définition des deux familles de dette**, au critère du **remède seul** : ce qu'il faut changer pour
+rembourser, la page ou l'instrument. **L'origine devient un indice, jamais un test.**
+
+Le relevé de contraste sort du cadrage vers **`tasks/MESURE_contraste-ancres_v1.md`**, enregistré. Le
+cadrage **pointe** désormais, il ne recopie plus.
+
+### Cinq révisions, et les échecs n'étaient pas répartis
+
+| Version | Sort | Motif |
+|---|---|---|
+| **v1** | **arrêtée** à l'étape 0 | se contredisait sur son compte : quatre lignes annoncées, six rédigées |
+| **v2** | exécutée | six lignes + conventions · revue `NEEDS WORK` sur trois nombres |
+| **v3** | **arrêtée** avant écriture | exigeait « mot pour mot » des textes contenant tableaux, titres et citations |
+| **v4** | exécutée | textes en contenu de cellule · ajoute D-22 · revue `NEEDS WORK` sur deux nombres |
+| **v5** | exécutée | sort le relevé vers un fichier de mesure · corrige la définition d'Héritage |
+
+**Le diagnostic de la v5 est le bon, et il tient en une phrase** : *les échecs n'étaient pas répartis,
+ils étaient tous sur D-20*. Quatre liens, puis six ancres, puis treize. D-16, D-18, D-19, D-21 et D-22
+n'ont jamais bougé. **Une ligne de registre qui porte une mesure encore en mouvement périme sa propre
+prose à chaque passe.** Une v6 serait arrivée par le même chemin.
+
+### D-22 est née d'un refus d'exécuter
+
+Le §8 est un **tableau markdown à quatre cellules**. La v3 donnait des textes portant vingt barres
+verticales, dix lignes vides, un titre et neuf citations : **pour la seule ligne D-20, le tableau
+serait passé de quatre cellules à une vingtaine, cassé jusqu'à sa fin.** Quatre blocs sur cinq étaient
+structurellement incompatibles avec leur destination.
+
+**C'est la première fois qu'un arrêt engendre une ligne de registre.**
+
+### Les deux réserves de la revue de la v4, et elles portaient sur le texte imposé
+
+- **D-20 déclarait conformes sept boutons qu'elle disait deux cellules plus loin n'avoir pas mesurés.**
+  Mesuré : blanc sur le dégradé des `.btn-primary`, **aucun des 101 points échantillonnés n'atteint le
+  seuil**, étendue **3,40 à 4,44**. L'état réel est **treize ancres sur vingt-trois**, pas six.
+- **Le remède était sous-estimé d'un facteur trois** : la couleur fautive de l'ancre TWAIM existe en
+  **trois exemplaires**, le corps et les deux blocs de langue. La bascule faisant `el.innerHTML = d[k]`,
+  corriger le seul corps donne un lien conforme **jusqu'à la première bascule**. C'est la mécanique de
+  **D-14**, soldée l'avant-veille.
+
+### L'arbitrage du chef de projet — route d'arrondi
+
+**Le texte imposé mot pour mot violait le critère du prompt qui l'imposait** : il écrivait `3,60`
+(route non arrondie) et `7,46` (route arrondie), les deux nombres exacts que la revue précédente avait
+dénoncés. Ils venaient de **mes** deux scripts de la veille.
+
+**Décision : route non arrondie.** `7,46` devient **`7,44`**, une occurrence, un caractère. Motifs :
+aucun verdict ne change · `3,60` est gelé dans trois prompts enregistrés · `7,44` est déjà au journal ·
+la route arrondie créerait un écart entre le cadrage et des pièces qui ne se réécrivent pas.
+
+**L'objection est consignée dans le fichier de mesure** : la route arrondie décrit mieux la couleur
+**réellement peinte**, le compositeur quantifiant sur huit bits avant d'afficher. **Il faudra l'adopter
+le jour où un outil d'audit lira la couleur affichée** — et ce jour-là, seul le fichier de mesure
+changera. D-20 n'aura pas à bouger. *C'est exactement ce que ce fichier existe pour permettre.*
+
+### Classement proposé de D-1 à D-15
+
+**Héritage 7 · Instrument 6 · indéterminable 2.** Le passage au critère du remède seul a déplacé **une
+ligne**, D-5. Et la revue en a trouvé une seconde que j'avais manquée : **D-8 emballe deux dettes**
+comme D-11, son plan exigeant aussi que `layoutNav` refuse de trier sur un rang non numérique — et
+`layoutNav` vit dans `index.html`.
+
+*J'avais appliqué la règle neuve à la ligne qui avait résisté au classement, pas à celle qui s'était
+laissé classer sans protester.*
+
+### Périmètre — une phrase due
+
+**L'enregistrement des cinq prompts publie trente occurrences de plus des noms de D-17.** Ce n'est
+**pas une divulgation** : les dix sont déjà dans `index.html` publié, trente et une occurrences. Mais
+D-17 déclare que son périmètre de remboursement couvre *« aussi les journaux, les prompts et les
+artefacts committés »* — **et l'incrément vient d'agrandir ce périmètre.** La ligne D-17 le dit
+désormais en toutes lettres : le périmètre **grandit tout seul**, sans qu'aucun contrôle ne le signale.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4). **22 lignes à quatre cellules**, D-1 à D-22.
+**D-1 à D-15 identiques à `main`** par empreinte, D-16, D-18, D-21 et D-22 intactes. **Zéro cadratin
+ajouté**, `index.html` **non ouvert** — 152 écrits inchangés. `CLAUDE.md` : **46 494 → 59 421**
+caractères, **297 %** du plafond que D-19 surveille, aggravée trois fois par son propre acte
+d'inscription.

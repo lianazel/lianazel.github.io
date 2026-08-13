@@ -626,3 +626,82 @@ se rappelant pourquoi on l'a écrit.** Trois compléments :
 version, toute page « comment c'est testé », tout commentaire qui résume ce qu'un garde-fou protège.
 Le geste : **ouvrir le contrôle** avant d'écrire la phrase qui le décrit, et préférer *« vérifie X, ne
 vérifie pas Y »* à *« vérifie tout »*.
+
+---
+
+## 13 août 2026 — Une réserve écrite dans un document et une affirmation écrite dans un autre ne se rencontrent jamais d'elles-mêmes
+
+**Type** : Erreur (relevée en revue, sur un texte imposé par le Tech Lead)
+
+**Contexte** : incrément « dettes au cadrage ». La ligne D-20 du registre décrit une mesure de
+contraste. Elle est écrite en quatre cellules : `#`, `Déviation`, `Impact`, `Plan de remboursement`.
+
+**Erreur** : j'avais posé, **correctement**, un angle mort dans mon rapport de mesure : *« les boutons
+`.btn-primary` sont posés sur un dégradé dont le contraste varie le long du bouton ; ils n'ont pas été
+mesurés et tout chiffre les concernant serait faux »*. Le Tech Lead l'a recopié dans la cellule `Plan`.
+
+**Et la cellule `Déviation`, deux cellules plus tôt, déclarait ces mêmes boutons conformes** en les
+incluant dans une fourchette « 6,96 à 19,17 » — leur `17,25` étant calculé contre le fond du conteneur,
+c'est-à-dire contre le mauvais fond.
+
+**Une ligne déclarait conformes des éléments qu'elle déclarait non mesurés deux cellules plus loin.**
+Mesuré ensuite : blanc sur ce dégradé donne **3,40 à 4,44**, et **aucun des 101 points échantillonnés
+n'atteint le seuil de 4,5**. Les sept échouent partout. L'état réel était **treize ancres sur
+vingt-trois**, pas six.
+
+**Correction/Pattern** : **une réserve et l'affirmation qu'elle contredit ne se rencontrent que dans
+une relecture qui les tient ensemble.** Aucune porte ne fait ce travail, et le découpage documentaire
+l'empêche activement : la réserve vivait dans un artefact, l'affirmation dans un autre, puis les deux
+dans la même ligne mais dans deux cellules différentes.
+
+Trois compléments :
+
+1. **Le signal à reconnaître** : *j'ai écrit quelque part que X n'est pas mesuré.* Alors il faut
+   chercher **où X est chiffré**, et le chercher dans le même document, pas ailleurs. Une réserve qui
+   voyage sans son affirmation est une réserve qui protège le rédacteur et pas le lecteur.
+2. **Un chiffre calculé sur le mauvais fond n'est pas une mesure imprécise, c'est une mesure d'autre
+   chose.** Le `17,25` n'était pas « approximatif » : il mesurait le contraste avec un fond qui
+   n'existe nulle part sous ces boutons.
+3. **Le remède structurel est de sortir le relevé du registre.** Une ligne de registre qui porte une
+   mesure encore en mouvement périme sa prose à chaque passe : trois fois ici. Le relevé vit désormais
+   dans un fichier de mesure enregistré, que le cadrage **pointe**.
+
+**Applicable globalement ?** : **Oui** — toute documentation à sections, tout registre, tout rapport
+long, et tout endroit où une limite est énoncée loin du chiffre qu'elle limite. Le geste : **relire la
+réserve et l'affirmation côte à côte**, physiquement, avant de livrer.
+
+---
+
+## 13 août 2026 — Un prompt qui exige « mot pour mot » doit avoir regardé la forme du fichier de destination
+
+**Type** : Erreur (du rédacteur du prompt, arrêtée avant écriture)
+
+**Contexte** : troisième révision d'un prompt visant le §8 du `CLAUDE.md`, qui est un **tableau
+markdown à quatre cellules**, sans aucun titre de section.
+
+**Erreur** : la révision donnait des textes de remplacement contenant **des tableaux, des lignes vides,
+un titre `###` et des blocs de citation**, et exigeait qu'ils soient appliqués **mot pour mot**. Or une
+cellule de tableau n'admet rien de tout cela. **Quatre blocs sur cinq étaient structurellement
+incompatibles avec leur destination.** Pour la seule ligne D-20 : vingt barres verticales, la ligne
+serait passée de quatre cellules à une vingtaine, cassant le tableau jusqu'à sa fin.
+
+**La cause n'est pas l'inattention** : le rédacteur a écrit dans la mise en forme de **son propre
+document** en croyant écrire dans celle du fichier cible, sans jamais regarder le fichier.
+
+**Correction/Pattern** : **« mot pour mot » est une exigence sur le contenu ET sur la forme. Elle
+n'est légitime que si la forme de la destination a été vérifiée.** Sinon le prompt porte **deux
+instructions contradictoires** : sois littéral, et entre dans un contenant qui ne peut pas te recevoir.
+
+Deux compléments :
+
+1. **La règle qui en sort est mixte, et c'est le bon compromis** : texte **littéral** pour les énoncés
+   courts qui portent une définition ou une convention, où le mot compte ; **substance et contraintes**
+   pour les documents longs et descriptifs, où c'est le contenu qui compte. *Chaque mot imposé est un
+   mot dont le rédacteur répond.*
+2. **Le coût de l'arrêt contre le coût de l'obéissance** : un aller-retour, contre un registre cassé
+   sur six lignes. **L'exécutant qui refuse d'exécuter fait partie du dispositif**, et ici son refus a
+   produit une ligne de registre — le §8 a dépassé la forme du tableau, et personne ne l'avait vu.
+
+**Applicable globalement ?** : **Oui** — toute consigne de remplacement littéral : migration de
+configuration, patch de documentation, injection dans un gabarit, message imposé. Le geste : **ouvrir
+la destination avant d'écrire la consigne**, et vérifier que la forme du texte peut y entrer.
