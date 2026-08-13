@@ -705,3 +705,54 @@ Deux compléments :
 **Applicable globalement ?** : **Oui** — toute consigne de remplacement littéral : migration de
 configuration, patch de documentation, injection dans un gabarit, message imposé. Le geste : **ouvrir
 la destination avant d'écrire la consigne**, et vérifier que la forme du texte peut y entrer.
+
+---
+
+## 13 août 2026 — Une révision est une soupape, pas un mode de travail
+
+**Type** : Erreur de méthode, relevée par le chef de projet
+
+**Contexte** : l'incrément « dettes au cadrage » a demandé **cinq révisions du prompt**, dont **deux
+arrêtées avant toute écriture**, pour un travail de **documentation seule**. Cinq rédactions, trois
+arrêts, deux revues complètes.
+
+**Erreur** : **l'erreur n'est aucun des défauts pris un par un.** Ils étaient réels, et chacun a été
+correctement attrapé : un compte qui se contredisait, des textes incompatibles avec la forme de leur
+destination, deux nombres sans unité, une définition à deux critères. **L'erreur est que rien ne
+bornait la boucle.** Le harnais autorise une révision de plus, indéfiniment, et personne ne comptait.
+
+**La cause profonde est une taille d'incrément.** Six dettes sans rapport entre elles, plus une
+convention de repères, plus une taxonomie de familles, plus le classement de quinze lignes anciennes,
+**dans une seule consigne**. Un défaut n'importe où obligeait à réécrire le tout. Découpé en six petits
+travaux, chacun aurait échoué au plus une fois, et une correction n'aurait coûté que sa ligne.
+
+**Deuxième cause, de rédaction** : un arbitrage qui tenait en **un caractère** a exigé une révision
+entière du prompt, parce que le texte était imposé mot pour mot et qu'un mot imposé engage son auteur.
+
+**Correction/Pattern** : **règle des trois révisions**, inscrite au référentiel le 13 août 2026 :
+**au-delà de trois, on ne révise plus, on découpe.**
+
+1. **Une quatrième révision n'est pas une correction**, c'est le signe que la **forme** de l'incrément
+   est fausse, pas sa rédaction.
+2. À ce point, **ce qui est déjà juste atterrit**, et ce qui résiste devient un incrément séparé et
+   plus petit.
+3. **Un arbitrage qui tient en un mot ne voyage jamais dans une révision** : il est transmis comme
+   décision et tracé comme tel.
+4. **Le compte se tient à voix haute** : au dépôt de la troisième révision, le Tech Lead le dit et
+   propose le découpage.
+
+> **Rien ne fait respecter cette règle, et il faut le savoir en la lisant.** Aucun contrôle ne compte
+> les révisions d'un prompt, aucune porte ne rougit à la quatrième. **Elle n'a encore rien attrapé.**
+> C'est une intention datée tant qu'un premier cas réel ne l'a pas éprouvée, et une règle qu'on n'a
+> jamais vue mordre n'est pas une règle : c'est une croyance, exactement comme un contrôle qu'on n'a
+> jamais vu refuser.
+
+**Une observation qui explique pourquoi la boucle a pu tourner si longtemps.** Le filet est resté vert
+du début à la fin des cinq révisions. **Il n'avait rien à dire** : il vérifie le site, pas les
+documents de la méthode. **Le prompt est la seule pièce de la chaîne qui ne passe par aucune porte, et
+c'est celle qui gouverne toutes les autres.** C'est un constat, pas un chantier : le remède s'instruira
+au référentiel.
+
+**Applicable globalement ?** : **Oui**, toute consigne écrite qu'un tiers exécute : specification,
+ticket, contrat d'interface, gabarit de migration. Le geste : **compter les révisions à voix haute**,
+et traiter la troisième comme un **signal de découpage** plutôt que comme une étape.
