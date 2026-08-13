@@ -1408,3 +1408,68 @@ Porte **verte** après fusion, **4 avertissements** (D-4). **22 lignes à quatre
 ajouté**, `index.html` **non ouvert** — 152 écrits inchangés. `CLAUDE.md` : **46 494 → 59 421**
 caractères, **297 %** du plafond que D-19 surveille, aggravée trois fois par son propre acte
 d'inscription.
+
+---
+
+## 13 août 2026 — Une révision est une soupape, pas un mode de travail (session 17)
+
+| | |
+|---|---|
+| **Type** | CHORE (documentation) |
+| **Branche** | `chore/lecon-boucle-revisions` — 2 enregistrements |
+| **Fusion** | **`03deb86`** (`--no-ff`) — 2 fichiers, +136, **zéro suppression** |
+| **Prompt pilote** | `prompts/v0.9/CHORE_lecon-boucle-revisions_v1.md` — **une seule version** |
+| **Version** | **0.9.2 → 0.9.3** (patch : `chore/*`) |
+| **Dette** | aucune touchée · **une déviation signalée, non réparée** |
+
+### Ce que l'incrément pose
+
+**La troisième leçon du 13 août**, demandée par le chef de projet après la clôture de la session 16 :
+*une révision est une soupape, pas un mode de travail*.
+
+Elle porte la **règle des trois révisions** — au-delà de trois, on ne révise plus, on découpe — et
+elle nomme la cause profonde de la boucle précédente : **une taille d'incrément**. Six dettes sans
+rapport, plus une convention de repères, plus une taxonomie, plus le classement de quinze lignes
+anciennes, dans une seule consigne. Un défaut n'importe où obligeait à réécrire le tout.
+
+**L'erreur n'était aucun des défauts pris un par un** : ils étaient réels et chacun a été attrapé.
+**L'erreur est que rien ne bornait la boucle.**
+
+### Ce que la leçon dit d'elle-même, et c'est le plus utile
+
+Elle porte **sa propre limite**, écrite dans le corps : *aucun contrôle ne compte les révisions d'un
+prompt, elle n'a encore rien attrapé, et une règle qu'on n'a jamais vue mordre est une croyance,
+exactement comme un contrôle qu'on n'a jamais vu refuser*.
+
+Et elle explique **pourquoi la boucle a pu tourner cinq fois sans que rien ne s'y oppose** : le filet
+est resté vert du début à la fin, parce qu'il vérifie le site et non les documents de la méthode.
+**Le prompt est la seule pièce de la chaîne qui ne passe par aucune porte, et c'est celle qui gouverne
+toutes les autres.** Constat, pas chantier : le remède s'instruira au référentiel.
+
+### Une déviation signalée, et volontairement non réparée
+
+**Les cinq prompts de la session 16 vivent dans `prompts/v0.8/` alors que `VERSION` portait déjà
+`0.9.1`** aux trois enregistrements, mesuré sur `bc7586a`, `76dab3c` et `1a9a17e`. Le §10 impose
+`prompts/v<version mineure>/`.
+
+**Les huit buckets antérieurs sont tous conformes** : `v0.1` déposé quand `VERSION` valait `0.1.0`,
+`v0.2` à `0.2.0`, jusqu'à `v0.8` à `0.8.0`. **C'est donc un écart isolé, pas une dérive** — et le
+prompt de cette session demandait explicitement de le signaler sans le corriger.
+
+Le prompt de cet incrément est, lui, dans **`prompts/v0.9/`**, bucket créé à cette occasion.
+
+### Le seul point de friction, et il est de forme
+
+Le critère 3 exigeait **aucun tiret cadratin dans le texte ajouté**. Il en reste **un** : celui du
+titre, `## 13 août 2026 — Une révision est une soupape…`. C'est la **convention des dix-sept titres du
+fichier**, et le prompt demandait par ailleurs « la même forme que les deux leçons du 13 août ».
+Le retirer aurait désaligné la leçon de ses seize voisines au moment même où l'on demande d'en
+respecter le format. **Le seul cadratin de prose a été retiré**, remplacé par une virgule.
+
+*Signalé plutôt que masqué : c'est un arbitrage entre deux exigences du même prompt, pas un oubli.*
+
+### Filet de tests
+
+Porte **verte**, **4 avertissements** (D-4). **Zéro ligne existante modifiée**, un seul fichier suivi
+touché, aucun nombre périssable dans l'ajout — seules les dates. Le registre des dettes, `index.html`
+et `scripts/` n'ont pas été ouverts.
