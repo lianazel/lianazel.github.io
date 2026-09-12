@@ -331,13 +331,81 @@ globale du 15 juin 2026 : faire évoluer le framework, c'est modifier le gabarit
   vert. C'est par conception, aucune machine ne peut en juger. À énoncer parmi les limites si
   l'en-tête du contrôleur ne le dit pas déjà.
 
+# Partie IV — Constats du 12 septembre 2026, pas encore inscrits au cadrage
+
+> Même statut que la partie III : établis en session, pas encore au `CLAUDE.md` §8, ici pour ne pas se
+> perdre. Ils viennent des sessions 18 et 19, celles qui ont posé le plancher de permissions puis
+> enregistré le harnais.
+
+## C-6 — Le `CLAUDE.md` §11 confie encore la fusion à l'agent, la commande ne la fait plus · **priorité 1**
+
+**Le fait, mesuré sur `bab845f`.** Le §11 « Séquence de fin d'incrément », étape 3, écrit : *« puis
+Claude Code `/land <branche>` : fusion, filet de tests vert, incrément de version… »*. Or le
+`.claude/commands/land.md` enregistré le 12 septembre 2026 écrit l'inverse en toutes lettres — **« Ne
+merge jamais »** en tête, *« Aucun `git merge` ici »* à son ÉTAPE 2 — et sa pré-garde refuse tant que la
+branche n'est pas déjà fusionnée. Le cadrage publié contredit donc l'outillage publié.
+
+**Ce n'est pas un défaut de l'incrément qui l'a révélé, c'en est le produit voulu.** La session 18 avait
+laissé un chantier ouvert : la règle `Bash(git merge *)` du plancher désarmait la commande
+d'atterrissage. La session 19 l'a refermé du côté de la commande, et le prompt pilote interdisait
+nommément d'ouvrir `CLAUDE.md` — un incrément qui modifie le cadrage pendant qu'il modifie l'outillage
+mélange deux choses qui doivent pouvoir se relire séparément.
+
+**Pourquoi cette ligne existe, et c'est le point.** La revue de la session 19 (réserve `RV-2`) a relevé
+que le seul écrit portant cette divergence vivait dans `.pipeline/changes.md` — **un dossier exclu du
+dépôt**. Quand il s'effacera, le cadrage contredira l'outillage et **plus rien ne dira que c'était su**.
+Ce n'est pas de la dissimulation, c'est de l'**évaporation du support**, et le résultat est le même :
+une dette silencieuse. Le `land.md` indexe `tasks/ROADMAP.md` pour exactement ce motif, qu'il écrit
+lui-même. La présente ligne est ce support.
+
+**Remède** : réécrire le §11 pour que ses six étapes disent qui fait quoi — la fusion, le push et la
+suppression de branche au chef de projet ; le filet, le bump, le journal et le `STATUS` à l'agent. À
+faire avec la conversion du §8 (**D-22**) et l'allègement du cadrage (**D-19**), les trois portant sur
+la forme du `CLAUDE.md`. **Ne pas le traiter seul** : une passe de plus sur ce fichier pour une ligne
+coûte plus qu'elle ne rapporte, et `D-19` surveille précisément ce volume.
+
+## C-7 — Le plancher de permissions est éprouvé à 9 règles sur 39 · priorité 2
+
+**9 des 39 règles `deny`** ont été vues mordre le 12 septembre 2026 (essai 0, onze essais, aucune
+commande passée). Les **30 autres** restent **non éprouvées une à une** : elles sont de même forme que
+celles qui l'ont été, ce qui est un argument, pas une preuve. Le chiffre vit aujourd'hui dans
+`.pipeline/RAPPORT_ESSAI0_plancher_v1.md`, **hors dépôt** — même mécanique d'évaporation que `C-6`.
+
+**Deux résultats de cet essai qui servent la suite** : une règle `deny` l'emporte sur une autorisation
+`allow` ; et une règle `Edit(...)` ferme **les deux chemins d'écriture**, l'outil et la redirection
+shell — sous une réserve à ne pas perdre, relevée en revue : *le refus du chemin shell ne nomme aucune
+règle*, et peut venir de la couche de session plutôt que du plancher. Le refus est constaté, **son
+auteur ne l'est pas**.
+
+**Remède** : inscrire le chiffre et sa date au `CLAUDE.md`, avec l'unité (« 9 sur 39, au 12 septembre
+2026 »), et jouer les essais manquants par familles. Un essai reste ouvert et mérite son propre prompt :
+**un interdit d'outil suit-il un agent délégué ?** `WebFetch` et `WebSearch` ont disparu de la liste
+d'outils de l'agent principal, mais un type d'agent déclaré dans la session les annonce encore. Si la
+réponse est non, l'interdiction réseau a une porte de service.
+
+## C-8 — `.claude/commands/` et `.claude/agents/` sont devenus des chemins à relire après tout `pull` · priorité 3
+
+Depuis le 12 septembre 2026, le dépôt versionne sous `.claude/` des documents qui **sont** des ordres à
+un agent — deux commandes et un relecteur. C'est un gain net : ils deviennent diffables et revus, et
+c'était l'argument de l'incrément. Mais la règle auto-chargée de sécurité supply chain impose de relire
+le diff de `.claude/settings.json` après tout `pull` ; **elle vaut désormais pour ces chemins-là aussi**,
+et ce n'est écrit nulle part.
+
+**Remède** : une ligne dans la section sécurité du `CLAUDE.md`, à porter avec `C-7`.
+
 ---
 
-*Feuille de route tenue par le Tech Lead · mise à jour du 13 août 2026 (ajout de E-4, hors session
-portfolio) · état de fond arrêté au 9 août 2026, après l'atterrissage de la version 0.3.0.*
+*Feuille de route tenue par le Tech Lead · **partie IV ajoutée le 12 septembre 2026** (session 19) ·
+mise à jour du 13 août 2026 (ajout de E-4, hors session portfolio) · état de fond des parties I à III
+arrêté au 9 août 2026, après l'atterrissage de la version 0.3.0.*
 
-> ⚠️ **Cette feuille de route a quatre jours de retard sur le dépôt.** Les parties I à III décrivent
-> l'état du 9 août et renvoient à des consignes de `prompts/v0.3`, alors que le dossier `prompts/v0.8`
-> existe et porte le travail des 12 et 13 août, dont l'épisode des cinq refus et la dette qui en est
-> sortie. Seul l'ajout de E-4 est à jour. **Une remise aux faits est à faire avant de se fier aux
-> priorités ci-dessus.**
+> ⚠️ **Les parties I à III ont un mois de retard sur le dépôt.** Elles décrivent l'état du 9 août et
+> renvoient à des consignes de `prompts/v0.3`, alors que `prompts/v0.8` et `prompts/v0.9` existent et
+> portent le travail des 12-13 août puis du 12 septembre — dont l'épisode des cinq refus, la dette qui
+> en est sortie, le plancher de permissions et l'entrée du harnais au dépôt. **Seuls l'ajout de E-4 et
+> la partie IV sont à jour.** Une remise aux faits est à faire avant de se fier aux priorités des
+> parties I à III.
+>
+> *La formule « quatre jours de retard » a été corrigée le 12 septembre 2026 : elle datait du 13 août et
+> s'était périmée en silence — un retard écrit en durée relative se périme, un retard écrit en date ne
+> se périme pas. C'est la même maladie que **D-18**, dans le document qui suit les dettes.*

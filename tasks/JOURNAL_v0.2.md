@@ -1567,3 +1567,141 @@ Porte **verte** après fusion, **4 avertissements** (D-4 : `e7_title`, `e7_desc`
 site, et le site n'a pas été ouvert. Ce bloc ne prouve donc pas le plancher, il prouve qu'il **n'a
 rien cassé**, ce qui est une autre affirmation et la seule qu'on puisse en tirer. `index.html`,
 `scripts/` et le registre des dettes n'ont pas été ouverts.
+
+## 12 septembre 2026 — Le harnais entre au dépôt, et la commande qui refuse de fusionner garde son propre atterrissage (session 19)
+
+| | |
+|---|---|
+| **Type** | CHORE (outillage) |
+| **Branche** | `chore/harnais-au-depot` — 2 enregistrements |
+| **Fusion** | **`bab845f`** (`--no-ff`) — 5 fichiers, **+583**, −21 |
+| **Prompt pilote** | `prompts/v0.9/CHORE_harnais-au-depot_v2.md` — **une révision**, la `_v1` bloquée à la relecture |
+| **Version** | **0.9.4 → 0.9.5** (patch : `chore/*`) |
+| **Dette** | aucune soldée au §8 · **trois constats** portés à `tasks/ROADMAP.md` partie IV (`C-6` à `C-8`) |
+
+### Ce que l'incrément pose
+
+Le dépôt met sous contrôle de version **l'outillage qui décide des droits et des gestes de l'agent** :
+les deux commandes du cycle (`/ship`, `/land`), le relecteur de prompts qui garde l'entrée de `/ship`,
+et l'archive du prompt d'essai réellement joué. Jusqu'ici ces fichiers ne vivaient que sur le disque du
+chef de projet — non diffables, non revus, non traçables.
+
+**Aucun octet n'a été écrit par l'agent dans ces fichiers.** Le chef de projet les avait copiés à la
+main, seul geste possible : la règle `Edit(/.claude/**)` du plancher ferme l'outil d'édition, et le pont
+de Cowork répond « Writing to .claude is not permitted via remote tools ». L'agent les a lus, statués et
+enregistrés. **Indexer n'est pas écrire** — `git add` lit le fichier et écrit dans `.git/index` ; ni
+`Bash(git add *)` ni `Bash(git commit *)` ne figurent parmi les 39 règles `deny`, vérifié.
+
+Le critère le plus fort de l'incrément est aussi le seul qui prouve vraiment sa thèse : après
+enregistrement, les quatre fichiers rendent **les mêmes tailles et les mêmes empreintes** qu'avant —
+9006 · 5968 · 10533 · 7545 octets, quatre sha256 identiques. La revue les a recomparés aux objets de
+`HEAD`, pas seulement entre eux.
+
+### Le chantier ouvert de la session 18 est refermé, et il s'est refermé sur lui-même
+
+La session 18 laissait `Bash(git merge *)` désarmer `/land`, dont l'ÉTAPE 2 exécutait
+`git merge --no-ff`. Le `land.md` enregistré ici ne fusionne plus : il l'écrit en tête (**« Ne merge
+jamais »**), le répète à son ÉTAPE 2 (*« Aucun `git merge` ici »*), et sa pré-garde refuse tant que
+`git branch --merged main` ne liste pas la branche — en affichant la commande exacte à taper.
+
+**Et il l'a démontré sur lui-même.** Le premier `/land` de la session a été lancé sans que la fusion
+soit faite : refus propre à l'ÉTAPE 0, **aucun marqueur `LANDING` posé**, `main` inchangé, `VERSION`
+inchangée, la commande à taper affichée. Le chef de projet a fusionné, relancé, et l'atterrissage est
+passé.
+
+> **Le détail qui vaut d'être noté** : au moment où cette garde a refusé, **elle n'était pas encore dans
+> `main`** — elle n'y est entrée que par la fusion qu'elle réclamait. Une commande de branche de travail
+> a gardé son propre atterrissage. C'est la démonstration la plus économique qu'on pouvait avoir qu'elle
+> mord.
+
+### La relecture de prompt a bloqué, et elle avait raison
+
+**C'est le premier `BLOCK` du relecteur suivi d'un `SHIP` sur révision** — son cas positif restait à
+éprouver, il l'est. La `_v1` affirmait que `grep -r` était aveugle sur le montage de cette machine. Le
+relecteur l'a réfuté par la mesure ; l'agent d'exécution l'a re-réfuté indépendamment avant de relayer
+le refus : montage `9p/drvfs`, `grep -rl` sort en **code 0** avec des résultats justes, et en code 1
+seulement sur une chaîne réellement absente. La `_v2` ne s'est pas contentée de retirer l'affirmation :
+elle écrit l'inverse — *« `grep -r` fonctionne sur cette machine ; ne va pas écrire le contraire »* — et
+conserve la consigne « fichier par fichier » avec son **vrai** motif, un compte attribuable à son
+fichier.
+
+C'est la famille de l'erreur fondatrice du relecteur : *un prompt affirmait un outil absent qui tournait
+sur la machine.* Le dispositif a attrapé exactement ce pour quoi il a été construit.
+
+### L'erreur de l'exécution, relevée par la revue — deux comptes faux dans un renforcement de preuve
+
+L'agent avait élargi de lui-même le balayage anti-`deny` des dix verbes git prescrits aux **39 familles**
+de règles, au motif que le critère d'acceptation parle des 39 : une preuve doit couvrir ce qu'elle
+affirme. Le geste était juste. **Ses deux comptes étaient faux** : « 9 lignes au grep prescrit, 14 à
+l'élargi », là où la mesure rend **10** et **19**. Et le premier n'avait pas été lancé — il était
+**estimé à la lecture**.
+
+La revue a refait les deux balayages et trouvé **trois lignes non statuées**, dont la plus sensible des
+cinq fichiers : `prompt-reviewer.md:49`, **la seule qui autorise nommément un agent à lancer git**
+(`git branch --show-current`, `git log`, `git rev-parse`). Confrontées aux 39 règles, aucune n'est
+couverte — le seul `git branch` interdit est `-D *` — donc **la conclusion tenait**. Mais un
+renforcement de preuve qui déclare deux comptes faux retombe dans le défaut qu'il invoque, et le risque
+n'était pas théorique : le `/land` recopie la matière de `changes.md` dans ce journal, **qui est servi
+publiquement**. Un compte faux inscrit ici ne s'efface plus.
+
+Corrigé dans les trois artefacts avant la clôture, avec l'aveu en tête du paragraphe et la **règle de
+comptage** désormais écrite — on compte des lignes, sur les quatre fichiers du geste, une ligne portant
+deux commandes comptant une fois. L'écart résiduel avec la revue (17 pour elle, 19 pour l'agent) est
+**une règle de comptage, pas un désaccord** : elle exclut deux lignes où `npm` et `pip` sont des
+critères de détection et non des commandes.
+
+### Trois constats portés à la feuille de route, et pourquoi là plutôt qu'ailleurs
+
+La revue a émis trois réserves sous son `SHIP`. La deuxième portait moins sur le fond que sur le
+**support** : la divergence `CLAUDE.md` §11 ⇄ `land.md` était écrite honnêtement, mais **seulement dans
+`.pipeline/`**, dossier exclu du dépôt. Quand il s'efface, le cadrage contredit l'outillage et plus rien
+ne dit que c'était su. Ce n'est pas de la dissimulation, c'est de l'**évaporation du support** — et le
+résultat est le même qu'une dette silencieuse.
+
+Le `land.md` indexe `tasks/ROADMAP.md` pour exactement ce motif, qu'il écrit lui-même. Trois constats y
+sont donc inscrits, en **partie IV** datée plutôt que glissés dans la partie III du 9 août :
+
+- **`C-6`** — le §11 confie encore la fusion à l'agent. À traiter avec `D-19` et `D-22`, les trois
+  portant sur la forme du `CLAUDE.md`. Ne pas le traiter seul : une passe de plus sur ce fichier pour
+  une ligne coûte plus qu'elle ne rapporte, et `D-19` surveille ce volume.
+- **`C-7`** — le plancher est éprouvé à **9 règles sur 39**, avec son unité et sa date. Les 30 autres
+  sont de même forme, ce qui est un argument, pas une preuve. Un essai reste ouvert et mérite son prompt :
+  *un interdit d'outil suit-il un agent délégué ?*
+- **`C-8`** — `.claude/commands/` et `.claude/agents/` sont devenus des chemins à relire après tout
+  `pull`. La règle supply chain l'impose pour `settings.json` ; elle vaut désormais pour ceux-là, et ce
+  n'était écrit nulle part.
+
+Le pied de la feuille de route a été corrigé au passage : il annonçait « quatre jours de retard », une
+durée **relative** écrite le 13 août qui s'était périmée en silence. Remplacée par une date. C'est
+`D-18` dans le document qui suit les dettes.
+
+### Ce que l'incrément ne prouve pas
+
+**Trente règles sur trente-neuf restent non éprouvées une à une.** Aucun essai de permission n'a été
+joué ici. `SPIKE_essai0-plancher_v2.md` entre comme **archive** : son contenu est une donnée, pas une
+consigne — aucun de ses onze essais rejoué, aucune de ses commandes exécutée. Et une réserve de la revue
+mérite de survivre : l'affirmation selon laquelle `Edit(/.claude/**)` ferme *aussi* la redirection shell
+est **un cran plus forte que la mesure qui la fonde** — le rapport d'essai dit que le refus du chemin
+shell « ne nomme aucune règle » et peut venir de la couche de session. Le refus est constaté, **son
+auteur ne l'est pas**. L'artefact a été ramené à ce que la mesure dit.
+
+Aucune dette **D-1 à D-22** n'est soldée. `index.html`, `scripts/*` et le §8 n'ont pas été ouverts.
+
+### Filet de tests
+
+Porte **verte** après fusion : **code 0**, **9 lignes `OK -`** pour un seuil de 8, **4 avertissements**
+(D-4 : `e7_title`, `e7_desc`, `p3_title`, `p3_desc`). Les huit blocs de preuve de morsure passent avant
+le neuvième. **Relevé du bloc 9 identique à celui de la session 18** — attendu : le filet vérifie le
+site, et le site n'a pas été ouvert. Ce vert prouve que l'incrément **n'a rien cassé** ; il ne prouve
+rien sur le harnais enregistré, **aucun bloc du filet n'inspectant `.claude/`**. Pas d'étape de
+construction : site statique publié directement depuis `main`, et la ligne se saute en le disant.
+
+### Arbitrages rendus
+
+| Question | Ce qui a été tranché | Motif | Portée |
+|---|---|---|---|
+| Le chemin passé au second `/ship` portait un point final parasite (`…_v2.md.`), qui ne désigne aucun fichier. Refuser ou normaliser ? | **Normaliser** et le signaler en tête de réponse | Candidat unique et sans ambiguïté dans le dossier ; refuser aurait coûté un cycle sans rien protéger. La garde sert à écarter un prompt absent ou non gelé, pas à sanctionner une frappe | **cas d'espèce** — décidé par l'agent, non soumis au chef de projet |
+| Le geste 2 (c) prescrivait un balayage de dix verbes git pour un critère qui parle des 39 règles `deny`. Suivre la lettre ou l'intention ? | **Élargir** aux 39 familles, et le tracer en décision hors spec | Une preuve plus étroite que l'affirmation qu'elle sert est la maladie **D-7**. Le périmètre de fichiers reste identique — cinq chemins avant comme après | **précédent** — un instrument doit couvrir ce que son critère affirme |
+| La réserve `RV-2` demandait un support suivi pour la divergence §11. L'écrire où, le prompt fermant `CLAUDE.md` et `tasks/*` ? | **Dans `tasks/ROADMAP.md` au `/land`**, pas au `/ship` | L'ÉTAPE 7 du `land.md` indexe ce fichier précisément pour qu'une dette née dans `.pipeline/` ne s'évapore pas. Le `/ship` n'en avait pas le mandat, le `/land` l'a | **précédent** — une dette constatée en revue se porte au backlog pendant l'atterrissage |
+| Les trois révisions abandonnées de `CHORE_descente-harnais` devaient-elles entrer au dépôt ? | **Non** — laissées non suivies, retrait à la main | L'une d'elles cite une chaîne de la dette **D-17** et le dépôt est public ; caviarder une révision en ferait autre chose qu'une trace | **précédent** — une trace qu'on doit modifier pour la publier n'est plus une trace |
+| La revue a rendu `SHIP` **sous trois réserves**. Atterrir ou attendre ? | **Atterrir**, les trois réserves étant traitées ou portées | `RV-1` corrigée dans les artefacts sans ajouter de commit ; `RV-3` ramenée à ce que la mesure dit ; `RV-2` inscrite au backlog. Aucune n'exigeait de rouvrir les cinq fichiers enregistrés | **cas d'espèce** |

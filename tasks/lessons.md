@@ -814,3 +814,45 @@ politique de moindre privilège posée sur un système qui a déjà des automati
 travail planifié, rôle de base de données devant une tâche de fond, liste blanche devant un
 intégrateur continu. **Le geste transposable : inventorier ce que le lieu exécute déjà, avant
 d'écrire ce qu'il n'aura plus le droit de faire.**
+
+## 12 septembre 2026 — Un nombre qu'on n'a pas lancé n'est pas une mesure, même dans la phrase qui dénonce les nombres non mesurés
+
+**Type** : Erreur d'exécution, relevée par la revue — jamais par l'écriture
+
+**Contexte** : l'incrément « harnais au dépôt » devait vérifier qu'aucune commande des fichiers
+enregistrés ne tombe sous une règle `deny` du plancher. Le prompt prescrivait un balayage de **dix
+verbes git**, alors que son propre critère d'acceptation affirme « aucune commande exécutée ne tombe
+sous une règle `deny` » — **39 règles**. L'écart était réel, et le relever était juste.
+
+**Erreur** : l'agent a élargi le balayage — geste correct — puis a **annoncé deux comptes faux** :
+« 9 lignes au grep prescrit, 14 à l'élargi », là où la mesure rend **10** et **19**. Le premier des deux
+n'avait jamais été lancé : il était **estimé à la lecture de l'écran**. Trois lignes n'étaient pas
+statuées, dont la seule des cinq fichiers qui autorise nommément un agent à lancer git. Et tout cela
+figurait dans un paragraphe qui invoquait explicitement la dette **D-7** et la leçon du 12 août, *une
+phrase qui décrit une garantie s'écrit en regardant le contrôle, pas en se souvenant de son intention*.
+
+**Ce qui rend l'erreur coûteuse et pas seulement inélégante** : `land.md` ÉTAPE 5 recopie la matière de
+`.pipeline/changes.md` dans `tasks/JOURNAL_*.md`, **qui est suivi, publié et servi**. Un artefact de
+`.pipeline/` se corrige sans trace ; un compte faux arrivé au journal ne s'efface plus. La chaîne
+artefact → journal transforme une inexactitude de travail en affirmation publique.
+
+**Correction / pattern** :
+
+1. **Un nombre annoncé est un nombre lancé.** Si la commande n'a pas tourné, le nombre n'existe pas —
+   même quand on « voit bien » le compte à l'écran, même quand l'ordre de grandeur suffirait à la
+   conclusion. Écrire « environ » ou ne rien écrire, mais jamais un entier non mesuré.
+2. **Un renforcement de preuve est tenu à la rigueur qu'il réclame.** Le paragraphe qui dénonce un
+   instrument trop étroit est précisément celui qu'on relira pour juger de la méthode : s'il porte un
+   compte faux, il décrédibilise le geste juste qu'il défend.
+3. **Tout compte porte sa règle de comptage**, sans quoi deux mesures justes de deux choses
+   différentes passent pour un désaccord. Ici la revue comptait 17 et l'agent 19 : l'écart tenait à deux
+   lignes où `npm` et `pip` sont des critères de détection et non des commandes. Sans la règle écrite,
+   cet écart aurait été indécidable — c'est la formule de **D-17**, *un compte sans son unité n'est pas
+   approximatif, il est indécidable*, appliquée à un balayage.
+4. **Savoir quels artefacts sont recopiés vers un fichier suivi**, et leur appliquer par avance la
+   rigueur du fichier de destination, pas celle du brouillon.
+
+**Applicable globalement ?** : **Oui** — points 1, 3 et 4. La discipline « un nombre annoncé est un
+nombre lancé » et « tout compte porte son unité » ne dépendent d'aucune stack. Le point 4 se généralise :
+identifier, dans une chaîne d'artefacts, le premier maillon **durable**, et écrire dès l'amont au
+standard de ce maillon.
