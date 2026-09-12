@@ -756,3 +756,61 @@ au référentiel.
 **Applicable globalement ?** : **Oui**, toute consigne écrite qu'un tiers exécute : specification,
 ticket, contrat d'interface, gabarit de migration. Le geste : **compter les révisions à voix haute**,
 et traiter la troisième comme un **signal de découpage** plutôt que comme une étape.
+
+---
+
+## 12 septembre 2026 — Une porte posée sur l'outillage de l'agent peut couvrir un geste de son propre harnais
+
+**Type** : Erreur de conception, relevée par la revue — jamais par l'écriture
+
+**Contexte** : le dépôt n'avait **aucun interdit mécanique**. L'incrément a posé
+`.claude/settings.json`, copie conforme d'un gabarit : 39 interdits, dont `Bash(git merge *)`. Les
+sept critères d'acceptation sont passés du premier coup, la copie était juste **au caractère près**,
+et le filet est resté vert.
+
+**Erreur** : `.claude/commands/land.md` **exécute** `git merge --no-ff` à la ligne 22 et
+`git merge --abort` à la ligne 27. La règle posée **désarmait la commande d'atterrissage du dépôt** —
+et le `CLAUDE.md` §11 étape 3 confie précisément cette commande à l'agent. **La règle se serait
+retournée contre son propre atterrissage** : le fichier était déjà sur le disque de l'arbre de
+travail, et la session suivante l'aurait lu au démarrage.
+
+**Ce qui rend l'erreur instructive, c'est que rien ne pouvait l'attraper.** Le filet vérifie le site,
+pas l'outillage. Les sept critères mesuraient **un fichier** — sa taille, ses lignes, sa syntaxe, sa
+place dans le diff — et aucun ne demandait ce que ce fichier allait **empêcher**. Une copie conforme
+à 100 % d'un gabarit sain peut être fausse **pour ce dépôt-ci**, parce que la justesse d'un interdit
+ne vit pas dans l'interdit : elle vit dans la **rencontre** entre l'interdit et les gestes du lieu.
+
+**Correction/Pattern** : **avant de poser une règle qui interdit des gestes, inventorier les gestes
+que le dépôt exécute déjà.** Ici, un seul balayage suffisait, et il tient en une ligne :
+
+```bash
+grep -nE 'git (merge|tag|push|branch|checkout|restore|reset|clean|rebase|remote)' .claude/commands/*.md
+```
+
+Il remonte `land.md` sur trois lignes — dont une qui **affiche** la commande de publication sans
+l'exécuter, et qui n'est donc pas concernée. **Le balayage ne conclut pas seul** : il donne les
+candidats, la lecture tranche.
+
+1. **Un gabarit se copie, il ne s'adopte pas** : il est écrit pour un dépôt moyen, pas pour celui-ci.
+2. **La question à poser n'est pas « cette règle est-elle juste ? » mais « qu'est-ce qu'elle empêche
+   ici ? »** — la première a une réponse universelle, la seconde une réponse locale, et c'est la
+   seconde qui décide.
+3. **Le conflit se tranche avant la fusion, pas après** : trois sorties existaient (retirer la règle,
+   déplacer le geste vers l'humain, assumer et inscrire une dette), elles ne produisaient pas la même
+   fusion, et **le choix n'appartenait pas à l'agent d'exécution**.
+
+> **Ce que cette leçon ne prétend pas.** Le plancher posé reste **non éprouvé** : une règle de
+> permission ne mord qu'à la relance, et aucune des 39 n'a encore été vue refuser quoi que ce soit.
+> L'inventaire recommandé ci-dessus prévient une **collision**, il ne prouve pas une **morsure**.
+> Ce sont deux questions distinctes et il faut les deux : l'essai 0 répond à la seconde.
+
+**Une observation sur le moment où le défaut a été vu.** Il ne l'a été ni à la rédaction du prompt, ni
+à l'écriture, ni par le filet, ni par les sept critères — **uniquement par une relecture qui est allée
+ouvrir les fichiers voisins**. C'est la même famille que la leçon du 13 août sur la boucle de
+révisions : **l'outillage de l'agent ne passe par aucune porte, et c'est lui qui gouverne les autres.**
+
+**Applicable globalement ?** : **Oui** — tout dépôt qui outille un agent, et plus largement toute
+politique de moindre privilège posée sur un système qui a déjà des automatismes : pare-feu devant un
+travail planifié, rôle de base de données devant une tâche de fond, liste blanche devant un
+intégrateur continu. **Le geste transposable : inventorier ce que le lieu exécute déjà, avant
+d'écrire ce qu'il n'aura plus le droit de faire.**

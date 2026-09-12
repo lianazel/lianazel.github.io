@@ -1473,3 +1473,97 @@ respecter le format. **Le seul cadratin de prose a été retiré**, remplacé pa
 Porte **verte**, **4 avertissements** (D-4). **Zéro ligne existante modifiée**, un seul fichier suivi
 touché, aucun nombre périssable dans l'ajout — seules les dates. Le registre des dettes, `index.html`
 et `scripts/` n'ont pas été ouverts.
+
+---
+
+## 12 septembre 2026 — Le dépôt reçoit son premier interdit mécanique (session 18)
+
+| | |
+|---|---|
+| **Type** | CHORE (sécurité) |
+| **Branche** | `chore/plancher-securite` — 2 enregistrements |
+| **Fusion** | **`7538a1b`** (`--no-ff`) — 3 fichiers, **+366**, zéro suppression |
+| **Prompt pilote** | `prompts/v0.9/CHORE_plancher-securite_v1.md` — **une seule version, aucune révision** |
+| **Version** | **0.9.3 → 0.9.4** (patch : `chore/*`) |
+| **Dette** | aucune touchée, aucune inscrite · **un chantier ouvert**, voir plus bas |
+
+### Ce que l'incrément pose
+
+Le dépôt n'avait **aucun interdit mécanique**, et le seul fichier de permissions présent
+(`settings.local.json`, exclu du dépôt) portait `"Bash(git *)"` en `allow` : un agent lancé ici avait
+le droit de pousser, de fusionner, de faire un `reset --hard` et de supprimer une branche.
+
+`.claude/settings.json` est une **copie conforme du gabarit** `_TEMPLATE_AGENTS`, et les trois nombres
+du gabarit ont été **vérifiés sur le fichier écrit**, pas recopiés : **1 111 octets, 48 lignes,
+40 lignes de règles** — 39 interdits et un frein à clic. Sept critères d'acceptation sur sept. La
+revue a re-mesuré les sept indépendamment, comparé le bloc JSON du prompt au fichier par empreinte
+(`diff -u` sans aucune différence), et relevé un point que l'exécution n'avait pas pensé à contrôler :
+**la liste `allow` est absente**. Une liste `allow` glissée par inadvertance aurait desserré le
+plancher sans que rien ne le voie.
+
+### ⚠️ Le plancher est NON ÉPROUVÉ, et ce n'est pas une réserve de style
+
+**Aucune des 39 règles n'a été vue mordre.** Une règle de permission **ne mord qu'à la relance** :
+elle ne peut structurellement pas se prouver dans la session qui la pose. Le prompt d'essai 0
+(`prompts/v0.9/SPIKE_essai0-plancher_v1.md`) est enregistré **avec** elle, pour que la preuve voyage
+avec la règle, et se joue en **session neuve**, en commandes littérales, sous le regard du chef de
+projet. Jusque-là, ce fichier est un **argument**, pas une **preuve**.
+
+La règle `ask` sur le serveur de navigateur piloté et l'interdit sur son exécution de code brut sont
+**inertes** ici, ce dépôt ne déclarant aucun serveur MCP. Ils restent : la copie demeure conforme au
+gabarit, et ils s'activeront le jour où un navigateur piloté sera branché — c'est-à-dire le jour où
+la dette **D-1** sera remboursée, puisque son remède en exige un.
+
+### Le défaut que la revue a trouvé, et que rien d'autre ne pouvait trouver
+
+**`Bash(git merge *)` couvre `land.md` lignes 22 et 27.** Le plancher désarmait la commande
+d'atterrissage du dépôt, que le §11 étape 3 confie à l'agent. Le fichier était **déjà sur le disque**
+de l'arbre de travail : la session suivante l'aurait lu au démarrage, et **la règle se serait
+retournée contre son propre atterrissage**.
+
+Ni le filet ni les sept critères ne pouvaient l'attraper : ils mesurent un **fichier**, jamais ce que
+ce fichier **empêche**. C'est la leçon du jour, inscrite à `tasks/lessons.md`.
+
+**Arbitrage du chef de projet : sortie B.** Fusionner les trois fichiers inchangés — le plancher reste
+conforme au gabarit au caractère près — et corriger `land.md` étapes 2-3 ainsi que le `CLAUDE.md` §11
+dans un **incrément séparé**, où la fusion rejoindra le push parmi les gestes humains. C'est ce que le
+§2 dit déjà à moitié : *aucun agent ne fusionne ni ne publie.* Les deux autres sorties étaient
+écartées pour leur prix : retirer la règle périmait les trois nombres du gabarit dès la première pose,
+assumer laissait une commande morte dans `.claude/commands/`.
+
+> **Ce chantier est ouvert et il n'est pas une dette.** Entre cette clôture et l'incrément correctif,
+> `/land` reste inutilisable par l'agent. C'est un état **connu, daté et choisi**, pas un défaut tu.
+
+### Un atterrissage à deux mains, et c'est le premier
+
+**L'étape 2 du `/land` a été refusée à l'agent.** Le `git merge` n'est pas passé — et **ce n'était pas
+le plancher** : `.claude/settings.json` n'existait pas encore dans l'arbre sur `main`, un fichier
+absent du disque ne refuse rien. Le refus venait de la couche de permissions.
+
+**Aucune variante n'a été tentée, et c'est le geste juste.** Décomposer la commande pour faire passer
+le merge séparément aurait été un contournement — exactement ce que le prompt d'essai 0 enregistré
+le même jour proscrit : *si une commande est refusée, c'est le résultat attendu.* L'agent s'est arrêté
+sans effet de bord — `STATUS` resté à `READY`, `HEAD` inchangé, **aucun marqueur `LANDING` orphelin** —
+et le chef de projet a fusionné lui-même. Le `/land` a repris à l'étape 3.
+
+*Il y aurait eu une ironie mauvaise à contourner un refus de fusion dans l'incrément même qui pose
+l'interdit de fusionner.*
+
+### Deux écarts signalés à la rédaction, aucun masqué
+
+**Le prérequis d'arbre propre était faux** : `tasks/ROADMAP.md` portait 39 lignes non enregistrées
+depuis le 13 août. Levé par le chef de projet, puis **soldé par lui** avant l'atterrissage (`77a79f3`)
+— la pré-garde de l'étape 0 refuse sur tout fichier suivi modifié, et l'aurait bloqué.
+
+**Une affirmation était fausse dans le premier jet des artefacts** : « les dix-sept enregistrements
+précédents portent tous la ligne d'attribution ». Mesure : **quatorze la portent**, trois non — les
+commits de fusion. Corrigée. Dans un incrément dont la discipline est que les trois nombres du gabarit
+ont été vérifiés et non recopiés, un quatrième nombre recopié de confiance est **D-18 en miniature**.
+
+### Filet de tests
+
+Porte **verte** après fusion, **4 avertissements** (D-4 : `e7_title`, `e7_desc`, `p3_title`,
+`p3_desc`). **Relevé du bloc 9 identique à celui de la session 17** — attendu : le filet vérifie le
+site, et le site n'a pas été ouvert. Ce bloc ne prouve donc pas le plancher, il prouve qu'il **n'a
+rien cassé**, ce qui est une autre affirmation et la seule qu'on puisse en tirer. `index.html`,
+`scripts/` et le registre des dettes n'ont pas été ouverts.
