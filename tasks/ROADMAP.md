@@ -172,6 +172,37 @@ atterrissage. Si l'« À propos » d'E-2 la rend redondante plus tard, la retire
 
 ---
 
+## E-4 — Une page d'accueil dans `prompts/v0.8`, pour le lecteur qui arrive de TWAIM · priorité 3
+
+**Demande du chef de projet, 13 août 2026.** Priorité moyenne, à ordonner après E-2 et E-3.
+
+**Ce qui motive ce chantier vient d'un autre projet.** Le site TWAIM va publier un bloc court qui
+raconte l'épisode des cinq refus des 12 et 13 août, et son lien de preuve pointe **ici**, sur
+`prompts/v0.8`. Un lecteur extérieur y atterrira sans contexte, devant huit fichiers dont cinq
+seulement concernent l'épisode. Le service d'hébergement affiche automatiquement un fichier d'accueil
+sous la liste des fichiers d'un dossier : c'est exactement l'endroit où poser l'explication.
+
+**Ce que le fichier doit dire**, en une dizaine de lignes : ce que contient le dossier, quelles
+versions appartiennent à l'épisode, et ce que chacune a refusé, dans l'ordre. Rien de plus.
+
+**Trois contraintes, et la première n'est pas négociable.**
+
+1. **Il est écrit pour un lecteur extérieur**, pas pour l'équipe. Aucun code interne non expliqué,
+   aucun nom de tiers, aucun chemin de machine. C'est de la surface publique au même titre qu'une
+   page du site.
+2. **Il ne porte aucun compte figé dans un titre.** Une sixième version un jour, et « les cinq
+   versions » devient faux en silence. C'est la faute que le fichier de matière de l'anecdote a
+   justement corrigée en changeant son propre nom. Écrire ce que chaque version a refusé suffit :
+   le compte se lit alors dans la liste, il ne s'affirme pas.
+3. **Il ne contredit pas le texte publié sur le site TWAIM.** Les deux se relisent l'un contre
+   l'autre au moment de la rédaction, et le site fait foi puisqu'il est publié le premier.
+
+> **Ce chantier n'est pas bloquant pour le site TWAIM.** Le lien fonctionne sans lui, et le libellé
+> du lien nomme déjà ce que le lecteur doit trouver. Ce fichier rend l'arrivée accueillante, il ne
+> la rend pas possible.
+
+---
+
 # Partie II — Dette connue (`CLAUDE.md` §8)
 
 ## D-1 — Aucune barrière sur le rendu · **priorité 1**
@@ -302,5 +333,11 @@ globale du 15 juin 2026 : faire évoluer le framework, c'est modifier le gabarit
 
 ---
 
-*Feuille de route tenue par le Tech Lead · mise à jour du 9 août 2026, après l'atterrissage de la
-version 0.3.0.*
+*Feuille de route tenue par le Tech Lead · mise à jour du 13 août 2026 (ajout de E-4, hors session
+portfolio) · état de fond arrêté au 9 août 2026, après l'atterrissage de la version 0.3.0.*
+
+> ⚠️ **Cette feuille de route a quatre jours de retard sur le dépôt.** Les parties I à III décrivent
+> l'état du 9 août et renvoient à des consignes de `prompts/v0.3`, alors que le dossier `prompts/v0.8`
+> existe et porte le travail des 12 et 13 août, dont l'épisode des cinq refus et la dette qui en est
+> sortie. Seul l'ajout de E-4 est à jour. **Une remise aux faits est à faire avant de se fier aux
+> priorités ci-dessus.**
