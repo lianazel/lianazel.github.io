@@ -57,11 +57,7 @@ Ne déclare aucune lecture que tu n'as pas faite. Ne cite aucun chiffre que tu n
 
 État mesuré le 13 septembre 2026 en fin de session, par lecture de fichiers.
 
-**⚠️ Une dérogation, en toutes lettres : le dernier enregistrement n'est PAS poussé.**
-
-- `main` = **3526035** · `origin/main` = **50b7e70**. Les deux références diffèrent.
-- Le commit local est `docs(prompt): prompts/v0.9/SPIKE_interdit-agent-delegue_v2.md`.
-- **Premier geste de la session : me demander si je l'ai poussé depuis, et remesurer les deux références.** Ne pars pas du principe que ce message est encore vrai sur ce point.
+**Les références, et la précaution qui va avec.** Au moment où ce fichier est écrit, `main` = `origin/main` = **36f4fda**, mesuré par lecture de `.git/refs/` : tout est poussé. Mais **l'enregistrement de ce fichier déplacera `main` d'un cran**, et ce nombre sera périmé à l'instant même où tu le liras. Un fichier ne peut pas énoncer la référence du commit qui le contient. **C'est ta mesure d'ouverture qui fait foi, pas ce nombre.**
 
 Le reste :
 
