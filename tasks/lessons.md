@@ -900,3 +900,8 @@ est la référence*. Rencontrée le même jour sur une **image** : un QR d'aper�
 
 **Applicable globalement ?** : **Oui** — elle ne tient à aucune particularité de ce dépôt, et elle vaut
 pour tout outil en ligne de commande qui accepte des options.
+
+**Promue en global le 2026-09-13** (validation du chef de projet). Entrée jumelle dans
+`~/.claude/lessons.md`, sous le titre « Un outil qui avale une entrée de travers ne rend pas une
+erreur, il rend un résultat plausible », portant la provenance `lianazel.github.io (EVOL
+carte-ibmiapi-et-poc-wpf) · session 20 · 2026-09-13 · commit 62eb7c6 de la jumelle locale`.
