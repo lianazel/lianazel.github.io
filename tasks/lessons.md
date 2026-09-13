@@ -856,3 +856,47 @@ artefact → journal transforme une inexactitude de travail en affirmation publi
 nombre lancé » et « tout compte porte son unité » ne dépendent d'aucune stack. Le point 4 se généralise :
 identifier, dans une chaîne d'artefacts, le premier maillon **durable**, et écrire dès l'amont au
 standard de ce maillon.
+
+---
+
+## 13 septembre 2026 — Un outil qui accepte en silence une entrée de travers rend un résultat plausible, jamais une erreur
+
+**Type** : Erreur (trois fois, le même jour, sur trois outils différents)
+
+**Contexte** — session 20, incrément de la septième carte de projet. Trois mesures fausses produites
+et rattrapées avant d'atteindre le code ou la publication. Aucune n'avait rendu d'erreur.
+
+**Les trois, et ce qui les rend une seule.**
+
+1. **Option inconnue avalée.** La cible passée à `scripts/check-i18n.mjs` en `--file=<chemin>`. Le
+   script prend sa cible en **argument positionnel** et ignore les jetons commençant par `--` qu'il ne
+   connaît pas : il a mesuré `index.html` du dépôt — la version *d'après* — pendant qu'on croyait
+   mesurer celle d'avant. Les deux colonnes du rapport auraient été identiques et l'**écart nul aurait
+   été publié comme un fait**.
+2. **Chemin mort.** Une variable de chemin non définie dans un shell : `grep` a cherché dans un fichier
+   inexistant, son erreur est partie sur la sortie d'erreur, et `wc -l` a compté **zéro**. Or zéro est
+   exactement ce qu'aurait affiché un fichier sans aucune occurrence. Un chemin mort ne rend pas une
+   erreur : il rend **un compte plausible**.
+3. **Nombre repris d'un document.** Un compte « avant » cité depuis le registre des dettes plutôt que
+   mesuré. Il se trouvait juste ; il n'était pas *mesuré*, et rien ne l'aurait dit.
+
+**Ce qui a trahi chacune, et c'est là qu'est la règle.** Jamais le chiffre — les trois étaient
+plausibles. Ce qui a trahi : la ligne `Cible` de la sortie, qui nommait le fichier réellement lu ; une
+**seconde route** vers le même nombre, par `git show`, qui n'a pas de chemin de fichier à se tromper ;
+et la relecture de la provenance du nombre.
+
+**Règle extraite.** Une mesure qui compte se fait par **deux routes indépendantes**, ou bien elle
+s'accompagne de la **preuve qu'elle a porté sur la bonne cible** — l'outil doit dire *ce qu'il a lu*,
+pas seulement *ce qu'il a trouvé*. Un outil silencieux sur son entrée est un outil dont il faut lire
+l'identité de la cible avant de lire le résultat. Corollaire de terrain : **`0` est le résultat le plus
+dangereux qui soit**, parce qu'il est produit aussi bien par une absence réelle que par une cible
+introuvable, un motif échappé ou une option ignorée.
+
+**Parenté.** C'est la même famille que la garde inerte du 13 septembre (métacaractère échappé rendant
+`0` partout), que le « nombre reçu n'est pas plus mesuré qu'un nombre écrit » du 11 août, et que la
+règle (4) du `CLAUDE.md` §10 — *ce qu'affiche un navigateur est un artefact ; ce que sert le serveur
+est la référence*. Rencontrée le même jour sur une **image** : un QR d'aperçu daté du 12 août attendait
+à l'emplacement du QR du jour, indiscernable d'un neuf tant qu'on ne regarde pas sa provenance.
+
+**Applicable globalement ?** : **Oui** — elle ne tient à aucune particularité de ce dépôt, et elle vaut
+pour tout outil en ligne de commande qui accepte des options.

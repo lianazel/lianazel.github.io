@@ -409,3 +409,34 @@ arrêté au 9 août 2026, après l'atterrissage de la version 0.3.0.*
 > *La formule « quatre jours de retard » a été corrigée le 12 septembre 2026 : elle datait du 13 août et
 > s'était périmée en silence — un retard écrit en durée relative se périme, un retard écrit en date ne
 > se périme pas. C'est la même maladie que **D-18**, dans le document qui suit les dettes.*
+
+## C-9 — La garde « aucun commit après la revue » de `/land` est structurellement inatteignable · priorité 4
+
+**Constaté le 13 septembre 2026**, session 20, sur l'atterrissage de `feat/carte-ibmiapi-et-poc-wpf`.
+
+L'ÉTAPE 0 de `.claude/commands/land.md` exige qu'**aucun enregistrement n'ait été ajouté à la branche
+après la revue**, et le mesure en comparant la date de modification de `.pipeline/review.md` à celle du
+dernier commit de la branche. **Cette garde ne peut jamais passer sur ce dépôt**, et ce n'est pas un
+défaut de l'incrément : le `/ship` place sa revue à l'**ÉTAPE 4** et l'enregistrement de l'incrément à
+l'**ÉTAPE 5**. Le commit est donc *toujours* postérieur au fichier de revue, par construction du flux.
+
+**Mesuré sur cet incrément** : `index.html` écrit à 15:40:32, revue à 15:56:09, commit à 15:59:54.
+
+| | |
+|---|---|
+| **Impact** | La garde mordra à **chaque** incrément et exigera une levée du chef de projet à chaque fois. Une garde qu'on lève systématiquement n'est plus une garde : elle devient un péage, et le jour où elle aurait quelque chose de vrai à dire, elle sera levée par habitude. |
+| **Ce que la garde cherche vraiment** | que **le code relu soit le code enregistré**. C'est une question d'identité de contenu, pas de chronologie. |
+| **Remède à instruire** | **comparer l'empreinte du fichier relu, pas les dates.** Le `reviewer` consigne déjà l'empreinte de ce qu'il a lu — il l'a fait spontanément ici (`index.html` sha256 `1dc626ce…4cb38c5a`), et cette empreinte s'est révélée **concordante** avec celle du commit. Le matériau existe donc déjà ; il manque la garde qui le lit. Deux gestes : que le `reviewer` écrive l'empreinte dans un champ **repérable** plutôt qu'en prose, et que `land.md` la compare à `git show <branche>:<fichier>`. |
+
+**Même famille que C-6** : l'outillage et le flux réel ont divergé, et c'est l'outillage qui est en
+retard. **Et même famille que D-7**, un cran plus loin : là, un nombre déclaré que rien ne relie au
+fait ; ici, une garde qui mesure une grandeur — la date — à la place de celle qui l'intéresse.
+
+**Le geste ne se fait pas depuis ce dépôt** : `land.md` vit dans `.claude/`, fermé en écriture par la
+règle `Edit(/.claude/**)` du plancher, et sa modification relève d'un prompt dédié.
+
+> **Sur le rang** : inscrit en **priorité 4**, à la suite, parce que C-7 porte déjà la priorité 2 et
+> qu'un registre à deux priorités identiques ne se lit plus. Mais ce rang **sous-estime son urgence
+> réelle** : C-8 se rencontre après un `pull`, C-9 se rencontre à **chaque atterrissage**. La remonter
+> renumérote C-7 et C-8, geste qui appartient au chef de projet — d'où ce rang par défaut, et cette
+> note qui dit pourquoi il est discutable.*

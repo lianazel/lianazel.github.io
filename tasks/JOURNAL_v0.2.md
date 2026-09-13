@@ -1705,3 +1705,107 @@ construction : site statique publié directement depuis `main`, et la ligne se s
 | La réserve `RV-2` demandait un support suivi pour la divergence §11. L'écrire où, le prompt fermant `CLAUDE.md` et `tasks/*` ? | **Dans `tasks/ROADMAP.md` au `/land`**, pas au `/ship` | L'ÉTAPE 7 du `land.md` indexe ce fichier précisément pour qu'une dette née dans `.pipeline/` ne s'évapore pas. Le `/ship` n'en avait pas le mandat, le `/land` l'a | **précédent** — une dette constatée en revue se porte au backlog pendant l'atterrissage |
 | Les trois révisions abandonnées de `CHORE_descente-harnais` devaient-elles entrer au dépôt ? | **Non** — laissées non suivies, retrait à la main | L'une d'elles cite une chaîne de la dette **D-17** et le dépôt est public ; caviarder une révision en ferait autre chose qu'une trace | **précédent** — une trace qu'on doit modifier pour la publier n'est plus une trace |
 | La revue a rendu `SHIP` **sous trois réserves**. Atterrir ou attendre ? | **Atterrir**, les trois réserves étant traitées ou portées | `RV-1` corrigée dans les artefacts sans ajouter de commit ; `RV-3` ramenée à ce que la mesure dit ; `RV-2` inscrite au backlog. Aucune n'exigeait de rouvrir les cinq fichiers enregistrés | **cas d'espèce** |
+
+---
+
+## 13 septembre 2026 — La septième carte entre dans la grille, et une garde d'atterrissage se révèle inatteignable (session 20)
+
+**Incrément** : `EVOL_carte-ibmiapi-et-poc-wpf_v1` · **Merge** `1eaf371` · **Version** 0.9.5 → **0.10.0**
+**Branche** : `feat/carte-ibmiapi-et-poc-wpf` — deux commits, `a9f6289` (le prompt) et `cac2949` (l'incrément).
+
+### Ce qui a été livré
+
+**Deux blocs indépendants dans un seul incrément**, arbitrage du chef de projet, un seul fichier de
+code touché — `index.html`, huit morceaux de diff.
+
+**Bloc A, la septième carte de projet.** IBMiAPI entre en **première enfant** de `.proj-grid`, sur le
+patron exact des six existantes, avec trois clés neuves `p8_title`, `p8_tag` et `p8_desc` déclarées
+dans les deux blocs de langue. **Un seul bouton** : l'adresse du dépôt GitHub rend 404, et une carte à
+deux boutons dont l'un mène nulle part vaut moins qu'une carte à un. L'étiquette `IBM i` porte une clé
+plutôt qu'une entrée de liste blanche, parce que la liste compare **mot à mot** et ne connaît ni `i`
+seul ni `S/36` : l'étiquette nue aurait fait mordre le contrôle 6. Précédent maison `ia1`, valeur
+identique des deux côtés. **Aucune entrée ajoutée à la liste blanche**, empreinte inchangée.
+
+**Bloc B, le pavé POC.** Les valeurs de `x25` et `y324` réécrites en **six emplacements** — corps et
+deux blocs de langue. Aucune clé créée. Le texte arbitré n'a **pas été retapé** : il est extrait par
+programme du prompt gelé, avec gardes de non-vacuité sur chaque valeur. Motif : D-14 exige l'identité
+caractère pour caractère entre le corps et le bloc `fr`, et un texte retapé diverge d'un caractère que
+personne ne relit. Vérifié après coup, 30/30, 262/262, 5/5, 28/28, 337/337.
+
+**La première place de la carte est provisoire** : E-3 la réserve à la carte TWAIM, qui n'existe pas
+encore. Elle passera au-dessus le jour venu. Ce n'est pas une dette, c'est un ordre connu d'avance.
+
+### Ce que l'incrément aggrave, et il fallait le dire juste
+
+**D-20 s'aggrave en compte, pas en nature** : **quatorze ancres sur vingt-quatre** sous le seuil AA
+contre treize sur vingt-trois — unité : *ancres du corps rendu*, bloc `<style>` exclu, décomposition
+6 en `var(--c1)` + 8 `.btn-primary`. Le bouton neuf hérite exactement du défaut existant : même classe,
+même dégradé, même texte blanc. Aucune couleur changée, feuille de style jamais ouverte.
+
+### Trois erreurs de mesure, toutes attrapées, et c'est le fil de la session
+
+Aucune n'a atteint le code. Les trois relèvent de la même famille : **un outil qui accepte en silence
+ce qu'on lui donne de travers rend un résultat plausible, jamais une erreur.**
+
+| # | Ce qui s'est passé | Ce qui l'a trahi |
+|---|---|---|
+| 1 | La cible passée en `--file=` au contrôleur, qui la prend en **argument positionnel** : il a mesuré la version d'après en croyant mesurer celle d'avant, et les deux colonnes auraient été identiques | la ligne `Cible` de sa sortie, pas les chiffres — ils étaient plausibles |
+| 2 | Une variable de chemin non définie dans un shell : `grep` a cherché dans un fichier inexistant et `wc -l` a compté **zéro**, c'est-à-dire exactement ce qu'aurait affiché un fichier sans cadratin | la seconde route, par `git show`, qui n'a pas de chemin de fichier à se tromper |
+| 3 | `changes.md` a annoncé « treize ancres sur vingt-quatre » : faux **du côté qui minimise la dette**, et contredisant sa propre phrase trois lignes plus haut | la revue, réserve RV-1 |
+
+### La revue, et ce qu'elle a trouvé que personne ne cherchait
+
+Verdict **NEEDS WORK** sur des artefacts, jamais sur le code : dix PASS et un WARN sur les onze
+critères, tous remesurés par la revue sans rien reprendre des artefacts, sécurité 7/7. Quatre réserves
+corrigées avant clôture — RV-1 le compte D-20, RV-2 la ventilation des huit morceaux, RV-4 une consigne
+de validation visuelle qui **désignait le mauvais risque** (les quatre étiquettes neuves sont les plus
+*courtes* de la grille ; ce qui bouge est la hauteur de rangée que `p8_desc` entraîne), RV-5 la
+divergence du §3 sur le nombre de lignes, portée au registre de l'incrément.
+
+**RV-6 est la trouvaille.** En élargissant D-14 aux 202 poses du corps, la revue en trouve **huit** où
+le texte du corps diffère de la valeur `fr` — guillemets d'attributs imbriqués, DOM identique.
+**Identiques avant et après : cet incrément n'en introduit aucune.** Mais le contrôle de concordance
+annoncé en D-14 « écrit contre un fichier déjà propre » **naîtrait rouge sur huit poses**, et la
+tentation serait alors de desserrer le contrôle plutôt que d'écrire la normalisation. Trois voies
+proposées, aucune engagée ; la voie B touche `e5_desc`, donc elle est couplée à l'arbitrage D-17
+famille B, qui n'est pas technique.
+
+**RV-3 reste ouverte** : la cible du seul bouton de la carte n'a été jointe par personne — la revue
+n'avait pas d'accès réseau, et la tentative `curl` de l'exécution a été **refusée par le plancher de
+permissions**. Le refus n'a pas été contourné. C'est le seul risque à la fois probable et visible de
+cet incrément, et il se lève en ouvrant une adresse.
+
+### Arbitrages rendus
+
+| Question | Ce qui a été tranché | Motif | Portée |
+|---|---|---|---|
+| Un incrément ou deux pour les deux blocs ? | **Un seul**, deux blocs indépendants | même fichier, même filet, même atterrissage ; sections, clés et textes sans couplage | cas d'espèce |
+| L'étiquette `IBM i` : clé de dictionnaire ou entrée de liste blanche ? | **Clé `data-i18n`**, valeur identique dans les deux langues | la liste blanche compare mot à mot et ne connaît ni `i` seul ni `S/36` ; deux entrées de plus auraient périmé le compte `105` du §6 et obligé à ouvrir `CLAUDE.md` | précédent |
+| Le veto `NEEDS WORK` de la revue | **Levé par le chef de projet** | les quatre réserves corrigeables — RV-1, RV-2, RV-4, RV-5 — sont corrigées, et la revue écrit elle-même « une fois RV-1 corrigée, cet incrément est un SHIP sans réserve sur le code » | **cas d'espèce** |
+| La garde d'atterrissage « aucun commit après la revue » | **Levée par le chef de projet** | **l'empreinte fait foi, pas l'horodatage.** `index.html` écrit à 15:40:32, revue à 15:56:09, commit à 15:59:54 : le commit a **figé** le fichier relu, il ne l'a pas changé, et l'empreinte le prouve — `1dc626ce…4cb38c5a` au commit comme dans la revue. La garde compare deux dates là où ce projet a choisi de comparer une empreinte | **précédent** |
+| La validation visuelle avant publication | **Publication sans elle**, décision du chef de projet | tunnel d'aperçu impossible depuis un réseau filtrant l'UDP sortant ; risque visuel instruit et faible, le point ouvert (hauteur de rangée) est cosmétique et non cassant | cas d'espèce |
+
+### Le tunnel d'aperçu n'a rien publié, et c'est la garde qui a parlé
+
+La validation visuelle a été tentée par `tunnel-apercu`. Cloudflare a **attribué un nom**, mais le
+**contrôle de bout en bout à travers le tunnel a échoué** : l'outil a tout coupé plutôt que de livrer
+une adresse morte. Serveur local sain — `HTTP/1.0 200 OK` — donc c'est bien le tunnel qui ne passait
+pas, et non la page. Cause plausible mais **non prouvée** : réseau d'hôtel filtrant l'UDP sortant,
+donc le transport QUIC. Rien n'a fuité : le dossier servi ne contenait qu'`index.html`, copié hors
+dépôt, et rien n'a été publié.
+
+**Un piège relevé au passage** : un `qr-apercu.png` existait à l'emplacement visé, **daté du 12 août**.
+Un artefact ancien est indiscernable d'un neuf tant qu'on ne regarde pas sa provenance — c'est la
+règle (4) du §10, rencontrée cette fois sur une image.
+
+### État à la clôture
+
+Filet **vert** : code 0, **neuf** lignes `OK -` pour huit déclarées dans `gate.sh`, 41 lignes de
+sortie — le lanceur est vivant. Quatre avertissements, les quatre de **D-4**. Clés `fr`/`en` 194 → 197,
+utilisées 187 → 190, les deux colonnes **mesurées ce jour** sur deux cibles. Liste blanche inchangée à
+105 termes. Aucune dette D-1 à D-22 soldée ; **C-9 inscrit** à la feuille de route.
+
+> **Conséquence du bump à porter** : le `CLAUDE.md` §10 range les prompts dans
+> `prompts/v<version mineure>/`. La mineure passant de 9 à 10, les prochains prompts vont dans
+> **`prompts/v0.10/`**, et non plus `v0.9`. Aucun dossier n'a été créé ici : le premier prompt qui
+> arrive le créera.
