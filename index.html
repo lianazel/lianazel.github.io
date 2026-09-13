@@ -450,7 +450,7 @@
           <div data-i18n="x5" style="font-size:.85rem;font-weight:700;color:var(--text);margin-bottom:.6rem;">🔬 Rôles au sein de l'équipe R&D</div>
           <div style="display:flex;flex-direction:column;gap:.45rem;">
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x24" style="color:var(--c2-soft);font-weight:700;">Architecture technique</span><span data-i18n="y323"> — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.</span></div>
-            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x25" style="color:var(--c2-soft);font-weight:700;">Exploration WPF</span><span data-i18n="y324"> — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.</span></div>
+            <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x25" style="color:var(--c2-soft);font-weight:700;">Un module RPG réécrit en WPF</span><span data-i18n="y324"> — Trois mois pour livrer un POC, avec la technologie à apprendre en chemin : C#, .NET et WPF. Le livrable n'est pas une maquette. C'est un module métier qui tournait en RPG sur IBM i, réécrit entièrement en WPF. Passer d'un écran 5250 à une interface WPF change tout sauf la règle de gestion, et c'est elle qui devait ressortir intacte.</span></div>
             <div style="font-size:.82rem;color:var(--sub);padding-left:.8rem;border-left:2px solid rgba(246,79,89,.3);line-height:1.6;"><span data-i18n="x26" style="color:var(--c2-soft);font-weight:700;">Framework Objet Windev 23</span><span data-i18n="y325"> — Participation à la conception du framework objet de la future solution métier.</span></div>
           </div>
           <div class="exp-tags" style="margin-top:.8rem;">
@@ -662,6 +662,15 @@
     <h2 data-i18n="h2_proj">Projets <span>Notables</span></h2>
   </div>
   <div class="proj-grid">
+    <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#1f70c1,#0b3c63)">
+      <span class="proj-emoji">📇</span>
+      <h3 data-i18n="p8_title">Des fichiers S/36 à l'API REST</h3>
+      <p data-i18n="p8_desc">Comment des fichiers plats S/36 deviennent une API REST. Le site déroule le décor, le problème, la solution, le mini-langage et la méthode, puis regarde un fichier S/36 de près. Bilingue, la bascule se fait dans la page. Conçu et piloté avec le harnais IA TWAIM.</p>
+      <div class="tags"><span class="tag" data-i18n="p8_tag">IBM i</span><span class="tag">RPG</span><span class="tag">.NET</span><span class="tag">REST</span></div>
+      <div class="proj-btns" style="margin-top:1rem;">
+        <a href="https://lianazel.github.io/ibm-s36-to-rest-api/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_site">🌐 Voir le site</a>
+      </div>
+    </div>
     <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#D4A843,#6B7C2D)">
       <span class="proj-emoji">🌾</span>
       <h3>GrainWatch</h3>
@@ -786,6 +795,7 @@ const t = {
     p5_desc:"Suivi en temps réel de 600+ cargos céréaliers sur un globe 3D interactif. WebSocket AIS, texture NASA Blue Marble, architecture sécurisée via Vercel. Développé avec Claude Code.",
     p6_desc:"Dashboard de suivi des cours mondiaux des denrées alimentaires. 26 matières premières, 3 sources de données (Banque Mondiale, USDA, simulation), traduction FR/EN, graphiques interactifs et export CSV.",
     p7_desc:"Analyseur de tendances crypto en WPF (.NET 8). Top 20 par capitalisation, graphiques interactifs, indicateurs techniques (SMA, RSI), watchlist avec favoris persistés. API CoinGecko, zéro dépendance NuGet.",
+    p8_title:"Des fichiers S/36 à l'API REST", p8_tag:"IBM i", p8_desc:"Comment des fichiers plats S/36 deviennent une API REST. Le site déroule le décor, le problème, la solution, le mini-langage et la méthode, puis regarde un fichier S/36 de près. Bilingue, la bascule se fait dans la page. Conçu et piloté avec le harnais IA TWAIM.",
     redac:"Rédaction technique", archi:"Architecture perso",
     see_linkedin:"🔗 Voir sur LinkedIn", see_site:"🌐 Voir le site",
     h2_contact:"Travaillons <span>Ensemble</span>",
@@ -818,7 +828,7 @@ const t = {
     x22:"1/ Optimisation des ressources",
     x23:"2/ Rentabilité clients",
     x24:"Architecture technique",
-    x25:"Exploration WPF",
+    x25:"Un module RPG réécrit en WPF",
     x26:"Framework Objet Windev 23",
     x27:"Refonte ERP — MNM",
     x28:"Migration technique",
@@ -877,7 +887,7 @@ const t = {
     y321:" — Exploitation mécanique (machines, imprimantes, rotatives…) et gestion des équipes humaines.",
     y322:" — Mesure de la rentabilité des dossiers clients pris en charge.",
     y323:" — Proposition de solutions s'appuyant sur les technologies PCSoft (Windev) et .NET / C#.",
-    y324:" — Développement d'un module complet en WPF (Microsoft) pour une démonstration Front-End, dans le cadre de l'évaluation des technologies candidates.",
+    y324:" — Trois mois pour livrer un POC, avec la technologie à apprendre en chemin : C#, .NET et WPF. Le livrable n'est pas une maquette. C'est un module métier qui tournait en RPG sur IBM i, réécrit entièrement en WPF. Passer d'un écran 5250 à une interface WPF change tout sauf la règle de gestion, et c'est elle qui devait ressortir intacte.",
     y325:" — Participation à la conception du framework objet de la future solution métier.",
     y326:"— Solution développée en partie sur une partition AS/400 partagée aux USA via ",
     y327:". Conversion des spools au format PDF, chargement dynamique de la <em>library list</em> selon le projet et l'environnement (DEV / PROD), etc.",
@@ -926,6 +936,7 @@ const t = {
     p5_desc:"Real-time tracking of 600+ bulk carrier vessels on an interactive 3D globe. AIS WebSocket, NASA Blue Marble texture, secure architecture via Vercel. Built with Claude Code.",
     p6_desc:"Global food commodity price tracking dashboard. 26 commodities, 3 data sources (World Bank, USDA, simulation), FR/EN translation, interactive charts and CSV export.",
     p7_desc:"Crypto trend analyzer built with WPF (.NET 8). Top 20 by market cap, interactive charts, technical indicators (SMA, RSI), watchlist with persisted favorites. CoinGecko API, zero NuGet dependency.",
+    p8_title:"From S/36 files to a REST API", p8_tag:"IBM i", p8_desc:"How flat S/36 files become a REST API. The site walks through the setting, the problem, the solution, the mini-language and the method, then looks at an S/36 file up close. Bilingual, with an in-page switch. Designed and run with the TWAIM AI harness.",
     redac:"Technical writing", archi:"Custom architecture",
     see_linkedin:"🔗 View on LinkedIn", see_site:"🌐 View live site",
     h2_contact:"Let's Work <span>Together</span>",
@@ -958,7 +969,7 @@ const t = {
     x22:"1/ Resource optimization",
     x23:"2/ Client profitability",
     x24:"Technical architecture",
-    x25:"WPF exploration",
+    x25:"An RPG module rewritten in WPF",
     x26:"Windev 23 Object Framework",
     x27:"ERP overhaul — MNM",
     x28:"Technical migration",
@@ -1017,7 +1028,7 @@ const t = {
     y321:" — Mechanical operation (machines, printers, rotaries…) and human team management.",
     y322:" — Measuring the profitability of client engagements.",
     y323:" — Proposing solutions based on PCSoft (Windev) and .NET / C# technologies.",
-    y324:" — Development of a complete WPF (Microsoft) module for a Front-End demonstration, as part of evaluating candidate technologies.",
+    y324:" — Three months to deliver a POC, with the technology to learn along the way: C#, .NET and WPF. The deliverable is not a mock-up. It is a business module that ran in RPG on IBM i, rewritten entirely in WPF. Moving from a 5250 screen to a WPF interface changes everything except the business rule, and the business rule had to come through intact.",
     y325:" — Contributed to the design of the object framework for the future business solution.",
     y326:"— Solution partly developed on a shared AS/400 partition in the USA via ",
     y327:". Spool conversion to PDF, dynamic loading of the <em>library list</em> depending on the project and environment (DEV / PROD), etc.",
