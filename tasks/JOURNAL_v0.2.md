@@ -1913,3 +1913,106 @@ Deux chemins de code distincts, tous deux éprouvés.
 > **Et `prompts/v0.10/` garde deux fichiers non suivis** : les `_v1` et `_v2` refusés. Le premier
 > enregistrement de la branche n'a pris que le `_v3`, nommé au fichier près. Leur sort appartient au
 > chef de projet — les enregistrer garderait la trace des deux refus, les effacer la perdrait.
+
+---
+
+## 15 septembre 2026 — Le badge sort par la porte de derrière, et c'est la revue qui regarde les pixels (session 22)
+
+**Incrément** : `CHORE_badge-linkedin-png_v3` · **Merge** `a2ceb48` · **Version** 0.11.0 → **0.11.1**
+**Branche** : `chore/badge-linkedin-png` — un seul commit, `6a929c5`, le prompt.
+
+### Ce qui a été livré
+
+**Un livrable qui n'est pas dans le dépôt.** Les deux PNG du badge de présentation LinkedIn —
+1200 × 630 pour le post, 2400 × 1260 pour l'aperçu social GitHub — **réécrits** hors dépôt par un
+Chrome déjà installé, sans qu'une seule ligne du site ne bouge. Dans le dépôt, un fichier : le prompt.
+
+**Le gate pixel est vert.** Chrome 152.0.7977.84 reproduit `c011ab31…` et `e89d085a…` **octet pour
+octet**, les empreintes du `_v1` produites une heure plus tôt. Le rendu est reproductible — à version
+de navigateur constante, et cette réserve est la raison d'être des deux branches du critère 8b.
+
+**Et la preuve de police est enfin faite.** C'est l'objet réel de cet incrément.
+
+### Le fil : un témoin qui ne pouvait pas échouer
+
+Le `_v1`, exécuté le matin **hors `/ship`** sur instruction directe, portait un critère 6
+**inatteignable** : son témoin retirait `'Segoe UI', ` de la pile et laissait `system-ui` en tête —
+qui **résout vers Segoe UI sous Windows**. Les deux rendus étaient donc identiques *même quand la
+police servait parfaitement*, et le prompt prescrivait d'en conclure « le rendu est faux ».
+
+**L'agent ne s'est pas arrêté et l'a déclaré.** S'arrêter aurait inscrit une conclusion fausse.
+
+Le `_v3` remplace ce témoin par **deux routes**, et la leçon est dans leur rapport :
+
+| Route | Ce qu'elle mesure | Ce qu'elle ne mesure pas |
+|---|---|---|
+| **A** — `canvas.measureText` via `--dump-dom` | pile du badge **259,91 px** = `'Segoe UI'` seule **259,91 px** ; privée de `'Segoe UI'` **et** de `system-ui` : **274,77 px** | un `canvas` construit pour la mesure, **pas le texte du badge** |
+| **B** — empreinte du rendu privé des deux entrées | `129a33db…` ≠ `c011ab31…` : le document rendu **dépend** de la police | — |
+
+**Elles ne sont pas redondantes, elles sont complémentaires** — une première rédaction les disait
+« concordantes », ce qui leur créditait une force qu'elles n'ont pas séparément. Dette **D-5**
+déchargée pour ce rendu, cette machine, cette date.
+
+### Trois relectures de prompt, et le refus qui a servi
+
+| Version | Verdict | Ce qui l'a arrêté |
+|---|---|---|
+| `_v1` | *jamais relu* — exécuté hors `/ship`, hors du dépôt | critère 6 inatteignable, découvert **à l'exécution** |
+| `_v2` | **NEEDS_WORK**, 4 fails | critère 8 inatteignable : « 3 fichiers de plus » dans un dossier que **l'exécution du `_v1` avait déjà rempli** |
+| `_v3` | **SHIP**, 0 fail, 9 warns | — |
+
+**La même maladie deux fois, et c'est elle qu'il faut retenir** : un critère écrit sans avoir été
+rejoué contre l'état réel du terrain. Au `_v1` le terrain était la machine ; au `_v2`, c'était le
+dossier que le `_v1` venait lui-même de changer. **Un incrément peut périmer le critère de son propre
+successeur.**
+
+### La revue a fait ce que le dépôt ne sait pas faire
+
+Verdict d'abord **NEEDS WORK** — 1 FAIL : `.pipeline/STATUS.md` n'avait pas été écrit. Le relevé est
+plus fin que l'oubli : **l'ÉTAPE 5 de `/ship` porte deux gestes**, le commit (écarté à raison,
+`.pipeline/` étant ignoré) et le STATUS (omis **sans être déclaré**). Une omission déclarée voisinait
+une omission tue, et la première avait l'air d'épuiser le sujet.
+
+Puis, sur l'état corrigé, **SHIP** — et la revue a apporté ce qu'aucun contrôle du dépôt ne sait
+produire : **un décodeur PNG en Node natif, `zlib`, zéro dépendance installée**, qui a soldé deux
+réserves par la mesure là où elles n'étaient acquises que par construction :
+
+- **RV-4** — le 2× **est un rendu, pas un agrandissement** : doublons horizontaux **68,56 %** (plus
+  proche voisin = 100 %), **6 676 couleurs absentes du 1×**, et le discriminant qui exclut aussi le
+  bilinéaire — **34 940 arêtes `|Δ|≥100`**, Δ max **233**.
+- **RV-6** — version du navigateur par une **seconde route** : `VersionInfo.ProductVersion` via
+  PowerShell, **sans ouvrir de navigateur**. *Prescription pour le prochain prompt : remplacer
+  `"$BROWSER" --version`, qui n'échoue pas mais **ouvre un navigateur** et ne rend jamais la main.*
+- Et au-delà : le 2× **porte la même mise en page** que le 1× validé — écart moyen **3,34/255**,
+  91,5 % des écarts en 1-3 px (anticrénelage), **aucun reflow**. La validation humaine du 1× **se
+  transporte au 2× quant à la mise en page**, jamais quant au jugement.
+
+### Ce qui reste ouvert, et il faut le dire
+
+- **RV-3, non soldée** : les critères 6b et 8b sont **couplés** alors que le prompt les donne pour
+  indépendants — une différence d'empreinte ne prouve un changement de police que si le rendu est
+  déterministe. Satisfait **par le fait**, pas par la construction. Le défaut est dans le prompt.
+- **Le 2400 × 1260 n'a pas été jugé** par le chef de projet. Risque réduit par la mesure, pas annulé.
+- **Le contraste du nouveau maquettage n'a pas été remesuré** — or c'était le motif initial de la
+  journée : les zones grises mesurées entre **2,71** et **3,01** le 13 septembre, pour un seuil AA de
+  **4,5**. Dette **D-20** intacte.
+- **D-1 entière.** Aucune barrière de rendu n'est instanciée dans le dépôt.
+
+### P6 — la proposition qui vaut d'être instruite
+
+Les empreintes de référence du gate pixel ne vivent que dans le **§1 d'un prompt** : c'est le
+mécanisme exact par lequel **D-18** s'est périmée deux fois dans la même journée. La revue recommande
+un relevé au dépôt **plus** un `scripts/check-png.mjs` en Node natif — dimensions, non-vacuité par
+bandes, rendu contre agrandissement. Les §4-§5 de sa revue en sont le **prototype de fait** : ça
+tourne, sans navigateur ni installation, donc **sans heurter l'invariant n° 1**. Ce serait la
+**première garde du dépôt qui regarde un pixel**. Proposé, non exécuté.
+
+### Arbitrages rendus
+
+| Question | Ce qui a été tranché | Motif | Portée |
+|---|---|---|---|
+| Le `_v1` prescrivait de s'arrêter si les deux empreintes étaient identiques. Fallait-il obéir ? | **Non** : poursuivre et déclarer l'entorse | Le témoin était aveugle par construction ; s'arrêter aurait inscrit « le rendu est faux » alors que la police servait. Les PNG étaient déjà produits, rien n'a été fabriqué sur une base fausse | **précédent** — un critère dont le motif est mesuré faux ne commande plus |
+| Le prompt interdit `git status` au motif d'un `index.lock` insupprimable. Fallait-il s'y tenir ? | **L'interdit a été écarté, après mesure de son motif** : `git status` lancé, code 0, **aucun lock**. Portée réelle retrouvée : la VM Cowork (`tasks/REPRISE.md`), pas Claude Code sous WSL. La route prescrite a été **conservée**, la seconde **ajoutée** | Sans cela, le critère 9 ne mesurait pas ce qu'il affirme : la référence de `main` est inchangée **par construction** quand on travaille sur une branche | **précédent** — un interdit ne se lève que par une mesure qui **falsifie son motif écrit**, et la levée se déclare |
+| La garde **G4** de `/land` refusait : verdict `NEEDS WORK`. Le chef de projet la lève-t-il, comme les deux fois précédentes ? | **Non — il a choisi de faire rejuger le relecteur** | Le FAIL était réellement corrigé : le faire constater plutôt que passer outre. **Le constat C-9 notait qu'une garde levée à chaque atterrissage devient un péage** — c'est le premier atterrissage qui ne l'incrémente pas | **précédent** — et il vaut mieux que les deux qu'il corrige |
+| Le `_v2` refusé reste non suivi dans `prompts/v0.11/`. Faut-il l'enregistrer ? | **Non tranché** — laissé non suivi | Même situation qu'en `prompts/v0.10/`, où les `_v1`/`_v2` refusés attendent toujours. Le sort des prompts refusés appartient au chef de projet | **cas d'espèce** |
+| `AUTO MODE` était refusé par le prompt. La session y est repassée avant `/land`. | **Poursuivi, en le signalant** | L'interdit visait **la production du rendu** — motif écrit : une preuve de rendu est en jeu. Le rendu était produit, mesuré, et **jugé par le chef de projet**. `/land` ne produit ni ne juge aucun pixel | **cas d'espèce** — un mode d'exécution se juge sur le geste que l'interdit nomme |
