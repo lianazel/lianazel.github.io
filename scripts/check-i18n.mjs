@@ -122,11 +122,20 @@ let allowSize = 0;
 let contactReport = '—';
 let budgetReport = '—';
 let navReport = '—';
+let hrefReport = '—';
 
 // --- 1. Extraction des cles reellement utilisees dans la page ---------------
 const usedKeys = new Set([...html.matchAll(/data-i18n="([^"]*)"/g)].map((m) => m[1]));
 if (usedKeys.has('')) errors.push('Un attribut data-i18n est vide.');
 usedKeys.delete('');
+
+// Les cles d'adresse bilingue sont des cles de dictionnaire comme les autres :
+// versees dans usedKeys, elles heritent des controles 1, 2 et 3 sans une ligne
+// de plus. Contrat E-3 du 9 aout 2026, point 2.
+const hrefKeys = [...html.matchAll(/data-i18n-href="([^"]*)"/g)]
+  .map((m) => m[1])
+  .filter((k) => k !== '');
+for (const k of hrefKeys) usedKeys.add(k);
 
 // --- 2. Extraction des blocs de langue du dictionnaire ----------------------
 // Le dictionnaire a la forme : const t = { fr: { ... }, en: { ... } };
@@ -608,6 +617,37 @@ if (navKeys.length === 0) {
   }
 }
 
+// --- 13 bis. Controle 10 : le lien bilingue ---------------------------------
+// CE QU'IL FAIT : il verifie que le mecanisme EXISTE, et que chaque valeur qu'il
+// ecrira dans un href est bien une adresse http(s).
+//
+// CE QU'IL NE FAIT PAS, et il faut l'ecrire sous peine de lui crediter ce qu'il
+// ne fait pas : il ne joint aucune adresse, il ne verifie pas qu'elle repond, et
+// il ne verifie pas que la page visee est dans la bonne langue. Il verifie une
+// FORME, pas une destination.
+if (hrefKeys.length === 0) {
+  // Garde de non-vacuite. Sans elle, retirer l'attribut de la page rendrait ce
+  // controle aveugle EN RESTANT VERT. Voix propre, jamais le marqueur partage :
+  // le bloc 1/9 de gate.sh porte une garde NEGATIVE sur ce marqueur.
+  errors.push(
+    'Aucun lien bilingue : aucun element ne porte data-i18n-href. ' +
+    'Le controle du lien bilingue ne prouve plus rien.'
+  );
+} else {
+  const refuses = [];
+  for (const langue of ['fr', 'en']) {
+    for (const key of new Set(hrefKeys)) {
+      const found = blocks[langue].match(new RegExp(`\\b${key}\\s*:\\s*"([^"]*)"`));
+      if (!found) continue;   // absence deja dite par le controle de completude
+      if (!/^https?:\/\//.test(found[1])) refuses.push(`"${key}" en "${langue}" : ${found[1]}`);
+    }
+  }
+  if (refuses.length) {
+    errors.push(`Adresse de lien bilingue refusee (ni http:// ni https://) : ${refuses.join(' ; ')}`);
+  }
+  hrefReport = `${hrefKeys.length} pose(s), ${new Set(hrefKeys).size} cle(s)`;
+}
+
 // --- 14. Rapport -------------------------------------------------------------
 function report() {
   console.log(`Cible            : ${target}`);
@@ -621,6 +661,7 @@ function report() {
   console.log(`Adresse contact  : ${contactReport}`);
   console.log(`Budget largeur   : ${budgetReport}`);
   console.log(`Libelles nav     : ${navReport}`);
+  console.log(`Liens bilingues  : ${hrefReport}`);
   console.log('');
 
   for (const warning of warnings) console.log(`AVERTISSEMENT  ${warning}`);
