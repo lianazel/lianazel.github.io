@@ -905,3 +905,61 @@ pour tout outil en ligne de commande qui accepte des options.
 `~/.claude/lessons.md`, sous le titre « Un outil qui avale une entrée de travers ne rend pas une
 erreur, il rend un résultat plausible », portant la provenance `lianazel.github.io (EVOL
 carte-ibmiapi-et-poc-wpf) · session 20 · 2026-09-13 · commit 62eb7c6 de la jumelle locale`.
+
+---
+
+## 15 septembre 2026 — Un compte écrit à deux endroits diverge toujours : le remède n'est pas de mieux relire, c'est de faire mesurer l'absence de l'ancienne valeur
+
+**Type** : Erreur (quatre fois dans la même session, sur deux rôles différents)
+
+**Contexte** — session 21, incrément du lien bilingue. Le prompt a été **refusé deux fois** par le
+relecteur avant de passer, et j'ai commis **deux fautes de la même famille** dans mes propres
+artefacts. Aucune n'a atteint le code ; toutes ont coûté un aller-retour.
+
+**Les quatre, et ce qui en fait une seule famille.** Un énoncé et le fait qu'il décrit vivent à deux
+endroits, et rien ne les compare.
+
+1. **`_v1`, BLOCK.** Le prompt interdisait d'ajouter un cadratin à `index.html` (critère 7 : « 152
+   avant, 152 après ») et prescrivait deux pages plus haut un commentaire qui en contenait un. Le
+   critère était **inatteignable** : 153 après exécution littérale.
+2. **`_v2`, NEEDS_WORK.** La révision faisait passer `gate.sh` à « onze defauts semes » et laissait le
+   `CLAUDE.md` §6 à « dix défauts semés » — **dans le seul paragraphe qu'elle s'autorisait à ouvrir**.
+   Et elle posait un absolu, « aucun texte littéral prescrit ne porte de cadratin », que sa propre
+   pièce 2.3 démentait (`let hrefReport = '—';`) : en AUTO MODE, l'agent se serait arrêté sur sa
+   propre consigne.
+3. **Moi, `changes.md`.** J'ai écrit que le fichier portait `1189` lignes. Je ne l'avais pas compté :
+   il en portait **1191**. Le nombre était plausible, et c'est tout ce qu'il était.
+4. **Moi encore, `changes.md` §9.** La section annonçait la validation visuelle comme « ce qui reste au
+   chef de projet » **après** qu'il l'eut faite et m'en eut rendu compte. Le fait avait changé, la
+   phrase non. C'est le chef de projet qui l'a relevé.
+
+**Ce qui n'a pas marché : relire mieux.** Les deux premières ont été écrites par un rédacteur qui
+savait tout cela, et la seconde est née *de la correction de la première*. Une révision qui ne corrige
+que ce qu'on lui a signalé rouvre la même classe ailleurs — c'est le mode de panne classique d'une
+reprise, et il s'est produit ici exactement.
+
+**Ce qui a marché : cesser de compter à la main.** Le `_v3` a remplacé sa liste de retouches à cocher
+par un **balayage mesuré** : treize chaînes périmées qui doivent avoir **disparu**, treize chaînes
+neuves qui doivent être **présentes**, chacune avec son unité. Les treize neuves valaient `0` avant
+travaux — donc aucune ne pouvait être satisfaite par hasard — et le balayage a attrapé, en passant, ce
+qu'aucune liste n'aurait vu : trois chaînes devaient rester à `1` parce qu'elles vivent aussi dans une
+ligne d'un paragraphe **fermé à l'écriture**. Un `0` y aurait prouvé une violation de périmètre. **Le
+balayage prouvait donc aussi la clôture du périmètre.**
+
+**Règle extraite.** Quand une même vérité est écrite à deux endroits — un compte dans un document et le
+fait dans le code, un nombre dans un cadrage et la mesure dans un fichier —, ne pas se promettre de les
+tenir synchronisés : **écrire un contrôle qui cherche l'ancienne valeur et exige de ne pas la
+trouver**, doublé de son miroir qui exige la présence de la neuve. Un contrôle qui ne vérifie que la
+présence du neuf laisse vivre l'ancien à côté.
+
+**Corollaire, et il vaut pour tout artefact daté** : une section qui décrit un état *futur* devient
+fausse au moment précis où cet état survient, sans que personne ne la rouvre. Écrire au passé dès que
+le fait est acquis, ou faire porter à la phrase sa date de validité.
+
+**C'est D-7 généralisée.** Le budget de largeur du §9 est lu par le contrôle 8 plutôt que recopié dans
+le script, précisément pour cette raison. La discipline existait ; elle n'avait simplement jamais été
+étendue aux comptes de documentation.
+
+**Applicable globalement ?** : **Oui** — deux critères sur quatre. Elle reflète une préférence de
+travail du chef de projet (tout compte porte sa règle, sa mesure et son unité), et elle s'est répétée
+quatre fois dans une seule session, sur deux rôles distincts.
