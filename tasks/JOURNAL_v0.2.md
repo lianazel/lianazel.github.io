@@ -1809,3 +1809,107 @@ utilisées 187 → 190, les deux colonnes **mesurées ce jour** sur deux cibles.
 > `prompts/v<version mineure>/`. La mineure passant de 9 à 10, les prochains prompts vont dans
 > **`prompts/v0.10/`**, et non plus `v0.9`. Aucun dossier n'a été créé ici : le premier prompt qui
 > arrive le créera.
+
+---
+
+## 15 septembre 2026 — Le lien emmène la langue, et il arrive avec sa porte (session 21)
+
+**Incrément** : `EVOL_lien-bilingue_v3` · **Merge** `9dccb8a` · **Version** 0.10.0 → **0.11.0**
+**Branche** : `feat/lien-bilingue` — deux commits, `4605b0c` (le prompt) et `34d3bbd` (l'incrément).
+
+### Ce qui a été livré
+
+**Un mécanisme, pas un cas particulier.** Le bouton « Voir le site » de la carte IBMiAPI porte
+désormais `data-i18n-href="p8_href"` : à la bascule de langue, son adresse est réécrite depuis le
+dictionnaire. Les deux langues portent le paramètre — `?lang=fr` comme `?lang=en`, jamais l'adresse
+nue, parce que le site appelé ne réécrit sa préférence mémorisée que si l'adresse porte un `lang`
+valide. Le `href` du corps porte donc déjà le paramètre, **identique caractère pour caractère** à la
+valeur `fr` : c'est la mécanique de **D-14**, et elle a été vérifiée, pas supposée.
+
+**Et il arrive avec sa porte** — sortie (a), arbitrée le jour même. Contrôle 10 (existence et schéma
+`http(s)`), garde de non-vacuité à voix propre, onzième défaut semé dans `broken.html`, deux
+assertions dans `gate.sh`. Le compte des chemins bloquants passe de **24 à 26** (23 sites d'erreur +
+3 refus), et le §6 du cadrage suit — dix retouches, tout autre paragraphe fermé.
+
+**Les deux chemins neufs ont été prouvés vivants isolément**, par neutralisation sur copie hors dépôt :
+8a rougit au bloc 2/9, 8b au bloc 1/9. Chacun dans son bloc, donc aucun ne peut être satisfait par
+l'assertion de l'autre.
+
+### Le fil de la session : trois relectures pour un prompt
+
+Le prompt a été refusé **deux fois** avant de passer, et les deux refus portaient la même signature :
+**un absolu énoncé dans une section, démenti par une prescription d'une autre section du même
+document.**
+
+| Version | Verdict | Ce qui l'a arrêté |
+|---|---|---|
+| `_v1` | **BLOCK** | 4 fails, dont un cadratin prescrit dans un commentaire alors que le critère 7 interdisait d'en ajouter un — le critère était **inatteignable** |
+| `_v2` | **NEEDS_WORK** | 2 fails, **tous deux introduits par la révision** : le §6 serait resté à « dix défauts semés », et un absolu sur les cadratins que la pièce 2.3 démentait — en AUTO MODE, l'agent se serait arrêté sur sa propre consigne |
+| `_v3` | **SHIP** | 0 fail, 10 warns. Le critère 10 y devient un **balayage mesuré de 26 comptes** au lieu d'une liste à cocher |
+
+**Le remède qui a tenu n'est pas d'avoir mieux relu, c'est d'avoir cessé de compter à la main.** Les
+deux premiers refus venaient d'un compte écrit à deux endroits et corrigé à un seul ; le balayage du
+`_v3` mesure l'**absence des anciennes valeurs** et la **présence des neuves**, treize de chaque. Les
+treize chaînes neuves valaient `0` avant travaux : aucune ne pouvait être satisfaite par hasard.
+
+**Un détail qui mérite d'être retenu** : trois des vingt-six comptes attendent `1` et non `0`, parce
+que ces chaînes vivent aussi dans la ligne **D-10** du §8, fermé à l'écriture. Un `0` y aurait prouvé
+l'ouverture du §8. Le balayage prouve donc **aussi** la clôture du périmètre, ce qu'aucune liste à
+cocher n'aurait fait.
+
+### La revue, et les trois réserves qui ont été corrigées avant la clôture
+
+Verdict **SHIP**, six réserves, **sécurité 9/9**, aucune portant sur le code livré. La revue n'a repris
+aucun chiffre des artefacts : treize critères, vingt-six comptes, empreintes et **les deux
+neutralisations** rejoués sur ses propres copies.
+
+**RV-2 est la plus instructive** : l'incrément **aggrave D-19 de sa propre main** — le cadrage passe de
+**59 422 à 60 568 caractères**, soit 297 % → **303 %** du plafond de 20 000 — et `changes.md` ne le
+disait pas, alors qu'il nommait honnêtement D-18 et la collision D-8. *C'était le côté qui minimise.*
+Corrigé avant clôture, chiffres remesurés et non recopiés de la revue. RV-1 (une quatrième adaptation
+de texte non déclarée) et RV-5 (le `href` du corps n'est gardé par rien) corrigés de même.
+
+**RV-3 et P6 restent ouverts, et ils ont une échéance** : le mécanisme n'est **pas borné aux ancres** —
+sur un `<link rel="stylesheet">` il chargerait une ressource tierce avec un `https://` valide, ce que
+l'invariant §4-2 interdit — et le `href` du corps et sa valeur au dictionnaire sont **deux copies que
+rien ne compare**. Les deux se tranchent **avant l'incrément de la carte TWAIM**, qui posera le
+deuxième `data-i18n-href`.
+
+### La validation visuelle a eu lieu AVANT la publication, et c'est l'inverse de la session 20
+
+Le tunnel d'aperçu était impossible le 13 septembre sur un réseau filtrant l'UDP, et la page était
+partie sans être regardée. Cette fois il s'est ouvert : `index.html` seul, mis en scène hors dépôt,
+empreinte du fichier servi vérifiée identique à celle du commit. Le chef de projet a éprouvé les
+**deux sens** sur téléphone réel — portfolio en français → site en français, portfolio en anglais →
+site en anglais.
+
+**Les deux sens comptaient** : avant bascule le lien vient du corps, après bascule du dictionnaire.
+Deux chemins de code distincts, tous deux éprouvés.
+
+**Ce que cette validation ne couvre pas** : un seul appareil, une seule largeur, un seul moteur, et le
+**comportement** seulement — jamais le rendu. **D-1 reste entière.**
+
+### Arbitrages rendus
+
+| Question | Ce qui a été tranché | Motif | Portée |
+|---|---|---|---|
+| Le mécanisme part-il avec sa porte, ou la porte suit-elle dans un incrément ultérieur ? | **Sortie (a)** : les deux dans le même incrément | Un mécanisme livré sans sa porte est la « lampe torche » que `ASSURANCE_METHOD` couche A refuse, et le filet ne voit pas les attributs — son propre en-tête le dit | **précédent** |
+| La pré-garde G4 de `/land` refuse : le commit de l'incrément est postérieur à `review.md` de 1 min 59 s | **Garde levée explicitement** par le chef de projet | Constat **C-9** : `ship.md` place la revue en ÉTAPE 4 et le commit en ÉTAPE 5, donc le commit est **nécessairement** postérieur. La garde est structurellement inatteignable, et le contenu revu est identique au contenu commité — seuls des fichiers de `.pipeline/`, hors suivi de version, ont bougé entre les deux | **précédent** — **deuxième application**, la première étant du 13 septembre 2026, session 20, déjà inscrite aux « Arbitrages rendus » de son entrée |
+| `AUTO MODE ON` était-il légitime pour cet incrément ? | **Oui**, autorisé par le prompt et tenu | Toutes les preuves sont des comptes, des tailles, des empreintes et des codes de sortie ; aucune preuve de rendu n'était prescrite, aucun jugement d'aspect demandé | cas d'espèce |
+| Le `CLAUDE.md` pouvait-il être ouvert ? | **Oui, le §6 et lui seul**, autorisé en toutes lettres par le prompt | Le cadrage aurait décrit une porte à neuf contrôles alors qu'elle en porte dix. Prouvé par `git diff -U0` : lignes 141 à 283, toutes dans le §6 | cas d'espèce |
+
+### Ce qui reste ouvert après cette session
+
+- **RV-3** et **P6**, ci-dessus, avant la carte TWAIM.
+- **D-19 aggravée** : la modularisation du cadrage n'a pas avancé, et ce journal l'allonge encore.
+- **D-18** : le §3 décrit toujours la bascule de langue **sans** le mécanisme ajouté ici, et annonce
+  toujours `891` lignes pour un fichier qui en porte `1191`.
+- **D-8** : le numéro « dixième contrôle » qu'elle réservait est désormais **pris**. Son contrôle sera
+  le onzième.
+
+> **Conséquence du bump à porter**, comme à la session précédente : la mineure passant de 10 à 11, les
+> prochains prompts vont dans **`prompts/v0.11/`** (`CLAUDE.md` §10). Aucun dossier n'a été créé ici.
+>
+> **Et `prompts/v0.10/` garde deux fichiers non suivis** : les `_v1` et `_v2` refusés. Le premier
+> enregistrement de la branche n'a pris que le `_v3`, nommé au fichier près. Leur sort appartient au
+> chef de projet — les enregistrer garderait la trace des deux refus, les effacer la perdrait.
