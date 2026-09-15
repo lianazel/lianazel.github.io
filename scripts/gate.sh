@@ -27,8 +27,8 @@
 #   UNE ASSERTION PAR CHEMIN BLOQUANT, POSEE SUR LE MESSAGE PROPRE DE CE CHEMIN.
 #
 # Un chemin bloquant = un site d'erreur dans check-i18n.mjs, OU une sortie
-# anticipee. Il y en a VINGT-QUATRE (21 + 3), et ce fichier porte donc
-# VINGT-QUATRE assertions positives. Le compte est verifie mecaniquement en 8/9,
+# anticipee. Il y en a VINGT-SIX (23 + 3), et ce fichier porte donc
+# VINGT-SIX assertions positives. Le compte est verifie mecaniquement en 8/9,
 # parce qu'un compte declare que rien ne mesure finit toujours par etre faux —
 # le cadrage annoncait « 21 sites » en oubliant les trois sorties anticipees.
 #
@@ -101,7 +101,7 @@ case "$out_broken" in
   *"Budget de largeur introuvable dans le cadrage"*)
     fail "le temoin defectueux echoue parce que le budget du CLAUDE.md §9 est illisible, pas sur ses defauts semes." ;;
 esac
-# DIX chemins prouves ici. Le controle de symetrie en compte DEUX a lui seul :
+# ONZE chemins prouves ici. Le controle de symetrie en compte DEUX a lui seul :
 # ses deux sens sont deux branches de code distinctes, donc deux chemins, donc
 # deux defauts semes et deux assertions. Le sens EN -> FR a ete vu mourir la
 # porte verte le 9 aout — il n'etait pas seme.
@@ -117,7 +117,8 @@ assert_dit "$out_broken" 'Texte visible non traduit : "Cette"'                  
 assert_dit "$out_broken" 'Adresse de contact incoherente entre les trois occurrences' "coherence de l'adresse de contact"
 assert_dit "$out_broken" 'Adresse trop large pour le budget de la carte de contact'   "budget de largeur de l'adresse"
 assert_dit "$out_broken" 'Libelle de navigation trop large pour le panneau du menu'   "largeur des libelles de navigation"
-echo "OK - le temoin nomme ses dix defauts semes."
+assert_dit "$out_broken" 'Adresse de lien bilingue refusee'                       "schema du lien bilingue"
+echo "OK - le temoin nomme ses onze defauts semes."
 echo ""
 
 echo "--- 2/9 · Gardes de non-vacuite (le temoin de cecite doit echouer) ---"
@@ -125,9 +126,9 @@ echo "--- 2/9 · Gardes de non-vacuite (le temoin de cecite doit echouer) ---"
 out_blind="$(node scripts/check-i18n.mjs scripts/fixtures/blind.html 2>&1)"
 code_blind=$?
 assert_mord "$code_blind" "temoin de cecite"
-# QUATRE chemins distincts tirent sur ce temoin, et chacun a desormais SA
+# CINQ chemins distincts tirent sur ce temoin, et chacun a desormais SA
 # phrase. Avant le 10 aout 2026 une seule assertion, posee sur le marqueur
-# AVEUGLE, valait pour toute la famille : deux des quatre pouvaient mourir sans
+# AVEUGLE, valait pour toute la famille : deux des quatre d'alors pouvaient mourir sans
 # que rien ne rougisse. Les deux autres membres de la famille n'ont pas de cible
 # ici — la liste blanche est prouvee en 4/9, l'extraction en 6/9.
 assert_dit "$out_blind" 'suite(s) de texte visible extraite(s)' "seuil de suites extraites"
@@ -138,7 +139,8 @@ assert_dit "$out_blind" 'suite(s) couverte(s),'                 "seuil de suites
 # a ce temoin.
 assert_dit "$out_blind" 'Adresse de contact introuvable ou multiple' "garde de non-vacuite de l'adresse"
 assert_dit "$out_blind" 'Libelles de navigation introuvables'        "garde de non-vacuite des libelles de navigation"
-echo "OK - les quatre gardes de non-vacuite parlent chacune de sa voix."
+assert_dit "$out_blind" 'Aucun lien bilingue : aucun element ne porte data-i18n-href' "garde de non-vacuite du lien bilingue"
+echo "OK - les cinq gardes de non-vacuite parlent chacune de sa voix."
 echo ""
 
 echo "--- 3/9 · Garde de cadrage (le budget de largeur doit etre lisible) ---"
@@ -248,7 +250,7 @@ echo "--- 8/9 · Compte des chemins bloquants (la source contre le declare) ---"
 # Pourquoi elle existe malgre cette fragilite : le cadrage annoncait un nombre
 # ecrit que rien ne mesurait, et il etait FAUX. C'est la maladie D-7 dans sa
 # forme la plus pure, et le remede tient en trois lignes.
-CHEMINS_ERREUR=21   # sites d'erreur bloquante dans check-i18n.mjs
+CHEMINS_ERREUR=23   # sites d'erreur bloquante dans check-i18n.mjs
 CHEMINS_SORTIE=4    # sorties directes : 3 refus anticipes + la sortie finale de report()
 
 compter_chemins() { # <fichier> -> "<sites d'erreur> <sorties>"

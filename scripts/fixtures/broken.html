@@ -32,6 +32,10 @@
           caracteres, pour 33 admissibles) : il en deborderait. Seme dans les
           DEUX langues, l'anglais etant ici le pire — le controle doit retenir
           le pire des deux, et non calculer une seule fois.
+      10. une adresse de lien bilingue dont le schema n'est pas accepte : la cle
+          est declaree dans les DEUX blocs, et sa valeur n'est pas une adresse
+          que la garde accepte. Elle est inerte ici, ce fichier n'etant jamais
+          rendu par un navigateur.
 
      ATTENTION — le defaut n° 8 est calibre sur la valeur VIVANTE du CLAUDE.md
      §9 : 40 caracteres exigent 358,4 px. Il cesse de mordre si le budget y est
@@ -77,6 +81,8 @@
   <span class="email-text" data-i18n="email_txt">adresse-beaucoup-trop-longue@temoin.test</span>
 </div>
 
+<a href="#present" data-i18n="ok_key" data-i18n-href="bad_href">Titre correct</a>
+
 <script>
 const t = {
   fr: {
@@ -85,6 +91,7 @@ const t = {
     dup_key:"Seconde declaration — ecrase la premiere",
     email_txt:"adresse-beaucoup-trop-longue@temoin.test",
     nav_trop_long:"Libelle de navigation beaucoup trop long",
+    bad_href:"javascript:void(0)",
     langBtn:"🇬🇧 English"
   },
   en: {
@@ -92,6 +99,7 @@ const t = {
     only_en:"Present only in English",
     email_txt:"adresse-beaucoup-trop-longue@temoin.test",
     nav_trop_long:"Navigation label far too long for the panel",
+    bad_href:"javascript:void(0)",
     langBtn:"🇫🇷 Francais"
   }
 };

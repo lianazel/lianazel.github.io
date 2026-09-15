@@ -668,7 +668,7 @@
       <p data-i18n="p8_desc">Comment des fichiers plats S/36 deviennent une API REST. Le site déroule le décor, le problème, la solution, le mini-langage et la méthode, puis regarde un fichier S/36 de près. Bilingue, la bascule se fait dans la page. Conçu et piloté avec le harnais IA TWAIM.</p>
       <div class="tags"><span class="tag" data-i18n="p8_tag">IBM i</span><span class="tag">RPG</span><span class="tag">.NET</span><span class="tag">REST</span></div>
       <div class="proj-btns" style="margin-top:1rem;">
-        <a href="https://lianazel.github.io/ibm-s36-to-rest-api/" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_site">🌐 Voir le site</a>
+        <a href="https://lianazel.github.io/ibm-s36-to-rest-api/?lang=fr" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="font-size:.8rem;padding:.5rem 1.2rem;" data-i18n="see_site" data-i18n-href="p8_href">🌐 Voir le site</a>
       </div>
     </div>
     <div class="proj-card reveal" style="--grad:linear-gradient(135deg,#D4A843,#6B7C2D)">
@@ -796,6 +796,7 @@ const t = {
     p6_desc:"Dashboard de suivi des cours mondiaux des denrées alimentaires. 26 matières premières, 3 sources de données (Banque Mondiale, USDA, simulation), traduction FR/EN, graphiques interactifs et export CSV.",
     p7_desc:"Analyseur de tendances crypto en WPF (.NET 8). Top 20 par capitalisation, graphiques interactifs, indicateurs techniques (SMA, RSI), watchlist avec favoris persistés. API CoinGecko, zéro dépendance NuGet.",
     p8_title:"Des fichiers S/36 à l'API REST", p8_tag:"IBM i", p8_desc:"Comment des fichiers plats S/36 deviennent une API REST. Le site déroule le décor, le problème, la solution, le mini-langage et la méthode, puis regarde un fichier S/36 de près. Bilingue, la bascule se fait dans la page. Conçu et piloté avec le harnais IA TWAIM.",
+    p8_href:"https://lianazel.github.io/ibm-s36-to-rest-api/?lang=fr",
     redac:"Rédaction technique", archi:"Architecture perso",
     see_linkedin:"🔗 Voir sur LinkedIn", see_site:"🌐 Voir le site",
     h2_contact:"Travaillons <span>Ensemble</span>",
@@ -937,6 +938,7 @@ const t = {
     p6_desc:"Global food commodity price tracking dashboard. 26 commodities, 3 data sources (World Bank, USDA, simulation), FR/EN translation, interactive charts and CSV export.",
     p7_desc:"Crypto trend analyzer built with WPF (.NET 8). Top 20 by market cap, interactive charts, technical indicators (SMA, RSI), watchlist with persisted favorites. CoinGecko API, zero NuGet dependency.",
     p8_title:"From S/36 files to a REST API", p8_tag:"IBM i", p8_desc:"How flat S/36 files become a REST API. The site walks through the setting, the problem, the solution, the mini-language and the method, then looks at an S/36 file up close. Bilingual, with an in-page switch. Designed and run with the TWAIM AI harness.",
+    p8_href:"https://lianazel.github.io/ibm-s36-to-rest-api/?lang=en",
     redac:"Technical writing", archi:"Custom architecture",
     see_linkedin:"🔗 View on LinkedIn", see_site:"🌐 View live site",
     h2_contact:"Let's Work <span>Together</span>",
@@ -1057,6 +1059,14 @@ function toggleLang() {
   // la boucle ci-dessus. Idempotent tant que les deux disaient la meme chose —
   // et faux des que ce libelle varie, ce que cet increment fait justement. Le
   // dictionnaire est desormais seule source ; cette ecriture directe a disparu.
+  // Les adresses qui changent de langue : meme dictionnaire, meme mecanisme de
+  // cle, mais on ecrit dans href et non dans le contenu. La garde d'une ligne
+  // refuse une valeur qui n'est pas http(s) : c'est par la qu'entre un schema
+  // d'execution.
+  document.querySelectorAll('[data-i18n-href]').forEach(el => {
+    const url = d[el.getAttribute('data-i18n-href')];
+    if (typeof url === 'string' && /^https?:\/\//.test(url)) el.setAttribute('href', url);
+  });
   renderMenu();   // les libelles d'accessibilite du menu changent de langue
   layoutNav();    // ... et leur longueur change : le debordement se recalcule
 }

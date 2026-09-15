@@ -138,7 +138,7 @@ Cet enrobage est la seule entrée légitime : **huit blocs éprouvent la porte, 
 site**. L'appel direct à `node scripts/check-i18n.mjs` **saute la preuve de morsure** — il sert au
 diagnostic ponctuel, jamais de filet.
 
-**Neuf contrôles bloquants** — chacun fait échouer la porte :
+**Dix contrôles bloquants** — chacun fait échouer la porte :
 
 1. **Complétude du dictionnaire** — toute clé `data-i18n` présente dans la page possède une
    traduction en français **et** en anglais. Une clé manquante afficherait du texte non traduit à un
@@ -167,14 +167,23 @@ diagnostic ponctuel, jamais de filet.
    `VISION_METHOD` couvre la même propriété en la mesurant sur un rendu réel ; le jour où ce satellite
    sera instancié (dette D-1), ce contrôle arithmétique deviendra redondant. Il **ne garantit pas** que le
    socle de la barre tienne : voir le commentaire au-dessus du contrôle, qui dit pourquoi.
+10. **Lien bilingue** — chaque élément porteur de `data-i18n-href` désigne une clé du dictionnaire, et
+    la valeur de cette clé est une adresse `http` ou `https` dans les deux langues. Le contrôle
+    vérifie une **forme**, jamais une destination : il ne joint aucune adresse, ne vérifie pas qu'elle
+    réponde, ni qu'elle mène à la bonne langue. Il accepte `http://` en clair, la garde portant sur la
+    forme de l'adresse et non sur la sûreté du transport. Un attribut **vide**, `data-i18n-href=""`,
+    est ignoré en silence et n'a pas de chemin propre, contrairement au `data-i18n=""` du contrôle 5 :
+    le programme n'écrirait rien, et le mécanisme n'a pas de clé à vérifier.
 
-**Sept gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
+**Huit gardes de non-vacuité**, qui interdisent le pire mode de défaillance — une porte **aveugle qui
 reste verte** : l'extraction du texte visible doit trouver un volume plausible de suites **et** de
 suites couvertes ; la liste blanche doit être chargée et non vide ; le balisage doit être équilibré,
 sans quoi une balise ouverte gonfle la couverture et vide le contrôle 6 par **excès** ; chacune des
 trois extractions de l'adresse doit trouver **exactement une** occurrence ; le budget du §9 doit être
 lisible, faute de quoi le contrôle 8 se tairait sur un cadrage amputé ; et les libellés de navigation
-doivent être trouvés, sans quoi le contrôle 9 se tairait sur un balisage remanié. Ces gardes parlent de **voix
+doivent être trouvés, sans quoi le contrôle 9 se tairait sur un balisage remanié ; et le mécanisme
+de lien bilingue doit trouver au moins un élément porteur, sans quoi le contrôle 10 se tairait sur
+une page qui l'aurait perdu. Ces gardes parlent de **voix
 distinctes**, à dessein : un marqueur partagé permettrait à l'une de satisfaire l'assertion de l'autre,
 et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrôle 7).
 
@@ -182,17 +191,17 @@ et une garde morte passerait inaperçue (mesuré, voir le commentaire du contrô
 par une garde en porte deux, et c'est la garde qui meurt en silence — chacune a donc son assertion et
 son témoin.
 
-### Les 24 chemins bloquants — l'inventaire, et il est mesuré
+### Les 26 chemins bloquants — l'inventaire, et il est mesuré
 
-**Mesuré le 10 août 2026**, en comptant dans le fichier : `check-i18n.mjs` porte **21 sites d'erreur**
-et **3 refus de travailler** (options invalides, cible illisible), soit **24 chemins bloquants** pour
-**24 assertions** dans `gate.sh`. Chacune est posée sur le **message propre** de son chemin, et
+**Mesuré le 15 septembre 2026**, en comptant dans le fichier : `check-i18n.mjs` porte **23 sites d'erreur**
+et **3 refus de travailler** (options invalides, cible illisible), soit **26 chemins bloquants** pour
+**26 assertions** dans `gate.sh`. Chacune est posée sur le **message propre** de son chemin, et
 **chacune a été prouvée vivante isolément** — jamais relue.
 
 | Famille | Chemins | Détail |
 |---|---|---|
-| Les neuf contrôles | **10** | la **symétrie en compte deux** : FR→EN et EN→FR sont deux branches distinctes |
-| Gardes de non-vacuité | **7** | quatre sur l'extraction, une par contrôle 7, 8 et 9 |
+| Les dix contrôles | **11** | la **symétrie en compte deux** : FR→EN et EN→FR sont deux branches distinctes |
+| Gardes de non-vacuité | **8** | quatre sur l'extraction, une par contrôle 7, 8, 9 et 10 |
 | Structure du dictionnaire | **2** | déclaration introuvable · blocs de langue introuvables |
 | Tenue de la liste blanche | **2** | fichier illisible · entrée sans motif |
 | Refus de travailler | **3** | option numérique invalide · option de chemin vide · cible illisible |
@@ -211,8 +220,8 @@ et **3 refus de travailler** (options invalides, cible illisible), soit **24 che
 >    doit le voir. La discipline du budget de largeur — un seul endroit, lu par le contrôle — n'a pas
 >    été transposée ici, et ce n'est pas un oubli : le §9 est lu parce qu'il est un **contrat**, alors
 >    que ce compte-ci est un **fait de la source**, dont la source est l'autorité.
-> 2. **Les unités diffèrent, à dessein.** Ici : **24 chemins** = 21 sites d'erreur + **3** refus de
->    travailler. Dans `gate.sh` : 21 et **4**, parce qu'il compte les `exit(1)` du fichier, dont la
+> 2. **Les unités diffèrent, à dessein.** Ici : **26 chemins** = 23 sites d'erreur + **3** refus de
+>    travailler. Dans `gate.sh` : 23 et **4**, parce qu'il compte les `exit(1)` du fichier, dont la
 >    sortie finale de `report()` — qui n'est pas un chemin. Deux comptes justes de deux choses
 >    différentes ; ne pas « corriger » l'un pour qu'il ressemble à l'autre.
 >
@@ -225,13 +234,16 @@ quatre attendues) et entrée de liste blanche jamais utilisée.
 **Ce que ce filet ne couvre pas**, et il faut le savoir : la mise en page, le rendu visuel, le
 comportement sur téléphone. Aucun contrôle automatisé ne les surveille aujourd'hui — voir la dette
 D-1 ci-dessous. **La validation visuelle reste entièrement humaine.** Il ne voit pas davantage une
-traduction *fausse*, ni le contenu porté par un attribut (`href`, `title`, `aria-label`) : l'en-tête de
+traduction *fausse*. Le contenu porté par un **attribut** lui reste invisible — à une exception près,
+depuis le 15 septembre 2026 : le mécanisme de lien bilingue est couvert **dans sa forme** par le
+contrôle 10, son existence et son schéma. Le reste demeure hors de sa vue : qu'une adresse réponde,
+qu'elle mène à la bonne langue, et tout `title` ou `aria-label`. L'en-tête de
 `check-i18n.mjs` énumère ces limites, et il fait autorité sur elles.
 
 **Preuve de morsure — huit témoins** (en sept puces : la structure du dictionnaire en compte deux),
 et le filet les éprouve avant le site :
 
-- `scripts/fixtures/broken.html`, **témoin défectueux** : dix défauts semés, un par chemin qu'il
+- `scripts/fixtures/broken.html`, **témoin défectueux** : onze défauts semés, un par chemin qu'il
   couvre. Il doit échouer **en nommant** chacun d'eux. La **symétrie y est semée dans les deux sens** —
   `only_fr` et `only_en` : deux branches de code, deux défauts, deux assertions.
 - `scripts/fixtures/blind.html`, **témoin de cécité** : page saine sur les contrôles 1 à 6 mais presque
@@ -267,7 +279,8 @@ copie hors dépôt et en vérifiant que la porte rougit **en nommant ce chemin-l
 > **Une neutralisation peut faire *passer* le témoin entier plutôt que le faire échouer autrement** —
 > c'est le cas quand le chemin mort était la seule erreur de sa cible. La porte rougit alors par son
 > assertion de **morsure** (« la cible est PASSEE ») et non par celle de **message**. Les deux sont
-> spécifiques à leur bloc : le chemin reste prouvé. Constaté sur trois des vingt-quatre.
+> spécifiques à leur bloc : le chemin reste prouvé. Constaté le 10 août 2026 sur trois des vingt-quatre
+> chemins d'alors.
 
 ---
 
