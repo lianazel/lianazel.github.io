@@ -71,16 +71,24 @@
 #      particulierement vicieuse : si mktemp echoue, BAC vaut la chaine vide, et
 #      « cd "" » REUSSIT en bash sans changer de repertoire. La cible tournerait
 #      alors a la racine du depot et y ecrirait ses traces — exactement le faux
-#      positif que le bac neuf existe pour empecher. Mesure en revue : 590 octets
-#      de journal et une capture deposes dans un depot factice. ATTENUE : le
-#      temoin rougit quand meme (18 assertions), donc le defaut ne passe pas
-#      inapercu. Durcissement, pas correctif.
+#      positif que le bac neuf existe pour empecher. Reproduit en revue dans un
+#      depot factice : journal et capture bien deposes a la racine. ATTENUE : le
+#      temoin rougit quand meme, sur chacun de ses chemins, donc le defaut ne
+#      passe pas inapercu. Durcissement, pas correctif.
+#
+#      AUCUN NOMBRE N'EST ECRIT ICI, ET C'EST DELIBERE. Une premiere redaction
+#      annoncait « 590 octets » et « 18 assertions » : les deux etaient devenus
+#      faux DANS LE COMMIT MEME qui les inscrivait, puisqu'il ajoutait un dixieme
+#      chemin. Un nombre nu dans un commentaire se perime en silence a cote de la
+#      source qui pourrait le produire ; une propriete — « sur chacun de ses
+#      chemins » — reste vraie au onzieme.
 #   b. LE MENAGE N'EST ASSERTE PAR RIEN. « rmdir » est sous 2>/dev/null : un bac
 #      qui survit — parce que la cible y aurait depose un fichier inattendu — ne
 #      fait rougir personne, et ce fichier imprime quand meme « chaque execution
 #      a eu son bac neuf ». Mesure en revue : un mutant deposant un troisieme
-#      fichier laisse NEUF bacs derriere lui, temoin VERT. C'est « une garde qui
-#      parle et ne voit pas », dans le fichier qui condamne ce defaut plus haut.
+#      fichier laisse UN BAC PAR CHEMIN derriere lui, temoin VERT. C'est « une
+#      garde qui parle et ne voit pas », dans le fichier qui condamne ce defaut
+#      plus haut.
 #   c. L'APLATISSEMENT DE LA VALEUR N'A AUCUN CHEMIN. Le retirer de la cible
 #      traverse ce temoin sans le faire rougir, alors qu'il est ce qui protege la
 #      garde d'unicite.

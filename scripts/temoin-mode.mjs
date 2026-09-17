@@ -72,6 +72,32 @@
 //      pauses n'a depasse la borne. Le script DIT ALORS LA VERITE — il n'a pas
 //      tout lu — et la capture n'est pas ecrite. Ce n'est donc pas un faux
 //      resultat, c'est un abandon correct, mais premature.
+//   d. UN BLANC EXOTIQUE PEUT ENCORE FABRIQUER UN MODE LEGITIME, et c'est la
+//      moitie non fermee du refus des valeurs mutilees. La valeur est APLATIE
+//      avant d'etre comparee : tout ce que \s reconnait — passage a la ligne,
+//      tabulation, U+2028, espaces insecables — disparait AVANT que la
+//      comparaison puisse le voir. Mesure le 17 septembre 2026 :
+//        « auto » + U+2028   -> auto        (et non champ-invalide)
+//        « auto » + LF       -> auto
+//        HT + « plan » + LF  -> plan
+//      Seul l'octet NUL est attrape, parce qu'il n'est pas un blanc.
+//
+//      POURQUOI C'EST TOLERABLE AUJOURD'HUI : ce script RAPPORTE, il n'AUTORISE
+//      rien. Il sort toujours en 0, ne decide d'aucun acces, et personne ne lit
+//      sa sortie pour agir — le pire effet est une ligne de journal qui dit
+//      « auto » pour une charge qui portait « auto » suivi d'un blanc invisible.
+//      La valeur reste celle qui a ete envoyee, a sa decoration pres.
+//
+//      CE QUI LE RENDRAIT INTOLERABLE, ET IL FAUT LE VOIR VENIR : le jour ou
+//      QUOI QUE CE SOIT LIT CETTE VALEUR POUR DECIDER. Un garde-fou qui
+//      comparerait ce mode a une liste d'autorises, un aiguillage, un hook qui
+//      refuserait sur sa foi — a cet instant, un blanc invisible ajoute a la fin
+//      d'un mode devient un moyen de faire dire a l'instrument ce qu'on veut, et
+//      la tolerance d'aujourd'hui devient une faille. Le remede est connu et
+//      tient en un mot : comparer a la valeur BRUTE plutot qu'a l'aplatie. C'est
+//      un DURCISSEMENT — il n'y a aucune anomalie constatee — donc un /ship
+//      dedie avec son propre chemin de temoin, jamais un correctif au passage.
+//
 //   c. LE REPLI ECRIT HORS DU DEPOT. Sans .pipeline/ dans le repertoire courant,
 //      la charge utile est deposee EN CLAIR dans le dossier temporaire du
 //      systeme, sous un nom previsible. Sans objet dans ce depot, ou .pipeline/
@@ -228,8 +254,15 @@ function assainir(valeur) {
   // mesure, « au<NUL>to » ressortait « auto » — un mode parfaitement legitime,
   // ne d'un octet de commande. Pour un instrument dont l'unique produit est une
   // mesure, c'est le pire mode de defaillance : il ne dit pas « je n'ai pas
-  // compris », il repond a cote avec aplomb. On refuse donc TOUTE valeur que le
-  // filtrage a modifiee ; elle devient CHAMP_INVALIDE, ce qui est la verite.
+  // compris », il repond a cote avec aplomb. On refuse donc toute valeur que LE
+  // FILTRE DES CARACTERES NON IMPRIMABLES a modifiee ; elle devient
+  // CHAMP_INVALIDE, ce qui est la verite.
+  //
+  // ⚠️ CETTE COMPARAISON NE VOIT PAS CE QUE L'APLATISSEMENT A DEJA MANGE, et la
+  // limite (d) de l'en-tete dit ce que cela laisse passer. La phrase ci-dessus a
+  // d'abord ete ecrite « TOUTE valeur que le filtrage a modifiee » : c'etait
+  // faux, dans le paragraphe meme qui explique pourquoi il ne faut pas filtrer
+  // sans le dire.
   if (imprimable !== aplati) return null;
   if (imprimable.length === 0) return null;
   return imprimable.length > LONGUEUR_MAX
