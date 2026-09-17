@@ -12,7 +12,7 @@
 # check-i18n.mjs, et pour la meme raison : un chemin qui n'a aucune cible ou
 # mordre NAIT INVISIBLE.
 #
-# NEUF CHEMINS, TROIS GARDES INDEPENDANTES, UN DIAGNOSTIC SUBSUME.
+# DIX CHEMINS, TROIS GARDES INDEPENDANTES, UN DIAGNOSTIC SUBSUME.
 #
 # POURQUOI ON LIT LA SORTIE ET PAS SEULEMENT LE CODE : la cible sort TOUJOURS en
 # 0, par conception. Le code de sortie ne peut donc RIEN prouver a lui seul — il
@@ -61,6 +61,34 @@
 # imprime DEUX FOIS — verdicts identiques dans les six cases. C'est la dette D-10
 # sous forme subsumee. Correctif : l'assertion ne juge que la PREMIERE ligne
 # prefixee, la garde compte COMBIEN il y en a. Prouve par mutation.
+# ─────────────────────────────────────────────────────────────────────────────
+# CE QUE CE TEMOIN NE VOIT PAS — releve en revue le 17 septembre 2026, et inscrit
+# ICI plutot que dans un artefact de travail : .pipeline/ est ignore par git, une
+# limite qui y vit ne survit pas a l'atterrissage. Arbitrage du chef de projet du
+# 17 septembre : l'en-tete atterrit avec le script.
+#
+#   a. « mktemp -d » N'A PAS DE GARDE, et l'echec est silencieux d'une facon
+#      particulierement vicieuse : si mktemp echoue, BAC vaut la chaine vide, et
+#      « cd "" » REUSSIT en bash sans changer de repertoire. La cible tournerait
+#      alors a la racine du depot et y ecrirait ses traces — exactement le faux
+#      positif que le bac neuf existe pour empecher. Mesure en revue : 590 octets
+#      de journal et une capture deposes dans un depot factice. ATTENUE : le
+#      temoin rougit quand meme (18 assertions), donc le defaut ne passe pas
+#      inapercu. Durcissement, pas correctif.
+#   b. LE MENAGE N'EST ASSERTE PAR RIEN. « rmdir » est sous 2>/dev/null : un bac
+#      qui survit — parce que la cible y aurait depose un fichier inattendu — ne
+#      fait rougir personne, et ce fichier imprime quand meme « chaque execution
+#      a eu son bac neuf ». Mesure en revue : un mutant deposant un troisieme
+#      fichier laisse NEUF bacs derriere lui, temoin VERT. C'est « une garde qui
+#      parle et ne voit pas », dans le fichier qui condamne ce defaut plus haut.
+#   c. L'APLATISSEMENT DE LA VALEUR N'A AUCUN CHEMIN. Le retirer de la cible
+#      traverse ce temoin sans le faire rougir, alors qu'il est ce qui protege la
+#      garde d'unicite.
+#   d. UNE LIGNE NON PREFIXEE AJOUTEE A LA SORTIE PASSE AU VERT. La garde ne
+#      compte que les lignes qui commencent par le prefixe.
+#   e. LE BRUIT SUR LA SORTIE D'ERREUR EST MASQUE par 2>/dev/null : une cible qui
+#      ecrirait sur stderr — ce que son en-tete lui interdit — passerait ici.
+# ─────────────────────────────────────────────────────────────────────────────
 set -u
 
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
@@ -224,6 +252,13 @@ eprouve 5 "charge vide"      "printf '%s' ''"                            "charge
 eprouve 6 "champ a null"     "printf '%s' '{\"permission_mode\":null}'"  "champ-invalide" '{"permission_mode":null}'
 eprouve_depuis 7 "entree illisible" "$ILLISIBLE_ABS"                     "illisible"      "ABSENTE"
 
+# UNE VALEUR MUTILEE PAR LE FILTRAGE N'EST PAS UNE VALEUR. Le champ porte ici un
+# octet de commande au milieu d'un mode par ailleurs legitime. Sans ce chemin, la
+# garde qui refuse les valeurs modifiees par le filtrage NAITRAIT INVISIBLE —
+# mesure avant correctif : « au<NUL>to » ressortait « auto », un mode parfaitement
+# credible ne d'un octet qui n'aurait jamais du passer.
+eprouve 10 "valeur mutilee par le filtrage" "printf '%s' '{\"permission_mode\":\"au\\u0000to\"}'" "champ-invalide" '{"permission_mode":"au\u0000to"}' 
+
 # --- Le chemin qui prouve que la lecture RESISTE ----------------------------
 # ECRIVAIN EN DEUX TEMPS : regime normal d'un tube, et celui qui faisait tomber la
 # version livree le 16 septembre 2026. Une lecture unique prend le EAGAIN d'un
@@ -262,7 +297,7 @@ fi
 
 echo ""
 if [ "$echecs" -eq 0 ]; then
-  echo "TEMOIN VERT - 9 chemins, 3 gardes independantes, 1 diagnostic subsume."
+  echo "TEMOIN VERT - 10 chemins, 3 gardes independantes, 1 diagnostic subsume."
   echo "              Aucun fichier du depot n'a ete touche : chaque execution a eu son bac neuf."
   exit 0
 fi

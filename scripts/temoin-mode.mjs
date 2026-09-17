@@ -53,6 +53,30 @@
 // doit permettre — la confondre avec « je n'ai rien pu lire » fabrique un faux
 // negatif indiscernable d'un vrai, et ce faux negatif ferait abandonner la piste.
 //
+// CE QU'IL NE GARANTIT PAS — releve en revue les 16 et 17 septembre 2026, et
+// inscrit ICI plutot que dans un artefact de travail : .pipeline/ est ignore par
+// git, une limite qui y vit ne survit pas a l'atterrissage. Arbitrage du chef de
+// projet du 17 septembre : l'en-tete atterrit avec le script et se lit la ou le
+// defaut se rencontre.
+//
+//   a. LA LIGNE IMPRIMEE N'EST PAS DE FORME FIXE. La valeur du champ y est
+//      recopiee telle quelle, dans la limite de 64 caracteres imprimables. Une
+//      charge utile forgee peut donc produire une ligne trompeuse A L'OEIL —
+//      par exemple une valeur contenant elle-meme le prefixe. La garde
+//      d'unicite du temoin tient (elle compte les lignes qui COMMENCENT par le
+//      prefixe), la lisibilite humaine non. Encadrer la valeur fermerait le
+//      point ; ce n'est pas fait.
+//   b. LA BORNE D'ATTENTE EST CUMULEE, PAS UNE BORNE DE PROGRES. « attendu »
+//      n'est jamais remis a zero apres une lecture reussie : un ecrivain
+//      goutte-a-goutte tres lent finit donc en ILLISIBLE alors qu'aucune de ses
+//      pauses n'a depasse la borne. Le script DIT ALORS LA VERITE — il n'a pas
+//      tout lu — et la capture n'est pas ecrite. Ce n'est donc pas un faux
+//      resultat, c'est un abandon correct, mais premature.
+//   c. LE REPLI ECRIT HORS DU DEPOT. Sans .pipeline/ dans le repertoire courant,
+//      la charge utile est deposee EN CLAIR dans le dossier temporaire du
+//      systeme, sous un nom previsible. Sans objet dans ce depot, ou .pipeline/
+//      existe toujours — a peser avant tout portage au plancher machine.
+//
 // CE QU'IL CONSERVE, et il faut le savoir avant de declarer ce hook :
 //   hook-mode-last.json porte la charge utile TELLE QUELLE, donc le texte tape
 //   par le chef de projet. Un jeton colle dans un prompt y atterrit en clair.
@@ -87,7 +111,8 @@ const LONGUEUR_MAX = 64;
 // systeme. Dans ce depot c'est toujours le premier, mesure. Le repli n'existe
 // que pour un portage ulterieur au plancher machine, ou ce script tournerait
 // dans des depots qui n'ont pas ce dossier : sans lui, il planterait A CHAQUE
-// PROMPT. Ce repli n'est eprouve par aucun chemin du temoin.
+// PROMPT. Le chemin 9 du temoin l'eprouve, dans un bac sans .pipeline/ et avec
+// un TMPDIR dedie : la mutation qui supprime le repli le fait rougir seul.
 let trace;
 try {
   trace = existsSync('.pipeline') ? '.pipeline' : tmpdir();
@@ -198,6 +223,14 @@ function assainir(valeur) {
   // sequences ANSI et l'octet NUL, qui peuvent reecrire un terminal.
   const aplati = valeur.replace(/\s+/g, ' ').trim();
   const imprimable = aplati.replace(/[^\x20-\x7E]/g, '');
+  // UNE VALEUR MUTILEE N'EST PAS UNE VALEUR, ET C'EST LE POINT LE PLUS SUBTIL DE
+  // CE FICHIER. Filtrer sans le dire FABRIQUE un mode qui n'a jamais ete recu :
+  // mesure, « au<NUL>to » ressortait « auto » — un mode parfaitement legitime,
+  // ne d'un octet de commande. Pour un instrument dont l'unique produit est une
+  // mesure, c'est le pire mode de defaillance : il ne dit pas « je n'ai pas
+  // compris », il repond a cote avec aplomb. On refuse donc TOUTE valeur que le
+  // filtrage a modifiee ; elle devient CHAMP_INVALIDE, ce qui est la verite.
+  if (imprimable !== aplati) return null;
   if (imprimable.length === 0) return null;
   return imprimable.length > LONGUEUR_MAX
     ? `${imprimable.slice(0, LONGUEUR_MAX)}...`
