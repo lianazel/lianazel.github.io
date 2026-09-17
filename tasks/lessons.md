@@ -1087,3 +1087,27 @@ silence. C'est la doctrine **D-7** appliquée aux commentaires : *un nombre déc
 seulement prudent*.
 **Applicable globalement ?** : **Oui** — déjà quatre occurrences, deux stacks, et c'est une préférence
 de travail de JC sur la tenue des documents.
+
+## 17 septembre 2026 — Une revue sans portée gelée n'est pas une porte : elle trouvera toujours une phrase de plus
+
+**Type** : Erreur de méthode (relevée par le chef de projet, après quatre verdicts et cinq heures d'immobilisation)
+**Contexte** : `.pipeline/STATUS.md` dit `READY` à 10:51:24. L'incrément est clos à 16:05:35. Entre les
+deux, quatre verdicts de revue sur deux fichiers. La revue de 10:33:25 prescrit deux corrections ;
+elles deviennent le commit `3351882` de 10:50:57 ; la revue de 11:58:23 trouve que `3351882`
+**lui-même** porte deux défauts neufs — trois nombres périmés le jour de leur écriture, et une phrase
+plus forte que le code. Le commit `670ce95` de 13:17:46 les corrige ; la revue de 15:56:07 trouve que
+`670ce95` porte à son tour un énoncé faux, dans le commit dont l'objet était de corriger les énoncés faux.
+**Approche** : Aucune des quatre revues n'a trouvé n'importe quoi : les défauts relevés étaient réels
+à chaque tour. Ce n'est donc pas un problème de qualité de relecture. C'est que **chaque correction
+fabriquait le défaut suivant**, et que rien ne disait quand s'arrêter. Un stock de défauts s'épuise ;
+une prose perfectible, non. Sorti par une levée du volet « verdict » de la garde de revue, cas
+d'espèce, sur motif mesuré : `670ce95` ne change aucune ligne de code, prouvé deux fois.
+**Correction/Pattern** : Deux règles, et les deux ensemble :
+1. **La portée d'une revue est gelée avec le commit qu'elle relit.** Elle ne regarde que ce diff. Ce
+   qu'elle voit ailleurs devient une leçon ou un sujet à part, jamais une condition d'atterrissage.
+2. **Pas de verdict conditionnel.** Un SHIP « sous réserve de » prescrit sans vérifier : il garantit
+   un tour de plus, et la correction prescrite arrive dans un état que la revue n'a pas vu. Un
+   verdict est SHIP ou ne l'est pas.
+**Applicable globalement ?** : **Oui** — c'est la différence entre une porte et une conversation. Une
+porte a son critère fixé avant d'être franchie ; « cette phrase est-elle juste ? » n'en a pas. À
+porter dans `ASSURANCE_METHOD.md`, à côté de « Outil d'inspection ≠ porte ».
