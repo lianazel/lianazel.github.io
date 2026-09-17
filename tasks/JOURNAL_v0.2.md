@@ -2016,3 +2016,85 @@ tourne, sans navigateur ni installation, donc **sans heurter l'invariant n° 1**
 | La garde **G4** de `/land` refusait : verdict `NEEDS WORK`. Le chef de projet la lève-t-il, comme les deux fois précédentes ? | **Non — il a choisi de faire rejuger le relecteur** | Le FAIL était réellement corrigé : le faire constater plutôt que passer outre. **Le constat C-9 notait qu'une garde levée à chaque atterrissage devient un péage** — c'est le premier atterrissage qui ne l'incrémente pas | **précédent** — et il vaut mieux que les deux qu'il corrige |
 | Le `_v2` refusé reste non suivi dans `prompts/v0.11/`. Faut-il l'enregistrer ? | **Non tranché** — laissé non suivi | Même situation qu'en `prompts/v0.10/`, où les `_v1`/`_v2` refusés attendent toujours. Le sort des prompts refusés appartient au chef de projet | **cas d'espèce** |
 | `AUTO MODE` était refusé par le prompt. La session y est repassée avant `/land`. | **Poursuivi, en le signalant** | L'interdit visait **la production du rendu** — motif écrit : une preuve de rendu est en jeu. Le rendu était produit, mesuré, et **jugé par le chef de projet**. `/land` ne produit ni ne juge aucun pixel | **cas d'espèce** — un mode d'exécution se juge sur le geste que l'interdit nomme |
+
+## 17 septembre 2026 — Une lampe torche, et quatre revues pour qu'elle dise la vérité (session 23)
+
+**Incrément** : `CHORE_temoin-mode-permission_v1` · **merge `02eea97`** · `0.11.1` → `0.11.2`
+**Commits** : `87d2195` le prompt · `6cfe73a` les deux scripts · `3351882` les conditions de fusion ·
+`670ce95` les énoncés, posé sur `main` après la fusion.
+
+### Ce qui est livré
+
+Deux fichiers, aucune dépendance. `scripts/temoin-mode.mjs` est un hook `UserPromptSubmit` qui lit le
+mode de permission dans la charge utile, la conserve, journalise, imprime le mode sur une ligne — et
+**sort toujours en 0**. `scripts/test-temoin-mode.sh` est sa preuve de morsure : dix chemins, trois
+gardes indépendantes, un diagnostic déclaré subsumé.
+
+**Ce n'est pas une porte, et l'en-tête le dit avant tout le reste.** Une porte fait échouer quelque
+chose ; celle-ci n'arrête rien. C'est une lampe torche, et la distinction vient de
+`ASSURANCE_METHOD` : *« s'il ne fait rien échouer, ce n'est pas une porte »*. Elle a une conséquence
+pratique — l'essai 0 imposé aux règles exécutables ne s'applique pas.
+
+**Le chantier est né d'un découpage.** Le sujet voisin `CHORE_garde-auto-mode`, refusé deux fois,
+posait un garde-fou qui bloquait en code 2 et **effaçait le prompt tapé**. Il a été abandonné au profit
+de celui-ci, qui ne bloque rien. L'observation qui a déclenché le découpage : `UserPromptSubmit` ne se
+déclenche que sur le texte tapé par un humain, donc ce garde-fou **ne gardait pas l'agent, il gardait
+le chef de projet**. Celui-ci fait l'inverse : il donne à l'agent la grandeur qui lui manquait pour
+s'arrêter lui-même.
+
+### Ce que l'incrément ne prouve pas
+
+Ni que `UserPromptSubmit` porte `permission_mode`, ni que la ligne imprimée arrive jusqu'à l'agent.
+**Les deux inconnues restent entières** — la première exécution réelle les tranchera, et c'est l'objet
+même de l'instrument. Rien ne peut mal tourner en attendant : la sortie est 0, donc le pire cas est
+qu'il ne serve à rien.
+
+### Quatre revues, et chacune a trouvé ce que la précédente avait laissé passer
+
+| # | Verdict | Ce qu'elle a trouvé |
+|---|---|---|
+| 1 | NEEDS WORK | `readFileSync(0)` perdait la charge utile par `EAGAIN` — **0 succès sur 10** sur trente octets en deux temps — en produisant `introuvable`, c'est-à-dire **exactement la réponse que l'instrument existe pour aller chercher**. Et un seul mot pour quatre causes |
+| 2 | NEEDS WORK | Le vidage des traces n'avait pas été le **dernier** geste : l'artefact déclarait vide ce que le disque portait plein, avec une capture `{"permission_mode":"auto"}` — le faux positif parfait |
+| 3 | SHIP sous conditions | Un octet NUL fabriquait un mode légitime : `au<NUL>to` → **`auto`**. Et le commentaire du repli se contredisait |
+| 4 | NEEDS WORK | Le commit qui corrige les énoncés faux en introduit un : « seul l'octet NUL est attrapé » est faux, et contredit une autre ligne du même fichier |
+
+**Trois fois la même maladie, sous trois formes.** Un `diff &&` dont le code de sortie 1 — celui de
+`diff`, pas du témoin — ressemblait trait pour trait au résultat attendu. Une mutation dont le motif
+n'existait pas, laissant le témoin **vert sur un fichier non muté**. Un `grep` en échec de syntaxe dont
+le repli `||` affichait « aucune ligne de code ajoutée ». **Dans les trois cas, un résultat faux qui
+ressemble au vrai.** La parade retenue n'est pas de relire : c'est de rendre l'échec bruyant — toute
+mutation porte désormais son `assert` de présence du motif, et cet `assert` a attrapé deux mutations
+muettes dont une avait déjà produit un vert trompeur.
+
+### Le geste qui a fermé quatre réserves d'un coup
+
+`temoin-mode.mjs` est le **premier script de ce dépôt qui écrit** des fichiers ; tous les contrôles de
+`gate.sh` se contentent de lire. Cette seule différence a produit quatre réserves de familles
+différentes : pollution des traces du dépôt, deux écritures jamais éprouvées, capture conditionnelle
+née invisible, repli sans cible.
+
+**Le témoin fait désormais tourner sa cible dans un bac neuf** (`mktemp -d`) et y **asserte ce qu'elle a
+écrit**. Les quatre tombent ensemble. Mesuré par le relecteur : **135 invocations**, `.pipeline/` du
+dépôt identique à la nanoseconde. Le ménage retire les fichiers **par leur nom** puis `rmdir` — jamais
+de suppression récursive, les trois formes de `rm -r` étant en `deny` — ce qui est **plus sûr** qu'un
+`rm -rf` : un fichier inattendu fait échouer le ménage au lieu d'être emporté en silence.
+
+### Arbitrages rendus
+
+| Question | Ce qui a été tranché | Motif | Portée |
+|---|---|---|---|
+| Où vivent les limites des deux instruments ? | **En-tête des scripts**, pas en ligne `D-n` au §8 | L'en-tête atterrit avec le script et se lit là où le défaut se rencontre. Dans `.pipeline/`, ignoré par git, ces limites mouraient au `/land` — ce qui était en train de se produire. Le §8 est déjà ce que **D-22** dit sorti de sa forme | **précédent** |
+| Les conditions de fusion vont-elles dans le commit de `/land` ? | **Non — commit dédié sur la branche, avant fusion** | Une correction qui voyage avec la fusion **sort du diff de l'incrément** | **précédent** |
+| Le volet « verdict `SHIP` » de la garde de revue fraîche | **Levé, ce volet seul** | `670ce95` ne change **aucune ligne de code** : prouvé deux fois — fichiers privés de leurs commentaires identiques avant/après, et 21 charges utiles sans différence. Les trois réserves portent toutes sur du texte de commentaire, aucune n'est appliquée : l'état livré est exactement celui qui a passé la porte mécanique verte | **cas d'espèce** — cet incrément seul, ce commit seul. Ne s'étend pas au volet fraîcheur, qui était satisfait |
+| Le cinquième état `champ-invalide`, non demandé | **Conservé**, et déclaré | Le chef de projet en demandait quatre. Ranger un champ **présent mais inexploitable** sous `champ-absent` referait en plus petit la maladie que le découpage solde | **cas d'espèce** |
+| La fermeture du trou U+2028 | **Renvoyée à un `/ship` dédié** | Aucune anomalie constatée : c'est un **durcissement**, pas un correctif (`CLAUDE.md` §2). Trois voies instruites au §7 de `review.md`, préférence du relecteur pour la journalisation d'un drapeau | **précédent** |
+
+### Suite engagée
+
+**RV-32, RV-33 et RV-34 sont posées immédiatement après cet atterrissage, en commit ordinaire** —
+trois énoncés de commentaire, dont un faux. La fermeture du trou U+2028 fera l'objet d'un `/ship`
+dédié, avec son propre chemin de témoin.
+
+**Reste ouvert et non instruit** : l'aplatissement et la ligne non préfixée n'ont aucun chemin ;
+`mktemp -d` n'a pas de garde, et `cd ""` réussit en bash ; le ménage du bac n'est asserté par rien. Les
+trois vivent désormais dans les en-têtes, donc dans ce qui est enregistré.

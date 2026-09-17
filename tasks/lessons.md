@@ -1028,3 +1028,62 @@ contrainte vise **la VM Cowork**, pas Claude Code sous WSL. Enfin la route presc
    **déclarer la levée** la rend traçable. Jugée légitime en revue, et retenue comme précédent.
 **Applicable globalement ?** : **Oui** — c'est la règle générale de traitement d'une consigne qui
 empêche de mesurer ce qu'elle demande de prouver.
+
+## 17 septembre 2026 — Un résultat faux qui ressemble au vrai ne se relit pas, il se rend bruyant
+
+**Type** : Erreur
+**Contexte** : Incrément `CHORE_temoin-mode-permission`, session 23. Trois fois dans la même session,
+une commande a produit un message qui ressemblait trait pour trait au résultat attendu, alors que la
+mesure n'avait pas eu lieu.
+**Erreur/Approche** : (1) `diff … && bash témoin` — `diff` sort en 1 quand les fichiers diffèrent, ce
+qui était le cas voulu, donc la chaîne `&&` a court-circuité : **le témoin n'a jamais tourné**, et le
+`code=1` affiché était celui de `diff`. (2) Une mutation dont le motif portait quatre espaces
+d'indentation là où le fichier en porte deux : le `replace` a échoué en silence et le témoin est
+ressorti **VERT sur un fichier non muté** — ce qui se lit « la garde ne mord pas ». (3) Un `grep` en
+échec de syntaxe dont le repli `||` a affiché « aucune ligne de code ajoutée ».
+**Correction/Pattern** : **La parade n'est pas de relire, c'est de rendre l'échec bruyant.** Toute
+mutation porte un `assert` sur la présence de son motif avant d'être appliquée — cet `assert` a
+attrapé deux mutations muettes dont une avait déjà produit un vert trompeur. Toute chaîne de commandes
+dont un maillon peut légitimement sortir non nul emploie `;` et jamais `&&`. Tout repli `||` qui
+affiche une conclusion est suspect : il affirme là où la commande s'est tue. **Un code de sortie ne dit
+pas DE QUOI il est le code.**
+**Applicable globalement ?** : **Oui** — préférence de travail de JC sur la preuve, et le défaut est
+indépendant du langage et de la stack.
+
+## 17 septembre 2026 — Un script qui ÉCRIT s'éprouve dans un bac neuf, pas dans le dépôt
+
+**Type** : Succès
+**Contexte** : `temoin-mode.mjs` est le premier script de ce dépôt qui **écrit** des fichiers ; les dix
+contrôles de `gate.sh` se contentent de lire. Cette seule différence a produit, en deux revues, quatre
+réserves de familles différentes.
+**Erreur/Approche** : Les essais écrivaient dans le `.pipeline/` du dépôt. Une capture de test y a été
+lue comme une mesure réelle — et elle portait `{"permission_mode":"auto"}`, c'est-à-dire **exactement
+la forme de la réponse que l'instrument existe pour aller chercher**. Vider les traces à la main ne
+suffit pas : mesuré, le relecteur a repollué le journal **après** avoir écrit la revue qui exigeait de
+le vider.
+**Correction/Pattern** : Le témoin fait tourner sa cible depuis un **répertoire de travail neuf**
+(`mktemp -d`) et y **asserte l'existence et le contenu** de ce qu'elle a écrit. **Quatre réserves
+tombent d'un seul geste** : pollution, écritures jamais éprouvées, garde conditionnelle née invisible,
+chemin de repli sans cible. C'est une **propriété de construction**, là où un vidage est une remise à
+zéro qui se repérime. Corollaire de ménage : retirer les fichiers **par leur nom** puis `rmdir` — plus
+sûr qu'un `rm -rf`, car un fichier inattendu fait échouer le ménage au lieu d'être emporté en silence,
+et les trois formes de `rm -r` sont de toute façon en `deny`.
+**Applicable globalement ?** : **Oui** — vaut pour tout test d'un programme qui écrit, quelle que soit
+la stack.
+
+## 17 septembre 2026 — Un nombre nu dans un commentaire se périme à côté de la source qui le produit
+
+**Type** : Erreur
+**Contexte** : Quatrième occurrence dans ce dépôt de la même classe de défaut, après **D-10**, **D-18**
+et **D-7**.
+**Erreur/Approche** : En portant dans l'en-tête du témoin les limites relevées en revue, trois nombres
+mesurés y ont été recopiés — 590 octets, 18 assertions, NEUF bacs. **Deux sont devenus faux dans le
+commit même qui les inscrivait**, puisqu'il ajoutait un dixième chemin ; le troisième n'avait jamais
+été vrai.
+**Correction/Pattern** : **Retirer le nombre, pas le rectifier.** Une propriété — « sur chacun de ses
+chemins », « un bac par chemin » — reste vraie au onzième chemin ; un nombre non. Quand le nombre est
+nécessaire, il porte **sa date** : un énoncé daté reste vrai indéfiniment, un nombre nu se périme en
+silence. C'est la doctrine **D-7** appliquée aux commentaires : *un nombre déclaré doit être vrai, pas
+seulement prudent*.
+**Applicable globalement ?** : **Oui** — déjà quatre occurrences, deux stacks, et c'est une préférence
+de travail de JC sur la tenue des documents.
